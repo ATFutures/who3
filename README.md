@@ -35,7 +35,7 @@ The main output will be stable, online web tool that is feature-rich and availab
     -   A global, citywide scenario of multi-modal tranpsort change, showing reduced levels of driving following disincentives to own and use car.
     -   A global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
     -   Locally specific scenarios, such as creation of car-free zones and reduction in car parking spaces.
--   Health impacts:
+-   Health impacts: estimates of increased physical activity
 -   A customised service for different cities with different scenarios, user interface options (e.g. with specific modes, such as minibus, available in different places). This would include an adaptation guide.
 -   A user manual: this will provide information on every aspect of the user interface
 
@@ -43,6 +43,14 @@ Method
 ======
 
 In terms of web strategy, the prototype app will be set-up at a stable location, such as a ubdomain of existing website. The site will be maintained for the duration of the project.
+
+<!-- - Reproduce results from phase 2 - Mark and Robin -->
+-   Scenario development <!-- Robin -->
+-   Health output calculations - heat integration <!-- Mark -->
+-   User interface updates
+-   User manual
+-   Adaptation document <!-- Could be a vignette inside an R package -->
+-   Set-up server and deploy to atfutures.github.io (in the first instance)
 
 Automation
 ----------
