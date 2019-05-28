@@ -1,9 +1,9 @@
 # Aim: create simple leaflet shiny app for mvp
 
-if(!require(remotes)) {
-  install.packages("remotes")
-}
-remotes::install_cran("leaflet")
+# if(!require(remotes)) {
+#   install.packages("remotes")
+# }
+# remotes::install_cran("leaflet")
 library(shiny)
 library(leaflet)
 

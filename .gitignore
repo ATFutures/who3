@@ -1,3 +1,7 @@
 *.html
 .Rproj.user
 *.pdf
+.R*
+master.zip
+shiny-examples-master/
+ATF.bib

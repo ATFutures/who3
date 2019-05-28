@@ -27,3 +27,12 @@ docker exec -it competent_yonath /bin/bash
 
 R
 install.packages("leaflet")
+q()
+
+# sudo -i
+# sudo systemctl restart shiny-server
+# # sudo systemctl restart shiny-server
+# stop shiny-server
+exit
+
+docker restart competent_yonath
