@@ -28,13 +28,14 @@ Deliverables
 The main output will be stable, online web tool that is feature-rich and available for testing during the project. Initially the tool will be developed for Accra and Kathmandu, but provision will be built-in to scale the tool to other tools. The locations of the next case studies will
 
 <!-- Completion of health impact analysis in the scenarios of change, including based on the VSL methodology. This can build on WHO work Andreas Santos -->
--   A core
+-   A core codebase for processing OSM data to estimate baseline active transport levels at the route network levels
+-   A default user interface for people to explore the transport system at the city level
 -   Plausible scenarios of change, including:
--   A global, citywide scenario of uptake of active transport, as a result of citywide policies to promote walking and cycling. This would use baseline levels of walking and cycling from the global south as a reference, and an uptake scenario such as Go Dutch for cycling.
--   A global, citywide scenario of multi-modal tranpsort change, showing reduced levels of driving following disincentives to own and use car.
--   A global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
--   Locally specific scenarios, such as creation of car-free zones and reduction in car parking spaces.
--   -   Health impacts:
+    -   A global, citywide scenario of uptake of active transport, as a result of citywide policies to promote walking and cycling. This would use baseline levels of walking and cycling from the global south as a reference, and an uptake scenario such as Go Dutch for cycling.
+    -   A global, citywide scenario of multi-modal tranpsort change, showing reduced levels of driving following disincentives to own and use car.
+    -   A global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
+    -   Locally specific scenarios, such as creation of car-free zones and reduction in car parking spaces.
+-   Health impacts:
 -   A customised service for different cities with different scenarios, user interface options (e.g. with specific modes, such as minibus, available in different places). This would include an adaptation guide.
 -   A user manual: this will provide information on every aspect of the user interface
 
