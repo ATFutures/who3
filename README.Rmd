@@ -74,7 +74,7 @@ The locations of the next case studies will
 
 # Method
 
-In terms of web strategy, the prototype app will be set-up at a stable location, such as a ubdomain of existing website.
+In terms of web strategy, the prototype app will be set-up at a stable location, such as a subdomain of existing website.
 The site will be maintained for the duration of the project.
 
 <!-- - Reproduce results from phase 2 - Mark and Robin -->
