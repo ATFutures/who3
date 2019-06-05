@@ -32,9 +32,12 @@ task_df$description[1]
 stringi::stri_split_lines(task_df$description[1])
 stringi::stri_split_lines(task_df$description[1])[[1]]
 stringi::stri_split_lines1(task_df$description[1])
+x = stringi::stri_split_lines1(task_df$description[1]) 
+x_start_string = x[grepl("GanttStart", x)]
+x_start_
 
 extract_start_date = function(x) {
-  
+  char_lines = stringi::stri_split_lines1(x)
 }
 
 issue_df = issue_list %>%
