@@ -29,38 +29,43 @@ being used by dozens of transport planning organizations around the UK.
 The longer term aim is to create a globally scalable tool for
 sustainable transport planning.
 
-# Methods
+# Project stages
 
-The third stage of this project will proceed through seven
-methodological phases:
+As in previous phases, this project will involve the development of
+reproducible code and the creation of open data, for future use. The
+emphasis will shift from experimental software development and
+proof-of-concept production (delivered in phases 1 and 2) to the
+development of a stable prototype application. As outlined in the next
+section, the ‘stable application’ will have a dedicated domain and be
+available for at least 2 months after completion of the project. The
+main stages of the work will
+be:
 
-1.  **Analytic Methods and Software** Phase II resulted in a prototype
-    ATT representing patterns of active travel in Accra only. This third
-    Phase will apply all previous analyses to Kathmandu, thereby
-    consolidating code and ensuring transferability between locations.
+<!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 
-2.  **Health Impacts** The primary outputs of the ATT in current form
-    are metrics of mobility (densities of movement along street segments
-    for a range of journey purposes, modes of transport, and demographic
-    factors). This second phase will translate these outputs into
-    health-economic terms, primarily relying on the calibrated values
-    used in the WHO’s HEAT. The primary aim of this translation in to
-    health impacts will be to enable comparison of scenarios under the
-    fourth point below in health-economic terms, although we will also
-    investigate the feasibility of using locally-provided data to
-    calibrate a static HEAT model.
+<!--    This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations. -->
+
+1.  **Health Impacts** This stage will involve converting metrics of
+    mobility (number of movement along street segments for a range of
+    journey purposes, modes of transport, and demographic factors) into
+    health-economic measures, based on the Health Economic Assessment
+    Tool (HEAT Kahlmeier et al. 2014) . The primary aim of this
+    translation in to health impacts will be to enable comparison of
+    scenarios under the fourth point below in health-economic terms,
+    although we will also investigate the feasibility of using
+    locally-provided data to calibrate a static HEAT model.
+
+2.  **Scenario development**  
 
 3.  **Prototype App** Concurrent with the preceding two phases, the
     prototype app will be set-up and served from a stable web location,
     and will be maintained for the duration of the project.
 
-4.  **Scenarios** \<TODO: RL\>
-
-5.  **Health Impacts of Scenarios** The output of the previous phase
+4.  **Health Impacts of Scenarios** The output of the previous phase
     will be combined with those of the second phase to enable comparison
     of scenarios in terms of their impact on health-economic measures.
 
-6.  **User Manual** Final phases of this project stage will yield a user
+5.  **User Manual** Final phases of this project stage will yield a user
     manual able to be taken to the study cities of Accra and Kathmandu,
     to enable local stakeholders to understand, utilise, and provide
     feedback on the tool. As stated above, the tool itself will be
@@ -68,7 +73,7 @@ methodological phases:
     expertise as possible, and should be intelligible to an entirely
     general audience.
 
-7.  **Adaptation Manual** Finally, we will also develop an “Adaptation
+6.  **Adaptation Manual** Finally, we will also develop an “Adaptation
     Manual” serving the dual purpose of describing
     
     1)  How an ATT may be adapted and applied to other, additional
@@ -87,18 +92,18 @@ methodological phases:
 The primary deliverables extending from each of the above phases will
 be:
 
-1.  **Analytic Methods and Software** This phase will not produce any
-    concrete deliverables, but will provide for both cities the
-    necessary input data to allow the development of individually
-    adapted ATT.
-2.  **Health Impacts** This phase will enable ATT output to be expressed
+<!-- 1. **Analytic Methods and Software** This phase will not produce any concrete deliverables, but will provide for both cities the necessary input data to allow the development of individually adapted ATT. -->
+
+1.  **Health Impacts** This phase will enable ATT output to be expressed
     in health-economic terms. As the third phase will be conducted
     concurrently with these first two, the output of this phase will be
     directly viewable in the ATT.
-3.  **Prototype App** The single deliverable of this phase will be the
+2.  **Prototype App** The single deliverable of this phase will be the
     ATT, for which both cities will be able to be selected, and a
-    variety of ATT outputs viewed.
-4.  **Scenarios** \<TODO: RL\> Plausible scenarios of change, including:
+    variety of ATT outputs viewed. This will be hosted at a dedicated
+    URL and be available for at least 2 months after the project is
+    complete.
+3.  **Scenarios** \<TODO: RL\> Plausible scenarios of change, including:
       - A global, citywide scenario of uptake of active transport, as a
         result of citywide policies to promote walking and cycling. This
         would use baseline levels of walking and cycling from the global
@@ -111,18 +116,18 @@ be:
         [SDG 11](https://sustainabledevelopment.un.org/sdg11).
       - Locally specific scenarios, such as creation of car-free zones
         or reductions in car parking spaces.
-5.  **Health Impacts of Scenarios** This phase will extend the App to
+4.  **Health Impacts of Scenarios** This phase will extend the App to
     include the ability to select and compare scenarios, in terms both
     of changes in mobility patterns as well as associated health and
     economic terms.
-6.  **User and Adaptation Manuals** The final two phases will deliver
-    both the User and Adaptation manuals for the ATT.
+5.  **User and Adaptation Manuals** The final two phases will deliver
+    both the User and Adaptation manuals for the
+    ATT.
 
 # Resources and timeline
 
 ## Gantt chart
 
-    #> 8 issues returned for the repo who3
     #> TypeError: Attempting to change the setter of an unconfigurable property.
     #> TypeError: Attempting to change the setter of an unconfigurable property.
 
@@ -131,6 +136,16 @@ be:
 # References
 
 <div id="refs" class="references">
+
+<div id="ref-kahlmeier_health_2014">
+
+Kahlmeier, S, P Kelly, C Foster, T Götschi, N Cavill, H Dinsdale, J
+Woodcock, C Schweizer, H Rutter, and C Lieb. 2014. “Health Economic
+Assessment Tools (HEAT) for Walking and for Cycling, Methods and User
+Guide.” *World Health Organization Regional Office for Europe,
+Copenhagen, Denmark*, 2014.
+
+</div>
 
 <div id="ref-lovelace_estimating_2018">
 
