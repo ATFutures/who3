@@ -12,6 +12,7 @@ bibliography: ATF.bib
 remotes::install_github("robinlovelace/gitgantt")
 library(dplyr)
 knitr::opts_chunk$set(
+  out.width = "100%",
   collapse = TRUE,
   comment = "#>"
 )
@@ -22,10 +23,16 @@ if (!file.exists ("ATF.bib"))
 }
 ```
 
+```{r, echo=FALSE, eval=FALSE}
+# Convert pdf
+file.rename("README.pdf", "phase3-application.pdf")
+```
+
+
 # Introduction
 
-This document sets out a plan for the third phase of work for the WHO's Urban Health Initiative, and the ongoing development of an "Active Transport Tool" [ATT; @lovelace_estimating_2018].
-**The main output will be a prototype web tool -- the ATT -- to enable interactive viewing of current patterns of active transport and associated health impacts, as well as the effects of scenarios of change.**
+This document sets out a plan for the third phase of work for the WHO's Urban Health Initiative, and the ongoing development of a web application to explore health benefits of different sustainable transport policies, with the working title of "Active Transport Tool" [ATT; @lovelace_estimating_2018].
+**The main output will be a stable prototype, enabling interactive exploration of active transport scenarios and associated health impacts.**
 The work will build on previous projects funded by the WHO (in grants 2017/773067 and 2017/773067-0).
 The ATT can be used for many purposes related to the interface between transport and human health, including assessment of exposure to air pollution, changes in the distribution of physical activity, and the spatial distribution of cycling and pedestrian flow densities.
 These flow densities --- quantified as relative densities of bi-directional movement along each segment of the urban street network --- are calculated for a number of "layers" reflecting distinct journey purposes and modes.

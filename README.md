@@ -4,19 +4,21 @@
 # Introduction
 
 This document sets out a plan for the third phase of work for the WHO’s
-Urban Health Initiative, and the ongoing development of an “Active
-Transport Tool” (ATT; Lovelace et al. 2018). **The main output will be a
-prototype web tool – the ATT – to enable interactive viewing of current
-patterns of active transport and associated health impacts, as well as
-the effects of scenarios of change.** The work will build on previous
-projects funded by the WHO (in grants 2017/773067 and 2017/773067-0).
-The ATT can be used for many purposes related to the interface between
-transport and human health, including assessment of exposure to air
-pollution, changes in the distribution of physical activity, and the
-spatial distribution of cycling and pedestrian flow densities. These
-flow densities — quantified as relative densities of bi-directional
-movement along each segment of the urban street network — are calculated
-for a number of “layers” reflecting distinct journey purposes and modes.
+Urban Health Initiative, and the ongoing development of a web
+application to explore health benefits of different sustainable
+transport policies, with the working title of “Active Transport Tool”
+(ATT; Lovelace et al. 2018). **The main output will be a stable
+prototype, enabling interactive exploration of active transport
+scenarios and associated health impacts.** The work will build on
+previous projects funded by the WHO (in grants 2017/773067 and
+2017/773067-0). The ATT can be used for many purposes related to the
+interface between transport and human health, including assessment of
+exposure to air pollution, changes in the distribution of physical
+activity, and the spatial distribution of cycling and pedestrian flow
+densities. These flow densities — quantified as relative densities of
+bi-directional movement along each segment of the urban street network —
+are calculated for a number of “layers” reflecting distinct journey
+purposes and modes.
 
 The driving aim of this project across all stages will be to create of a
 *flexible framework* for analyzing, visualizing and testing a range of
@@ -136,7 +138,7 @@ be:
 The work will be conducted over 4 months, with each stage taking between
 2 weeks to a month, as illustrated below.
 
-![](README_files/figure-gfm/timeline.png)<!-- -->
+<img src="README_files/figure-gfm/timeline.png" width="100%" />
 
 # References
 
