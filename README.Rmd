@@ -9,8 +9,7 @@ bibliography: ATF.bib
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
-if (!"gitgantt" %in% installed.packages() [, "Package"])
-    remotes::install_github("robinlovelace/gitgantt")
+remotes::install_github("robinlovelace/gitgantt")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -38,8 +37,8 @@ The longer term aim is to create a globally scalable tool for sustainable transp
 
 The third stage of this project will proceed through seven methodological phases:
 
-1. **Analytic Methods and Software** The previous phase resulted in a prototype ATT representing patterns of active travel in Accra only. 
-   The first phase of this third project will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations.
+1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only. 
+   This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations.
 2. **Health Impacts** The primary outputs of the ATT in current form are metrics of mobility (densities of movement along street segments for a range of journey purposes, modes of transport, and demographic factors).
    This second phase will translate these outputs into health-economic terms, primarily relying on the calibrated values used in the WHO's HEAT.
    The primary aim of this translation in to health impacts will be to enable comparison of scenarios under the fourth point below in health-economic terms, although we will also investigate the feasibility of using locally-provided data to calibrate a static HEAT model.

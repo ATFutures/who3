@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -33,11 +34,10 @@ sustainable transport planning.
 The third stage of this project will proceed through seven
 methodological phases:
 
-1.  **Analytic Methods and Software** The previous phase resulted in a
-    prototype ATT representing patterns of active travel in Accra only.
-    The first phase of this third project will apply all previous
-    analyses to Kathmandu, thereby consolidating code and ensuring
-    transferability between locations.
+1.  **Analytic Methods and Software** Phase II resulted in a prototype
+    ATT representing patterns of active travel in Accra only. This third
+    Phase will apply all previous analyses to Kathmandu, thereby
+    consolidating code and ensuring transferability between locations.
 
 2.  **Health Impacts** The primary outputs of the ATT in current form
     are metrics of mobility (densities of movement along street segments
@@ -123,6 +123,8 @@ be:
 ## Gantt chart
 
     #> 8 issues returned for the repo who3
+    #> TypeError: Attempting to change the setter of an unconfigurable property.
+    #> TypeError: Attempting to change the setter of an unconfigurable property.
 
 ![](README_files/figure-gfm/gantt-1.png)<!-- -->
 
