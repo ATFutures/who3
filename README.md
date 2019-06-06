@@ -76,7 +76,7 @@ be:
 
 5.  **User Manual** Final stages of this project stage will yield a user
     manual able to be taken to the study cities of Accra and Kathmandu,
-    to enable local stakeholders to understand, utilise, and provide
+    to enable local stakeholders to understand, utilize, and provide
     feedback on the tool. As stated above, the tool itself will be
     web-based, and this usual manual will presume as little computer
     expertise as possible, and should be intelligible to an entirely
@@ -108,7 +108,7 @@ be:
 <!--    As the third stage will be conducted concurrently with these first two, the output of this stage will be directly viewable in the ATT. -->
 
 1.  **A Prototype App** which will work for multiple cities and allow
-    visualisation of transport and health outcomes under a range of
+    visualization of transport and health outcomes under a range of
     scenarios. This will be hosted at a dedicated URL and be available
     for at least 2 months after the project is complete.
 2.  **A description of scalable scenarios**, which will be encoded,
@@ -121,13 +121,13 @@ be:
         appropriate baseline levels of walking and cycling a reference,
         and uptake scenarios from surveys conducted in countries with
         high levels of walking and cycling.
-      - ‘Car diet’, a global, citywide scenario of multi-modal tranpsort
+      - ‘Car diet’, a global, citywide scenario of multi-modal transport
         change, showing reduced levels of driving following
         disincentives to own and use cars.
       - A global scenario of public transport uptake, linked to
         [SDG 11](https://sustainabledevelopment.un.org/sdg11).
       - Locally specific scenarios, such as creation of car-free zones
-        (meaning investment in car free city centres and other spaces)
+        (meaning investment in car free city centers and other spaces)
         or reductions in car parking spaces.
         <!-- 1. **Health Impacts** This stage will extend the App to include the ability to select and compare scenarios, in terms both of changes in mobility patterns as well as associated health and economic terms. -->
 3.  **User and Adaptation Manuals** The final two stages will deliver
