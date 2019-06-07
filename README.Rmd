@@ -54,13 +54,13 @@ The main stages of the work will be:
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 <!--    This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations. -->
 
-1. **Health Integration** This stage will involve converting metrics of mobility (densities of movement along street segments for a range of journey purposes, modes of transport, and demographic factors) into health-economic measures, extending from the calibration procedure underlying HEAT.
+1. **Health integration** This stage will involve converting metrics of mobility (densities of movement along street segments for a range of journey purposes, modes of transport, and demographic factors) into health-economic measures, extending from the calibration procedure underlying HEAT.
 1. **Scenario development** will involve: (1) setting out high level policy scenarios, including active transport uptake and disincentives to driving; (2) converting these changes into estimates of rates of shift towards active transport modes at the origin-destination and route network levels; and (3) simulating the impacts of these scenarios on walking and cycling levels citywide.
-1. **Prototype App** Concurrent with the preceding two stages, the prototype app will be set-up and served from a stable web location, and will be maintained for the duration of the project.
-1. **Health Impacts** The output of the previous stages will be combined to enable comparison of scenarios in terms of their impact on health-economic measures.
-1. **User Manual** Final stages of this project stage will yield a user manual able to be taken to the study cities of Accra and Kathmandu, to enable local stakeholders to understand, utilize, and provide feedback on the tool.
+1. **Prototype app** Concurrent with the preceding two stages, the prototype app will be set-up and served from a stable web location, and will be maintained for the duration of the project.
+1. **Health impacts** The output of the previous stages will be combined to enable comparison of scenarios in terms of their impact on health-economic measures.
+1. **User manual** Final stages of this project stage will yield a user manual able to be taken to the study cities of Accra and Kathmandu, to enable local stakeholders to understand, utilize, and provide feedback on the tool.
    As stated above, the tool itself will be web-based, and this usual manual will presume as little computer expertise as possible, and should be intelligible to an entirely general audience.
-1. **Adaptation Manual** Finally, we will also develop an "Adaptation Manual" serving the dual purpose of describing
+1. **Adaptation manual** Finally, we will also develop an "Adaptation Manual" serving the dual purpose of describing
 
    (i) How an ATT may be adapted and applied to other, additional locations; and in doing so,
    (ii) How the ATT as presented to each location may be adapted and modified following feedback from local stakeholders.
@@ -74,14 +74,14 @@ The primary deliverables extending from each of the above phases will be:
 <!-- 1. **Analytic Methods and Software** This phase will not produce any concrete deliverables, but will provide for both cities the necessary input data to allow the development of individually adapted ATT. -->
 <!-- 1. **Health Integration** This stage will enable ATT output to be expressed in health-economic terms. -->
 <!--    As the third stage will be conducted concurrently with these first two, the output of this stage will be directly viewable in the ATT. -->
-1.  **A Prototype App** which will work for multiple cities and allow visualization of transport and health outcomes under a range of scenarios. This will be hosted at a dedicated URL and be available for at least 2 months after the project is complete.
+1.  **Prototype web app** which will work for multiple cities and allow visualization of transport and health outcomes under a range of scenarios. This will be hosted at a dedicated URL and be available for at least 2 months after the project is complete.
 1.  **A description of scalable scenarios**, which will be encoded, quantified, and provided in a form that can be applied to other cities. Plausible scenarios of change will include those with the following working titles:
     - 'Get active', global (meaning without spatial components), citywide scenario of uptake of active transport, as a result of citywide policies to promote walking and cycling. This would use appropriate baseline levels of walking and cycling a reference, and uptake scenarios from surveys conducted in countries with high levels of walking and cycling.
     - 'Car diet', a global, citywide scenario of multi-modal transport change, showing reduced levels of driving following disincentives to own and use cars.
-    - A global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
-    - Locally specific scenarios, such as creation of car-free zones (meaning investment in car free city centers and other spaces) or reductions in car parking spaces.
+    - 'Go public transport', a global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
+    - 'Car free', meaning investment in car free city centers and other spaces, other locally specific scenarios, such as reductions in car parking spaces.
 <!-- 1. **Health Impacts** This stage will extend the App to include the ability to select and compare scenarios, in terms both of changes in mobility patterns as well as associated health and economic terms. -->
-1. **User and Adaptation Manuals** The final two stages will deliver both the User and Adaptation manuals for the ATT.
+1. **User and adaptation manuals** The final two stages will deliver both the User and Adaptation manuals for the ATT.
 
 # Timeline
 

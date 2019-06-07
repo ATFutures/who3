@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -46,13 +47,14 @@ proof-of-concept production (delivered in phases 1 and 2) to the
 development of a stable prototype application. As outlined in the next
 section, the ‘stable application’ will have a dedicated domain and be
 available for at least 2 months after completion of the project. The
-main stages of the work will be:
+main stages of the work will
+be:
 
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 
 <!--    This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations. -->
 
-1.  **Health Integration** This stage will involve converting metrics of
+1.  **Health integration** This stage will involve converting metrics of
     mobility (densities of movement along street segments for a range of
     journey purposes, modes of transport, and demographic factors) into
     health-economic measures, extending from the calibration procedure
@@ -65,15 +67,15 @@ main stages of the work will be:
     origin-destination and route network levels; and (3) simulating the
     impacts of these scenarios on walking and cycling levels citywide.
 
-3.  **Prototype App** Concurrent with the preceding two stages, the
+3.  **Prototype app** Concurrent with the preceding two stages, the
     prototype app will be set-up and served from a stable web location,
     and will be maintained for the duration of the project.
 
-4.  **Health Impacts** The output of the previous stages will be
+4.  **Health impacts** The output of the previous stages will be
     combined to enable comparison of scenarios in terms of their impact
     on health-economic measures.
 
-5.  **User Manual** Final stages of this project stage will yield a user
+5.  **User manual** Final stages of this project stage will yield a user
     manual able to be taken to the study cities of Accra and Kathmandu,
     to enable local stakeholders to understand, utilize, and provide
     feedback on the tool. As stated above, the tool itself will be
@@ -81,7 +83,7 @@ main stages of the work will be:
     expertise as possible, and should be intelligible to an entirely
     general audience.
 
-6.  **Adaptation Manual** Finally, we will also develop an “Adaptation
+6.  **Adaptation manual** Finally, we will also develop an “Adaptation
     Manual” serving the dual purpose of describing
     
     1)  How an ATT may be adapted and applied to other, additional
@@ -106,7 +108,7 @@ be:
 
 <!--    As the third stage will be conducted concurrently with these first two, the output of this stage will be directly viewable in the ATT. -->
 
-1.  **A Prototype App** which will work for multiple cities and allow
+1.  **Prototype web app** which will work for multiple cities and allow
     visualization of transport and health outcomes under a range of
     scenarios. This will be hosted at a dedicated URL and be available
     for at least 2 months after the project is complete.
@@ -123,13 +125,14 @@ be:
       - ‘Car diet’, a global, citywide scenario of multi-modal transport
         change, showing reduced levels of driving following
         disincentives to own and use cars.
-      - A global scenario of public transport uptake, linked to
+      - ‘Go public transport’, a global scenario of public transport
+        uptake, linked to
         [SDG 11](https://sustainabledevelopment.un.org/sdg11).
-      - Locally specific scenarios, such as creation of car-free zones
-        (meaning investment in car free city centers and other spaces)
-        or reductions in car parking spaces.
+      - ‘Car free’, meaning investment in car free city centers and
+        other spaces, other locally specific scenarios, such as
+        reductions in car parking spaces.
         <!-- 1. **Health Impacts** This stage will extend the App to include the ability to select and compare scenarios, in terms both of changes in mobility patterns as well as associated health and economic terms. -->
-3.  **User and Adaptation Manuals** The final two stages will deliver
+3.  **User and adaptation manuals** The final two stages will deliver
     both the User and Adaptation manuals for the ATT.
 
 # Timeline
