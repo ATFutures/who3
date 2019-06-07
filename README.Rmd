@@ -4,7 +4,7 @@ output:
   pdf_document:
     number_sections: true
 bibliography: ATF.bib
-title: Development of a web application for active transport planning
+title: Development of a prototype web application for active transport planning
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
