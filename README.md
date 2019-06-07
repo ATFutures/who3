@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -47,8 +46,7 @@ proof-of-concept production (delivered in phases 1 and 2) to the
 development of a stable prototype application. As outlined in the next
 section, the ‘stable application’ will have a dedicated domain and be
 available for at least 2 months after completion of the project. The
-main stages of the work will
-be:
+main stages of the work will be:
 
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 
@@ -116,7 +114,7 @@ be:
     quantified, and provided in a form that can be applied to other
     cities. Plausible scenarios of change will include those with the
     following working titles:
-      - ‘Get active’, referena global (meaning without spatial
+      - ‘Get active’, referring to a global (meaning without spatial
         components), citywide scenario of uptake of active transport, as
         a result of citywide policies to promote walking and cycling.
         This would use appropriate baseline levels of walking and
