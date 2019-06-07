@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -34,9 +33,9 @@ sustainable transport planning.
 A key research outcome will be methods to convert transport flow data
 into health impacts, and case study cities showcasing this. This will
 enable comparison of scenarios under the fourth point below in
-health-economic terms, although we will also investigate the feasibility
-of using locally-provided data to calibrate the Health Economic
-Assessment Tool (HEAT Kahlmeier et al. 2014) based on local data.
+health-economic terms, and we will also investigate the feasibility of
+calibrating the Health Economic Assessment Tool (HEAT Kahlmeier et al.
+2014) using locally-provided data.
 
 # Project stages
 
@@ -47,24 +46,24 @@ proof-of-concept production (delivered in phases 1 and 2) to the
 development of a stable prototype application. As outlined in the next
 section, the ‘stable application’ will have a dedicated domain and be
 available for at least 2 months after completion of the project. The
-main stages of the work will
-be:
+main stages of the work will be:
 
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 
 <!--    This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations. -->
 
 1.  **Health Integration** This stage will involve converting metrics of
-    mobility (number of movement along street segments for a range of
+    mobility (densities of movement along street segments for a range of
     journey purposes, modes of transport, and demographic factors) into
-    health-economic measures, based on HEAT.
+    health-economic measures, extending from the calibration procedure
+    underlying HEAT.
 
 2.  **Scenario development** will involve: (1) setting out high level
     policy scenarios, including active transport uptake and
-    disincentives to drive; (2) converting these changes into mode shift
-    estimates at the origin-destination and route network levels; and
-    (3) simulating the impacts of these scenarios on walking and cycling
-    levels citywide.
+    disincentives to driving; (2) converting these changes into
+    estimates of rates of shift towards active transport modes at the
+    origin-destination and route network levels; and (3) simulating the
+    impacts of these scenarios on walking and cycling levels citywide.
 
 3.  **Prototype App** Concurrent with the preceding two stages, the
     prototype app will be set-up and served from a stable web location,

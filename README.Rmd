@@ -42,7 +42,7 @@ This work will go beyond the Propensity to Cycle Tool (PCT) project [@lovelace_p
 The longer term aim is to create a globally scalable tool for sustainable transport planning.
 
 A key research outcome will be methods to convert transport flow data into health impacts, and case study cities showcasing this.
-This will enable comparison of scenarios under the fourth point below in health-economic terms, although we will also investigate the feasibility of using locally-provided data to calibrate the Health Economic Assessment Tool [HEAT @kahlmeier_health_2014] based on local data.
+This will enable comparison of scenarios under the fourth point below in health-economic terms, and we will also investigate the feasibility of calibrating the Health Economic Assessment Tool [HEAT @kahlmeier_health_2014] using locally-provided data.
 
 # Project stages
 
@@ -54,8 +54,8 @@ The main stages of the work will be:
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 <!--    This third Phase will apply all previous analyses to Kathmandu, thereby consolidating code and ensuring transferability between locations. -->
 
-1. **Health Integration** This stage will involve converting metrics of mobility (number of movement along street segments for a range of journey purposes, modes of transport, and demographic factors) into health-economic measures, based on HEAT.
-1. **Scenario development** will involve: (1) setting out high level policy scenarios, including active transport uptake and disincentives to drive; (2) converting these changes into mode shift estimates at the origin-destination and route network levels; and (3) simulating the impacts of these scenarios on walking and cycling levels citywide.
+1. **Health Integration** This stage will involve converting metrics of mobility (densities of movement along street segments for a range of journey purposes, modes of transport, and demographic factors) into health-economic measures, extending from the calibration procedure underlying HEAT.
+1. **Scenario development** will involve: (1) setting out high level policy scenarios, including active transport uptake and disincentives to driving; (2) converting these changes into estimates of rates of shift towards active transport modes at the origin-destination and route network levels; and (3) simulating the impacts of these scenarios on walking and cycling levels citywide.
 1. **Prototype App** Concurrent with the preceding two stages, the prototype app will be set-up and served from a stable web location, and will be maintained for the duration of the project.
 1. **Health Impacts** The output of the previous stages will be combined to enable comparison of scenarios in terms of their impact on health-economic measures.
 1. **User Manual** Final stages of this project stage will yield a user manual able to be taken to the study cities of Accra and Kathmandu, to enable local stakeholders to understand, utilize, and provide feedback on the tool.
