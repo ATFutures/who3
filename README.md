@@ -116,12 +116,12 @@ be:
     quantified, and provided in a form that can be applied to other
     cities. Plausible scenarios of change will include those with the
     following working titles:
-      - ‘Get active’, global (meaning without spatial components),
-        citywide scenario of uptake of active transport, as a result of
-        citywide policies to promote walking and cycling. This would use
-        appropriate baseline levels of walking and cycling a reference,
-        and uptake scenarios from surveys conducted in countries with
-        high levels of walking and cycling.
+      - ‘Get active’, referena global (meaning without spatial
+        components), citywide scenario of uptake of active transport, as
+        a result of citywide policies to promote walking and cycling.
+        This would use appropriate baseline levels of walking and
+        cycling as a reference, and uptake scenarios from surveys
+        conducted in countries with high levels of walking and cycling.
       - ‘Car diet’, a global, citywide scenario of multi-modal transport
         change, showing reduced levels of driving following
         disincentives to own and use cars.
@@ -138,7 +138,7 @@ be:
 # Timeline
 
 The work will be conducted over 4 months, with each stage taking between
-2 weeks to a month, as illustrated below.
+2 weeks to 2 months, as illustrated below.
 
 <img src="README_files/figure-gfm/timeline.png" width="100%" />
 
