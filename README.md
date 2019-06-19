@@ -37,6 +37,78 @@ health-economic terms, and we will also investigate the feasibility of
 calibrating the Health Economic Assessment Tool (HEAT Kahlmeier et al.
 2014) using locally-provided data.
 
+# Current state of project
+
+## Flow layers
+
+The project thus far has established and calibrated algorithms to
+generate the following “flow layers”, for which “destination” also
+describes the purpose of journeys, and where each layer is calculated in
+two directions (origin -\> destination; destination -\> origin):
+
+| origin | destination | mode of transport  |  |
+| ------ | ----------- | ------------------ |  |
+| home   | education   | bicycle, foot      |  |
+| home   | retail      | bicycle, foot      |  |
+| home   | bus         | foot               |  |
+| home   | work        | bicycle, foot      |  |
+| work   | retail      | bicycle, foot      |  |
+| work   | bus         | foot               |  |
+| retail | bus         | foot               |  |
+| retail | retail      | foot, bicycle, bus |  |
+
+Each flow layer quantifies a *relative* density along each street
+segment, with values determined both by densities at origins and
+destinations. These densities are in turn calculated as follows:
+
+1.  Home densities directly from population density layer (enabling
+    subsequent finer distinctions between demographic groups)
+2.  Work densities based on local densities of “activity centres”
+    (centres of commerce, administration, education). These are scaled
+    by estimated building sizes, modified for distinct purposes such
+    that, for example, densities for journeys to educational facilities
+    are high for purposes of education, yet lower for purposes of
+    employment.
+3.  Retail densities based on local densities of retail buildings.
+
+All of these densities are also adjusted via a model of the spatial
+patterns of bus usage which estimates aggregate rates of ingress –
+densities entering buses at each stop – and egress – densities exiting
+buses at each stop. The model used to estimate these rates of ingress
+and egress has been calibrated against open data from the [Minnesota
+Transit
+Survey](https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-stop-boardings-alightings).
+As said, all flow layers are relative only, and a “master” flow layer
+can only be generated through weighting each of these individual layers.
+A trial weighting scheme for a master walking layer was developed for
+Accra based on statistics for proportions of walking trips for different
+purposes, and for frequencies of bus usage.
+
+## Air pollution
+
+The master flow layer was then used to estimate aggregate exposure to
+vehicular-borne pollutants. As for flow layers, the resultant exposure
+layer was relative only, yet can be readily converted to absolute values
+using locally-provided statistics. The exposure layer extends beyond
+prior methods such as (Robin - please insert Vara-Vela ref once it’s in
+zotero group). Most prior methods, including the [Praise Hong Kong
+Air-Monitoring App](https://praise.ust.hk) in its current form, rely on
+coarse estimates of street network structure to provide crude estimates
+of vehicular densities. In contrast, we applied our own software to
+generate much more spatially detailed and realistic estimates of
+vehicular flow densities throughout the networks of Accra and Kathmandu,
+and presumed concentrations of vehicular-borne pollutants to be
+proportional to these flow densities. This modelling approach is
+equivalent to the development on the Praise App proposed for later this
+year (2019).
+
+Final estimates of exposure to air pollutants require combining
+estimates of static pollutant distributions throughout the cities with
+these spatially explicit components. We hope to receive or otherwise
+generate such static estimates during this third phase, enabling us to
+combine our spatially explicit estimates with city-wide “background”
+estimates, to generate estimates of aggregate exposure.
+
 # Project stages
 
 As in previous phases, this project will involve the development of
