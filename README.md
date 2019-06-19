@@ -46,16 +46,16 @@ generate the following “flow layers”, for which “destination” also
 describes the purpose of journeys, and where each layer is calculated in
 two directions (origin -\> destination; destination -\> origin):
 
-| origin | destination | mode of transport  |  |
-| ------ | ----------- | ------------------ |  |
-| home   | education   | bicycle, foot      |  |
-| home   | retail      | bicycle, foot      |  |
-| home   | bus         | foot               |  |
-| home   | work        | bicycle, foot      |  |
-| work   | retail      | bicycle, foot      |  |
-| work   | bus         | foot               |  |
-| retail | bus         | foot               |  |
-| retail | retail      | foot, bicycle, bus |  |
+| origin | destination | mode of transport  |
+| ------ | ----------- | ------------------ |
+| home   | education   | bicycle, foot      |
+| home   | retail      | bicycle, foot      |
+| home   | bus         | foot               |
+| home   | work        | bicycle, foot      |
+| work   | retail      | bicycle, foot      |
+| work   | bus         | foot               |
+| retail | bus         | foot               |
+| retail | retail      | foot, bicycle, bus |
 
 Each flow layer quantifies a *relative* density along each street
 segment, with values determined both by densities at origins and
