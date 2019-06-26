@@ -17,7 +17,7 @@ activity, and the spatial distribution of cycling and pedestrian flow
 densities. These flow densities — quantified as relative densities of
 bi-directional movement along each segment of the urban street network —
 are calculated for a number of “layers” reflecting distinct journey
-purposes and modes.
+purposes and modes (see the following section).
 
 The driving aim of this project across all stages will be to create of a
 *flexible framework* for analyzing, visualizing and testing a range of
@@ -44,18 +44,19 @@ calibrating the Health Economic Assessment Tool (HEAT Kahlmeier et al.
 The project thus far has established and calibrated algorithms to
 generate the following “flow layers”, for which “destination” also
 describes the purpose of journeys, and where each layer is calculated in
-two directions (origin -\> destination; destination -\> origin):
+two directions (origin \(\rightarrow\) destination; destination
+\(\rightarrow\) origin):
 
-| origin | destination | mode of transport  |
-| ------ | ----------- | ------------------ |
-| home   | education   | bicycle, foot      |
-| home   | retail      | bicycle, foot      |
-| home   | bus         | foot               |
-| home   | work        | bicycle, foot      |
-| work   | retail      | bicycle, foot      |
-| work   | bus         | foot               |
-| retail | bus         | foot               |
-| retail | retail      | foot, bicycle, bus |
+| origin | destination | mode of transport  |  |
+| ------ | ----------- | ------------------ |  |
+| home   | education   | bicycle, foot      |  |
+| home   | retail      | bicycle, foot      |  |
+| home   | bus         | foot               |  |
+| home   | work        | bicycle, foot      |  |
+| work   | retail      | bicycle, foot      |  |
+| work   | bus         | foot               |  |
+| retail | bus         | foot               |  |
+| retail | retail      | foot, bicycle, bus |  |
 
 Each flow layer quantifies a *relative* density along each street
 segment, with values determined both by densities at origins and
@@ -65,11 +66,12 @@ destinations. These densities are in turn calculated as follows:
     subsequent finer distinctions between demographic groups)
 2.  Work densities based on local densities of “activity centres”
     (centres of commerce, administration, education). These are scaled
-    by estimated building sizes, modified for distinct purposes such
-    that, for example, densities for journeys to educational facilities
-    are high for purposes of education, yet lower for purposes of
-    employment.
-3.  Retail densities based on local densities of retail buildings.
+    by estimated building sizes (including floor areas times height
+    where available), modified for distinct purposes such that, for
+    example, densities for journeys to educational facilities are high
+    for purposes of education, yet lower for purposes of employment.
+3.  Retail densities based on local densities and sizes of retail
+    buildings.
 
 All of these densities are also adjusted via a model of the spatial
 patterns of bus usage which estimates aggregate rates of ingress –
@@ -90,17 +92,17 @@ The master flow layer was then used to estimate aggregate exposure to
 vehicular-borne pollutants. As for flow layers, the resultant exposure
 layer was relative only, yet can be readily converted to absolute values
 using locally-provided statistics. The exposure layer extends beyond
-prior methods such as (Robin - please insert Vara-Vela ref once it’s in
-zotero group). Most prior methods, including the [Praise Hong Kong
-Air-Monitoring App](https://praise.ust.hk) in its current form, rely on
-coarse estimates of street network structure to provide crude estimates
-of vehicular densities. In contrast, we applied our own software to
+prior methods such as Vara-Vela et al. (2016). Most prior methods,
+including the [Praise Hong Kong Air-Monitoring
+App](https://praise.ust.hk) in its current form, rely on coarse
+estimates of street network structure to provide crude estimates of
+vehicular densities. In contrast, we applied our own software to
 generate much more spatially detailed and realistic estimates of
 vehicular flow densities throughout the networks of Accra and Kathmandu,
 and presumed concentrations of vehicular-borne pollutants to be
-proportional to these flow densities. This modelling approach is
-equivalent to the development on the Praise App proposed for later this
-year (2019).
+proportional to these flow densities, and modelled dispersion away from
+the street-based sources. This modelling approach is equivalent to the
+development on the Praise App proposed for later this year (2019).
 
 Final estimates of exposure to air pollutants require combining
 estimates of static pollutant distributions throughout the cities with
@@ -130,12 +132,15 @@ main stages of the work will be:
     health-economic measures, extending from the calibration procedure
     underlying HEAT.
 
-2.  **Scenario development** will involve: (1) setting out high level
-    policy scenarios, including active transport uptake and
-    disincentives to driving; (2) converting these changes into
-    estimates of rates of shift towards active transport modes at the
-    origin-destination and route network levels; and (3) simulating the
-    impacts of these scenarios on walking and cycling levels citywide.
+2.  **Scenario development** will involve:
+    
+    1)  setting out high level policy scenarios, including active
+        transport uptake and disincentives to driving;
+    2)  converting these changes into estimates of rates of shift
+        towards active transport modes at the origin-destination and
+        route network levels; and
+    3)  simulating the impacts of these scenarios on walking and cycling
+        levels citywide.
 
 3.  **Prototype app** Concurrent with the preceding two stages, the
     prototype app will be set-up and served from a stable web location,
@@ -165,7 +170,11 @@ main stages of the work will be:
     of inputs, analytic processes, and resultant outputs, to enable
     stakeholders to readily identify modifications that might ultimately
     provide outputs better suited to local needs, desires, and future
-    visions.
+    visions. Particularly important will be a section describing the
+    quality of results in cases where *no* local data are able to be
+    provided, along with a brief catalogue of increases in accuracy
+    resulting from supplementing generic global-scale data with more
+    detailed local data.
 
 # Deliverables
 
@@ -202,8 +211,8 @@ be:
         other spaces, other locally specific scenarios, such as
         reductions in car parking spaces.
         <!-- 1. **Health Impacts** This stage will extend the App to include the ability to select and compare scenarios, in terms both of changes in mobility patterns as well as associated health and economic terms. -->
-3.  **User and adaptation manuals** The final two stages will deliver
-    both the User and Adaptation manuals for the ATT.
+3.  **User Manual** (as described above).
+4.  **Adaptation Manual** (as described above).
 
 # Timeline
 
@@ -240,6 +249,16 @@ Lovelace, Robin, Anna Goodman, Rachel Aldred, Nikolai Berkoff, Ali
 Abbas, and James Woodcock. 2017. “The Propensity to Cycle Tool: An Open
 Source Online System for Sustainable Transport Planning.” *Journal of
 Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
+
+</div>
+
+<div id="ref-vara-vela_impact_2016">
+
+Vara-Vela, A., M. F. Andrade, P. Kumar, R. Y. Ynoue, and A. G. Muñoz.
+2016. “Impact of Vehicular Emissions on the Formation of Fine Particles
+in the Sao Paulo Metropolitan Area: A Numerical Study with the WRF-Chem
+Model.” *Atmospheric Chemistry and Physics* 16 (2): 777–97.
+<https://doi.org/https://doi.org/10.5194/acp-16-777-2016>.
 
 </div>
 
