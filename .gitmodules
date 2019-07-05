@@ -4,3 +4,6 @@
 [submodule "attShiny"]
 	path = attShiny
 	url = git@github.com:atfutures-labs/attShiny
+[submodule "att"]
+	path = att
+	url = git@github.com:atfutures-labs/attShiny
