@@ -58,6 +58,10 @@ This will enable comparison of scenarios under the fourth point below in health-
 The previous two phases of this work established and calibrated methods to generate "flow layers" from a range of origins to trip attracting destinations, defined by the type of trip (work, education, etc).
 Each layer is calculated in two directions (origin $\rightarrow$ destination; destination $\rightarrow$ origin):
 
+```{r}
+# todo: fix this table (RL)
+```
+
 | origin | destination | mode of transport
 | --- | --- | --- | ---
 | home | work | bicycle, foot

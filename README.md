@@ -108,12 +108,12 @@ data](http://roads.data.tfl.gov.uk/) and the UK Census.
 
 A spatial model of air pollution will be created, enabling the automatic
 creation of pollution heat maps, building on prior methods such as
-Vara-Vela et al. (2016). Most prior methods, including the [Praise Hong
-Kong Air-Monitoring App](https://praise.ust.hk)m, rely on coarse
-estimates of street network structure to provide crude estimates of
-vehicular densities. We will model air quality at relatively high
-resolution, including estimated rates of dispersion away from the
-street-based sources.
+(<span class="citeproc-not-found" data-reference-id="vara-vela_impact_2016">**???**</span>).
+Most prior methods, including the [Praise Hong Kong Air-Monitoring
+App](https://praise.ust.hk)m, rely on coarse estimates of street network
+structure to provide crude estimates of vehicular densities. We will
+model air quality at relatively high resolution, including estimated
+rates of dispersion away from the street-based sources.
 <!-- This modelling approach is equivalent to the development on the Praise App proposed for later this year (2019). -->
 
 Estimates of exposure to air pollutants require data on both background
@@ -275,16 +275,6 @@ Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
 
 Padgham, Mark, and Andreas Peutschnig. 2017. *Dodgr: Distances on
 Directed Graphs*. <https://CRAN.R-project.org/package=dodgr>.
-
-</div>
-
-<div id="ref-vara-vela_impact_2016">
-
-Vara-Vela, A., M. F. Andrade, P. Kumar, R. Y. Ynoue, and A. G. Muñoz.
-2016. “Impact of Vehicular Emissions on the Formation of Fine Particles
-in the Sao Paulo Metropolitan Area: A Numerical Study with the WRF-Chem
-Model.” *Atmospheric Chemistry and Physics* 16 (2): 777–97.
-<https://doi.org/https://doi.org/10.5194/acp-16-777-2016>.
 
 </div>
 
