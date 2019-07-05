@@ -7,3 +7,6 @@
 [submodule "att"]
 	path = att
 	url = git@github.com:atfutures-labs/attShiny
+[submodule "upthat"]
+	path = upthat
+	url = git@github.com:atfutures-labs/upthat
