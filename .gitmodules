@@ -1,3 +1,6 @@
 [submodule "transportScenarios"]
 	path = transportScenarios
 	url = git@github.com:ATFutures/transportScenarios
+[submodule "attShiny"]
+	path = attShiny
+	url = git@github.com:atfutures-labs/attShiny
