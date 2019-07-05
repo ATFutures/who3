@@ -5,7 +5,7 @@ docker run --rm -p 3838:3838 \
     -e PASSWORD=<YORPASS> \
     -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinyapps/:/srv/shiny-server/ \
     -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinylog/:/var/log/shiny-server/ \
-    atfutures/pct:v0.0.1
+    atfutures/ut:v0.0.1
 
 sudo chown $USER ../shinyapps
 sudo chown $USER ../shinylogs
@@ -37,7 +37,7 @@ q()
 exit
 
 # see https://github.com/rocker-org/rocker/issues/235
-docker build pct -t atfutures/pct:v0.0.1
+docker build ut -t atfutures/ut:v0.0.1
 
 cp -Rv ~/hd/npct/pct-shiny/ ../shinyapps/
 
