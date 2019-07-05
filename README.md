@@ -57,16 +57,16 @@ destinations, defined by the type of trip (work, education, etc). Each
 layer is calculated in two directions (origin \(\rightarrow\)
 destination; destination \(\rightarrow\) origin):
 
-| origin | destination | mode of transport  |  |
-| ------ | ----------- | ------------------ |  |
-| home   | work        | bicycle, foot      |  |
-| home   | education   | bicycle, foot      |  |
-| home   | retail      | bicycle, foot      |  |
-| home   | bus         | foot               |  |
-| work   | retail      | bicycle, foot      |  |
-| work   | bus         | foot               |  |
-| retail | bus         | foot               |  |
-| retail | retail      | foot, bicycle, bus |  |
+| origin | destination | mode             |
+| :----- | :---------- | :--------------- |
+| home   | work        | bicycle foot     |
+| home   | education   | bicycle foot     |
+| home   | retail      | bicycle foot     |
+| home   | bus         | foot             |
+| work   | retail      | bicycle foot     |
+| work   | bus         | foot             |
+| retail | bus         | foot             |
+| retail | retail      | foot bicycle bus |
 
 In the second stage, *relative* density along each street segment was
 calculated as follows:

@@ -11,12 +11,12 @@ bibliography: ATF.bib
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
-if (!requireNamespace ("gitgantt")) {
-    remotes::install_github("robinlovelace/gitgantt")
-    library (gitgantt)
-}
+remotes::install_github("robinlovelace/gitgantt")
+library (gitgantt)
+
 library(dplyr)
 knitr::opts_chunk$set(
+  echo = FALSE,
   out.width = "100%",
   collapse = TRUE,
   comment = "#>"
@@ -59,19 +59,20 @@ The previous two phases of this work established and calibrated methods to gener
 Each layer is calculated in two directions (origin $\rightarrow$ destination; destination $\rightarrow$ origin):
 
 ```{r}
-# todo: fix this table (RL)
+# OD table
+od_layers = read.csv(text = "origin,destination,mode
+home,work,bicycle foot
+home,education,bicycle foot
+home,retail,bicycle foot
+home,bus,foot
+work,retail,bicycle foot
+work,bus,foot
+retail,bus,foot
+retail,retail,foot bicycle bus")
+knitr::kable(od_layers)
 ```
 
-| origin | destination | mode of transport
-| --- | --- | --- | ---
-| home | work | bicycle, foot
-| home | education | bicycle, foot
-| home | retail | bicycle, foot
-| home | bus | foot
-| work | retail | bicycle, foot
-| work | bus | foot
-| retail | bus | foot
-| retail | retail | foot, bicycle, bus
+
 
 In the second stage, *relative* density along each street segment was calculated as follows:
 
