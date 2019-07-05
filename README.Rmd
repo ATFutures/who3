@@ -21,11 +21,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-if (!file.exists ("ATF.bib"))
-{
-    refs = RefManageR::ReadZotero(group = "418217", .params = list(collection = "TJEQMXJR", limit = 100))
-    RefManageR::WriteBib(refs, "ATF.bib")
-}
+refs = RefManageR::ReadZotero(group = "418217", .params = list(collection = "TJEQMXJR", limit = 100))
+RefManageR::WriteBib(refs, "ATF.bib")
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
