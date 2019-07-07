@@ -1,10 +1,4 @@
 # # docker run --rm -d 3838:3838 \ 
-docker run --rm -p 3838:3838 \
-    -e PASSWORD=<YOURPASS> \
-    -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinyapps/:/srv/shiny-server/ \
-    -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinylog/:/var/log/shiny-server/ \
-    atfutures/ut:v0.0.1 &
-    
 
 # 
 # sudo chown $USER ../shinyapps
@@ -24,7 +18,7 @@ docker run --rm -p 3838:3838 \
 # cp exampleLeafletApp.R ../shinyapps/att/app.R
 # 
 # # next step: container admin with docker attach
-# docker exec -it competent_yonath /bin/bash
+# docker exec -it hardcore_ritchie /bin/bash
 # 
 # R
 # install.packages("leaflet")
@@ -37,7 +31,18 @@ docker run --rm -p 3838:3838 \
 # exit
 # 
 # # see https://github.com/rocker-org/rocker/issues/235
-# docker build ut -t atfutures/ut:v0.0.1
+docker build --no-cache ut -t atfutures/ut:v0.0.1
+
+# see https://stackoverflow.com/questions/32073971/stopping-docker-containers-by-image-name-ubuntu
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=atfutures/ut:v0.0.1 --format="{{.ID}}"))
+docker ps
+
+docker run --rm -p 3838:3838 \
+    -e PASSWORD=<YOURPASS> \
+    -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinyapps/:/srv/shiny-server/ \
+    -v /mnt/57982e2a-2874-4246-a6fe-115c199bc6bd/atfutures/shinylog/:/var/log/shiny-server/ \
+    atfutures/ut:v0.0.1 &
+
 # 
 # cp -Rv ~/hd/npct/pct-shiny/ ../shinyapps/
 # 
