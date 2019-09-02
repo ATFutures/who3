@@ -1,5 +1,9 @@
 # Aim: get minimum cycle network in city
 
+# examaple: 
+net = readRDS(system.file("net.Rds", package = "upthat"))
+head(net)
+
 city_name = "Kathmandu, nepal"
 size_net = 1000
 osm_variables_to_keep = c("osm_id", "name", "highway", "access", "bicycle", "cycleway", "foot", "maxspeed", "oneway")
