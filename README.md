@@ -1,6 +1,3 @@
-Development of a prototype web application for active transport planning
-================
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -32,10 +29,9 @@ beyond the Propensity to Cycle Tool (PCT) project (Lovelace et al.
 planning tool in the UK and is being used by dozens of transport
 planning organizations to improve the effectiveness of hundreds of km of
 cycleway schemes. The international application of these methods,
-supplemented by new high performace software (Padgham and Peutschnig
-2017), raises the possibility of a globally scalable tool for
-sustainable transport planning. Follow-up work will seek funding for
-such a global tool.
+supplemented by new high performace software (Padgham 2019), raises the
+possibility of a globally scalable tool for sustainable transport
+planning. Follow-up work will seek funding for such a global tool.
 
 The prototype web application we will develop for this project will be
 implemented at the city level, however, in Accra, Kathmandu, and at
@@ -133,8 +129,7 @@ application, building on the experimental software development and
 proof-of-concept production focus of phases 1 and 2. As outlined in the
 next section, the ‘stable application’ will have a dedicated domain and
 be available for at least 2 months after completion of the project. The
-main stages of the work will
-be:
+main stages of the work will be:
 
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 
@@ -271,10 +266,11 @@ Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
 
 </div>
 
-<div id="ref-padgham_dodgr:_2017">
+<div id="ref-padgham_dodgr:_2019">
 
-Padgham, Mark, and Andreas Peutschnig. 2017. *Dodgr: Distances on
-Directed Graphs*. <https://CRAN.R-project.org/package=dodgr>.
+Padgham, Mark. 2019. *Dodgr: An R Package for Network Flow Aggregation*.
+Vol. 2. Transport Findings. Network Design Lab.
+<https://doi.org/10.32866/6945>.
 
 </div>
 

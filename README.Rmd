@@ -41,7 +41,7 @@ These flow densities --- quantified as relative densities of bi-directional move
 
 The driving aim of this project across all stages will be to create of a *flexible framework* for analyzing, visualizing and testing a range of scenarios based on different input datasets and parameters, and to ensure the framework is able to be updated and modified at any stage within or beyond the project timetable as desired.
 This work will go beyond the Propensity to Cycle Tool (PCT) project [@lovelace_propensity_2017], which has become the primary government endorsed cycle network planning tool in the UK and is being used by dozens of transport planning organizations to improve the effectiveness of hundreds of km of cycleway schemes.
-The international application of these methods, supplemented by new high performace software [@padgham_dodgr:_2017], raises the possibility of a globally scalable tool for sustainable transport planning.
+The international application of these methods, supplemented by new high performace software [@padgham_dodgr:_2019], raises the possibility of a globally scalable tool for sustainable transport planning.
 Follow-up work will seek funding for such a global tool.
 
 The prototype web application we will develop for this project will be implemented at the city level, however, in Accra, Kathmandu, and at least one other city.
