@@ -31,6 +31,8 @@ Authority](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm),
 with data on locations obtained through the city’s [open data
 portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
 
+### The Street Network
+
 ## Modelling Pedestrian Flows
 
 We modelled pedestrian flows throughout the entirety of New York City,
@@ -40,6 +42,45 @@ the 114 pedestrian count stations. Models were constructed using the
 large-scale routing through street networks, by assembling an array of
 “flow layers” representing pedestrian flows between distinct
 categories of origin and destination points.
+
+Flow layers were generated in two primary ways: either by dispersing
+from a given set of origin points according to specified densities, or
+through routing flows between specific sets of origin and destination
+points, with densities calculated by a doubly-constrained spatial
+interaction model, with exponential form used throughout (Wilson 2008).
+We refer to these two methods of calculating flow layers as “flow
+dispersal” and “flow aggregation”, and illustrate both in the following
+sub-sections. Our spatial interaction models were modified to reflect a
+“weighted rich-club effect” (Opsahl et al. 2008), reflecting the
+increased likelihood of people being attracted to social groups
+surrounding rich or otherwise desirable individuals. The “richer” a
+person becomes, the more powerful becomes the attraction of others to
+that person, and Opsahl et al. (2008) demonstrated that increases in
+attraction with “richness” are supra-linear. Similarly, we hypothesised
+that pedestrians are supra-linearly more attracted to centres of
+pedestrian activity, through non-linearly increasing flows towards the
+destinations of our spatial interaction models in proportion to the
+attractiveness of those destinations. Specifically, for a destination of
+“size” or “attractiveness”, \(n\) (generally proportion to local
+concentration of centres of pedestrian activity), we constructed spatial
+interaction models according to a decay parameter, \(k\), and an
+additional parameter, \(0\le\alpha\), as,  where \(w\) is a normalising
+coefficient equal to the sum over all discrete destinations from a given
+point, \(w = \sum_i SI(d_i)\).
+
+### Flow dispersal
+
+The calculation of flow dispersal is illustrated here through
+calculating flow dispersing from the subway stations of New York City.
+The data were obtained as described above, specified as total annual
+numbers of passengers entering or exiting each of 424 subway stations.
+Counts extend back to 2013, and we used for this study the most recent
+full year of 2018.
+
+For each station, flow dispersal was calculated using the station
+coordinates as an origin point, and routing to every other point within
+the street network according to a weighting scheme representing typical
+pedestrian preferences. We used
 
 ## Flow layers
 
@@ -100,11 +141,29 @@ data](http://roads.data.tfl.gov.uk/) and the UK Census.
 
 <div id="refs" class="references">
 
+<div id="ref-opsahl_prominence_2008">
+
+Opsahl, Tore, Vittoria Colizza, Pietro Panzarasa, and Jos’e J. Ramasco.
+2008. “Prominence and Control: The Weighted Rich-Club Effect.” *Physical
+Review Letters* 101 (16): 168702.
+<https://doi.org/10.1103/PhysRevLett.101.168702>.
+
+</div>
+
 <div id="ref-padgham_dodgr:_2019">
 
 Padgham, Mark. 2019. *Dodgr: An R Package for Network Flow Aggregation*.
 Vol. 2. Transport Findings. Network Design Lab.
 <https://doi.org/10.32866/6945>.
+
+</div>
+
+<div id="ref-wilson_boltzmann_2008">
+
+Wilson, Alan. 2008. “Boltzmann, Lotka and Volterra and Spatial
+Structural Evolution: An Integrated Methodology for Some Dynamical
+Systems.” *Journal of the Royal Society Interface* 5 (25): 865–71.
+<https://doi.org/10.1098/rsif.2007.1288>.
 
 </div>
 
