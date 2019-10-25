@@ -33,6 +33,16 @@ portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
 
 ### The Street Network
 
+<span style="background-color:yellow; color:red"> \[Describe weighting
+profiles for pedestrian routing, and time-based versus distance-based
+routing\] </span>
+
+### Trip categories
+
+<span style="background-color:yellow; color:red"> \[Describe the kinds
+of origin and destination categories used to generate flow layers\]
+</span>
+
 ## Modelling Pedestrian Flows
 
 We modelled pedestrian flows throughout the entirety of New York City,
@@ -50,105 +60,87 @@ points, with densities calculated by a doubly-constrained spatial
 interaction model, with exponential form used throughout (Wilson 2008).
 We refer to these two methods of calculating flow layers as “flow
 dispersal” and “flow aggregation”, and illustrate both in the following
-sub-sections. Our spatial interaction models were modified to reflect a
-“weighted rich-club effect” (Opsahl et al. 2008), reflecting the
-increased likelihood of people being attracted to social groups
-surrounding rich or otherwise desirable individuals. The “richer” a
-person becomes, the more powerful becomes the attraction of others to
-that person, and Opsahl et al. (2008) demonstrated that increases in
-attraction with “richness” are supra-linear. Similarly, we hypothesised
-that pedestrians are supra-linearly more attracted to centres of
-pedestrian activity, through non-linearly increasing flows towards the
-destinations of our spatial interaction models in proportion to the
-attractiveness of those destinations. Specifically, for a destination of
-“size” or “attractiveness”, \(n\) (generally proportion to local
-concentration of centres of pedestrian activity), we constructed spatial
-interaction models according to a decay parameter, \(k\), and an
-additional parameter, \(0\le\alpha\), as,  where \(w\) is a normalising
-coefficient equal to the sum over all discrete destinations from a given
-point, \(w = \sum_i SI(d_i)\).
+sub-sections.
 
-### Flow dispersal
+Each of the flow layers described below was initially independently
+calibrated against the observed pedestrian flows, by extracting flow
+values along the network segments corresponding to each pedestrian count
+location, and minimising the standardised error of a linear regression
+model. We applied weighted regression, weighting each observed value of
+\(n\) pedestrian counts by some factor, \(0\ge\lambda\le1\), as
+\(n^\lambda\), where \(\lambda = 0\) yields an unweighted regression
+which minimises the overall *relative* error, while values of
+\(\lambda\rightarrow1\) minimise the absolute error, through weighting
+the contributions of errors on observations with high pedestrian counts
+in proportion to those counts. Values of \(\lambda\) were automatically
+selected as those giving the lowest overall model error. Values of
+`lambda` were automatically selected for each regression as that value
+minimising the resultant model error, with all correlation strengths
+reported throughout the following (as \(R^2\) values) corresponding to
+the resultant values of \(\lambda\), which are also stated for all
+reported correlations.
 
-The calculation of flow dispersal is illustrated here through
-calculating flow dispersing from the subway stations of New York City.
-The data were obtained as described above, specified as total annual
-numbers of passengers entering or exiting each of 424 subway stations.
-Counts extend back to 2013, and we used for this study the most recent
-full year of 2018.
+### Spatial Interaction Models
 
-For each station, flow dispersal was calculated using the station
-coordinates as an origin point, and routing to every other point within
-the street network according to a weighting scheme representing typical
-pedestrian preferences. We used
+We generated flows along the shortest paths between all origins, \(i\),
+and destinations, \(j\), according to exponential spatial interaction
+models (Wilson 2008) of the form,  where \(d_{ij}\) denotes the distance
+between the points \(i\) and \(j\). The denominator ensured that our
+models were singly-constrained to unit sums for each origin, \(i\), over
+densities at destinations, \(j\). The above form gives the expected
+flow, in direct units of \(n_i\), along the path between the points
+\(i\) and \(j\).
 
-## Flow layers
+We further modified these standard spatial interaction models to
+accommodate a possibility that people may tend to walk different average
+or typical differences in different locations dependent on levels of
+overall pedestrian activity in those locations. In particular, we
+hypothesised that people may be more likely to walk further in more
+prominent centres than in more peripheral locations of lower aggregate
+pedestrian activity. We thus introduced an additional parameter in the
+above model, which also retained the possibility that people may in fact
+walk shorter distances in more prominent centres. This parameter,
+\(\alpha\), simply served to scale observed exponential decay
+coefficients according to the sizes of origins, \(n_i\), giving flows
+between origins, \(i\), and destinations, \(j\), according to sizes or
+origins, \(n_i\), rescaled to relative values of
+\(n_i^\prime = n_i/max_j (n_j)\), as, 
 
-The previous two phases of this work established and calibrated methods
-to generate “flow layers” from a range of origins to trip attracting
-destinations, defined by the type of trip (work, education, etc). Each
-layer is calculated in two directions (origin \(\rightarrow\)
-destination; destination \(\rightarrow\) origin):
+### Flow Layers
 
-| origin | destination | mode             |
-| :----- | :---------- | :--------------- |
-| home   | work        | bicycle foot     |
-| home   | education   | bicycle foot     |
-| home   | retail      | bicycle foot     |
-| home   | bus         | foot             |
-| work   | retail      | bicycle foot     |
-| work   | bus         | foot             |
-| retail | bus         | foot             |
-| retail | retail      | foot bicycle bus |
+Our models comprised a variety of flow layers, each of which was
+generated by applying the spatial interaction models described above
+between a specified set of origin points. Each flow layer was obtained
+through calculating shortest paths between each origin point and
+destination point in the network, and aggregating the corresponding
+values of \(F_{ij} (d_{ij})\) along each segment of each shortest path.
+Layers were also calculated describing undirected dispersal throughout
+the entire network from a set of origin points. These dispersal models
+are equivalent to a set of destination points comprising the entire
+network, with unit destination sizes, \(n_j = 1\forall j\).
 
-In the second stage, *relative* density along each street segment was
-calculated as follows:
+We used the 8 categories of points shown in Table 1, below, to generate
+8$$7/2 = 28 flow layers between all pairwise combinations of origins and
+destinations. An additional 8 layers described dispersal from each of
+origin points defined by each of the categories, for a final total of 36
+flow layers.
 
-1.  Home densities were estimated directly from population density layer
-    (enabling subsequent finer distinctions between demographic groups)
+| n | category       |
+| - | -------------- |
+| 1 | subway         |
+| 2 | centrality     |
+| 3 | residential    |
+| 4 | transportation |
+| 5 | sustenance     |
+| 6 | entertainment  |
+| 7 | education      |
+| 8 | healthcare     |
 
-2.  Work densities were based on data on “activity centres” (centres of
-    commerce, administration, education), scaled by estimated building
-    sizes.
-
-<!-- I don't think we've don this yet... (RL) -->
-
-<!-- (including floor areas times height where available), modified for distinct purposes such that, for example, densities for journeys to educational facilities are high for purposes of education, yet lower for purposes of employment. -->
-
-<!-- 3. Educational trip attractor densities were based on open data on schools, colleges and universities. -->
-
-3.  Retail densities based on local densities and sizes of retail
-    buildings.
-
-<!-- All of these densities are also adjusted via a model of the spatial patterns of -->
-
-<!-- bus usage which estimates aggregate rates of ingress -- densities entering buses at each stop -- and egress -- densities exiting buses at each stop. -->
-
-<!-- The model used to estimate these rates of ingress and egress has been calibrated against open data from the. -->
-
-The layers were generated in isolation, with associated levels of
-uncertainty, but can be combined converting relative flows into absolute
-flows and then combining the trip counts for each layer at a given level
-of temporal resolution (daily, on week days, in the first instance).
-<!-- A trial weighting scheme for a master walking layer was developed for Accra based on statistics for proportions of walking trips for different purposes, and for frequencies of bus usage. -->
-Phase 3 will involve calculating absolute flows and validating these
-against a range of data sources, including the [Minnesota Transit
-Survey](https://gisdata.mn.gov/dataset/us-mn-state-metc-trans-stop-boardings-alightings),
-Transport for London’s cycle [traffic count
-data](http://roads.data.tfl.gov.uk/) and the UK Census.
+### Statitstical Models
 
 # References
 
 <div id="refs" class="references">
-
-<div id="ref-opsahl_prominence_2008">
-
-Opsahl, Tore, Vittoria Colizza, Pietro Panzarasa, and Jos’e J. Ramasco.
-2008. “Prominence and Control: The Weighted Rich-Club Effect.” *Physical
-Review Letters* 101 (16): 168702.
-<https://doi.org/10.1103/PhysRevLett.101.168702>.
-
-</div>
 
 <div id="ref-padgham_dodgr:_2019">
 
