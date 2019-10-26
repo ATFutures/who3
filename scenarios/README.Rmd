@@ -3,6 +3,12 @@ output: github_document
 title: Scenarios for the urban planning and transport health assessment tool
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+
 # High level policy scenarios of active transport uptake
 
 High level priorities are to improve population health, air quality and safety levels.
@@ -18,11 +24,37 @@ Specific scenarios of change include:
 - 'Go public transport', a global scenario of public transport uptake, linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
 - 'Car free', meaning investment in car free city centers and other spaces, other locally specific scenarios, such as reductions in car parking spaces.
 
-# Input data
+# Citywide scenarios of change
 
 To calculate scenarios of change, the minimum data requirements are the region's current modal split, data on transport infrastructure and car parking spaces, and data on the provision of public transport options.
-At a high level, for each city, these can be approximated as follows:
+For context, it's useful to take a step back and consider the range of modal splits observed in a sample of cities worldwide.
+The figure below shows the diversity in mode splits based on (primarily wealthy) cities, based on data of the type shown in the table below from [Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
 
+```{r}
+dc = readRDS("../global-data/city-mode-split-wiki.Rds")
+dc %>% 
+  filter(
+    walking == max(walking) |
+    cycling == max(cycling) |
+    pt == max(pt) |
+    car == max(car) 
+    ) %>% 
+  select(-n) %>% 
+  knitr::kable()
+```
+
+
+```{r}
+# see code/mode-split-cities.R
+knitr::include_graphics("../figures/city-mode-split-wiki.png")
+```
+
+
+```{r}
+knitr::include_graphics("../figures/city-mode-cor.png")
+```
+
+This city level data allows models of mode split to be developed.
 
 
 # Estimates of rates of shift towards walking and cycling down to route network levels

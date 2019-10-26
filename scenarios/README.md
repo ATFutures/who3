@@ -29,13 +29,31 @@ Specific scenarios of change include:
     spaces, other locally specific scenarios, such as reductions in car
     parking spaces.
 
-# Input data
+# Citywide scenarios of change
 
 To calculate scenarios of change, the minimum data requirements are the
 region’s current modal split, data on transport infrastructure and car
 parking spaces, and data on the provision of public transport options.
-At a high level, for each city, these can be approximated as
-follows:
+For context, it’s useful to take a step back and consider the range of
+modal splits observed in a sample of cities worldwide. The figure below
+shows the diversity in mode splits based on (primarily wealthy) cities,
+based on data of the type shown in the table below from
+[Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
+
+| City       | walking | cycling | pt | car | year |
+| :--------- | ------: | ------: | -: | --: | ---: |
+| Adelaide   |       3 |       1 | 11 |  85 | 2016 |
+| Amsterdam  |       4 |      40 | 29 |  27 | 2014 |
+| Bratislava |       4 |       0 | 70 |  26 | 2004 |
+| Madrid     |      36 |       0 | 34 |  30 | 2006 |
+| Vilnius    |      36 |       0 | 26 |  38 | 2011 |
+
+![](../figures/city-mode-split-wiki.png)<!-- -->
+
+![](../figures/city-mode-cor.png)<!-- -->
+
+This city level data allows models of mode split to be
+developed.
 
 # Estimates of rates of shift towards walking and cycling down to route network levels
 
