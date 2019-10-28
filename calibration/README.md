@@ -49,22 +49,23 @@ Each of these 407,840 segments had an associated length, along with
 further detail as contained in the Open Street Map data, including the
 type of way (with such values as “cycleway”, “footway”, “pedestrian”, or
 “steps”). These types were used to weight the distances to reflect
-typical pedestrian preferences, to enable pedestrian routes to be
-accurately calculated. These weighting schemes act to extend the
-effective length of ways unsuitable for pedestrians, for example, by
-multiplying actual lengths of major vehicular roads by some factor
-representative of the associated pedestrian discomfort in comparison to
-quiet, pedestrian-only ways. All weighting factors are greater than one,
-so that the most pedestrian-friendly ways retain their original
-distances, while ways less suitable for pedestrian travel have weighted
-lengths greater than their actual lengths. Routing is then conducted
-using these weighted lengths, and so routes reflect those that would be
-typically chosen by pedestrians. Rather than distance-based routing, we
-used time-based routing, which operates on a similar principle, but
-introduces several categories of additional time-based penalties,
-notably for waiting at traffic lights, or for waiting to cross busy,
-multi-lane roads (where such crossing is permitted). All routing was
-implemented using the authors’ own `dodgr` software (Padgham 2019).
+typical pedestrian preferences (Luxen and Vetter 2011), to enable
+pedestrian routes to be accurately calculated. These weighting schemes
+act to extend the effective length of ways unsuitable for pedestrians,
+for example, by multiplying actual lengths of major vehicular roads by
+some factor representative of the associated pedestrian discomfort in
+comparison to quiet, pedestrian-only ways. All weighting factors are
+greater than one, so that the most pedestrian-friendly ways retain their
+original distances, while ways less suitable for pedestrian travel have
+weighted lengths greater than their actual lengths. Routing is then
+conducted using these weighted lengths, and so routes reflect those that
+would be typically chosen by pedestrians. Rather than distance-based
+routing, we used time-based routing, which operates on a similar
+principle, but introduces several categories of additional time-based
+penalties, notably for waiting at traffic lights, or for waiting to
+cross busy, multi-lane roads (where such crossing is permitted). All
+routing was implemented using the authors’ own `dodgr` software (Padgham
+2019).
 
 ### Trip categories
 
@@ -224,6 +225,16 @@ resulting in the selection of only a handful of the 64 layers.
 # References
 
 <div id="refs" class="references">
+
+<div id="ref-luxen_real-time_2011">
+
+Luxen, Dennis, and Christian Vetter. 2011. “Real-Time Routing with
+OpenStreetMap Data.” In *Proceedings of the 19th ACM SIGSPATIAL
+International Conference on Advances in Geographic Information Systems*,
+513–16. GIS ’11. New York, NY, USA: ACM.
+<https://doi.org/10.1145/2093973.2094062>.
+
+</div>
 
 <div id="ref-padgham_dodgr:_2019">
 
