@@ -138,6 +138,24 @@ flow layers.
 
 ### Statitstical Models
 
+Each of the above variables was examined in pairwise combination with
+all other variables, plus a disersal model was generated for each
+category used to define origin points, giving 64 possible layers. Our
+final model incorporated only a small fraction of this total number,
+through applying a step-wise variable addition procedure. We first
+independently correlated all layers with the observed counts,
+independently adjusting the two model parameters of \(k\) and \(#alpha\)
+for each layer in order to minimise model error. The minimal-error layer
+was then selected. The next layer-selection step incorporated that
+layer, again independently adjusting values of \(k\) and \(\alpha\) for
+each layer to identify the layer giving the lowest error as part of a
+multiple-linear regression model including the previously selected
+layer. The third layer was then selected through again adjusting values
+of \(k\) and \(\alpha\) for each remaining layer, and identifying the
+layer yielding the lowest error in a model including the previous two
+layers. This procedure was repeated as long as the contribution of each
+new layer to the model was statistically significant.
+
 # References
 
 <div id="refs" class="references">
