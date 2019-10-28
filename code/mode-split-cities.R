@@ -18,19 +18,35 @@ dc = d %>% # clean data
   mutate_all(str_replace, "\\%", "") %>%
   mutate_at(vars(-1), as.numeric) %>%
   arrange(walking) %>%
-  mutate(n = 1:nrow(d)) %>%
   na.omit() %>%
   filter(rowSums(.[modes]) == 100)
-saveRDS(dc, "global-data/city-mode-split-wiki.Rds")
+# saveRDS(dc, "global-data/city-mode-split-wiki.Rds")
+nrow(dc)
+dc$n = 1:nrow(dc)
 
 names(dc)
-dt = dc %>% pivot_longer(cols = 2:(ncol(dc) - 2), names_to = "mode")
+dt = dc %>% pivot_longer(cols = 2:(ncol(dc) - 2), names_to = "mode") %>% na.omit()
 summary(dt)
 unique(dt$mode)
-dt$mode_factor = factor(dt$mode, levels = modes)
+dt$mode = factor(dt$mode, levels = modes)
 
-ggplot(dt) + geom_area(aes(n, value, fill = mode_factor))
-ggsave(filename = "figures/city-mode-split-wiki.png")
+g = ggplot_build(g1)
+cols = unique(g$data[[1]]["fill"])
+class(cols)
+length(cols)
+
+
+g1 = ggplot(dt) + geom_bar(aes(n, value, fill = mode), stat = "identity", width = 1)
+g1
+ggsave(filename = "figures/city-mode-split-wiki.png", plot = g1)
+dc %>% arrange(car) %>% mutate(n = 1:nrow(dc)) %>% 
+  pivot_longer(cols = 2:(ncol(dc) - 2), names_to = "mode") %>% 
+  mutate(mode = factor(dt$mode, levels = rev(modes))) %>% 
+  ggplot() + geom_bar(aes(n, value, fill = mode), stat = "identity", width = 1) +
+  # scale_fill_discrete(h = c(0, 360) + 15, c = 100, l = 65, h.start = 0)
+  scale_fill_manual(values = rev(scales::hue_pal()(4)))
+# ggplot(dt) + geom_area(aes(n, value, fill = mode_factor), stat = "identity")
+ggsave(filename = "figures/city-mode-split-wiki-cars.png")
 cor_mat = cor(dc[modes])
 png(filename = "figures/city-mode-cor.png")
 corrplot::corrplot(cor_mat, type = "lower", tl.pos = "d")
