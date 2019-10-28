@@ -103,9 +103,12 @@ variables (Maier
 
 # Simulating the impacts citywide
 
-Scenario development will also be strongly informed by the transport
-scenarios assessed in Accra and Kathmandu as part of UHI project
-activities.
+Scenario development accounting for the transport systems in Accra and
+Kathmandu, as part of UHI project activities, must be based on current
+transport data. An overview for Ghana (a proxy for the travel pattern in
+Accra) is shown below.
+
+![](../figures/modes-ghana-work.png)<!-- -->
 
 # References
 
