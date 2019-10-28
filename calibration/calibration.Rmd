@@ -1,16 +1,15 @@
 ---
 title: "Calibration of Urban Planning and Transport Health Assessment Toolkit"
-# output:
-#   word_document: default
-#   pdf_document:
-#     number_sections: yes
 output:
-    html_document:
-        toc: true
-        toc_float: true
-        number_sections: true
-        theme: flatly
-#output: github_document
+   #word_document: default
+   github_document
+   #pdf_document:
+   #  number_sections: yes
+   #html_document:
+   #     toc: true
+   #     toc_float: true
+   #     number_sections: true
+   #     theme: flatly
 bibliography: ../ATF.bib
 ---
 
@@ -64,15 +63,77 @@ portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
 
 ### The Street Network
 
-<span style="background-color:yellow; color:red">
-[Describe weighting profiles for pedestrian routing, and time-based versus distance-based routing]
-</span>
+Both the street network used to route pedestrian journeys, and the structure,
+nature, and location of buildings serving as origins and/or destinations of
+those journeys were obtained from Open Street Map, accessed via the R package,
+`osmdata` [@padgham_osmdata_2017]. The network consisted of 813,402 street
+segments, representing a total 30,226 km. These segments are simply those used
+to represent Open Street Map, such that a single linear length of way may be
+represented by several points, and several corresponding edges in our internal
+representation. We then used the `dodgr` software [@padgham_dodgr:_2019] to
+"contract" this network down to segments between junctions points only,
+reducing it to 407,840 segments.
+
+Each of these 407,840 segments had an associated length, along with further
+detail as contained in the Open Street Map data, including the type of way
+(with such values as "cycleway", "footway", "pedestrian", or "steps"). These
+types were used to weight the distances to reflect typical pedestrian
+preferences, to enable pedestrian routes to be accurately calculated. These
+weighting schemes act to extend the effective length of ways unsuitable for
+pedestrians, for example, by multiplying actual lengths of major vehicular
+roads by some factor representative of the associated pedestrian discomfort in
+comparison to quiet, pedestrian-only ways. All weighting factors are greater
+than one, so that the most pedestrian-friendly ways retain their original
+distances, while ways less suitable for pedestrian travel have weighted lengths
+greater than their actual lengths. Routing is then conducted using these
+weighted lengths, and so routes reflect those that would be typically chosen by
+pedestrians. Rather than distance-based routing, we used time-based routing,
+which operates on a similar principle, but introduces several categories of
+additional time-based penalties, notably for waiting at traffic lights, or for
+waiting to cross busy, multi-lane roads (where such crossing is permitted). All
+routing was implemented using the authors' own `dodgr` software
+[@padgham_dodgr:_2019].
 
 ### Trip categories
 
-<span style="background-color:yellow; color:red">
-[Describe the kinds of origin and destination categories used to generate flow layers]
-</span>
+Open Street Map includes not only streets, but also buildings with optional yet
+frequently extensive descriptions of categories, purpose, sizes, and other
+properties. These building descriptions enable Open Street Map to be used to
+identify likely locations of trip origins and destinations according to trip
+purpose. In particular, we divided building categories into the five main
+groups of transportation, sustenance, entertainment, education, and healthcare,
+each by grouping the Open Street Map tags given in Appendix 1. Transportation
+notably included all parking facilities, both for bicycles and automobiles.
+
+For each of these categories, we estimated local intensities of the respective
+activities by attributing all buildings to the nearest street network junction,
+and aggregating numbers at each junction. These numbers provided estimates of
+likely numbers of people originating from or coming to that point for the
+respective activities.
+
+Beyond these Open Street Map-based estimates, we also used Worldpop data to
+ascribe aggregate residential densities to each street junction, and subway
+counts to represent journeys to or from entrances and exits of the New York MTA
+subway system. A final category was based on the betweenness centrality of the
+entire street network. Centrality is known to be a strong determinant of travel
+behaviour, with more central points, or street segments, correlated with higher
+densities of movements towards or away from those points or segments. A final
+categorical trip purpose considered in our analyses below is thus,
+"centrality".
+
+Extraction and processing of these data enabled analyses of the following eight
+trip categories, serving as types of journey origins or destinations:
+
+n | category
+--- | ---
+1 | subway
+2 | centrality
+3 | residential
+4 | transportation
+5 | sustenance
+6 | entertainment
+7 | education
+8 | healthcare
 
 ## Modelling Pedestrian Flows
 
@@ -81,8 +142,8 @@ order to calibrate our models against the empirical data from the 114
 pedestrian count stations. Models were constructed using the
 [`dodgr`](https://github.com/atfutures/dodgr) software package for large-scale
 routing through street networks, by assembling an array of "flow layers"
-representing pedestrian flows between distinct categories of origin and
-destination points.
+representing pedestrian flows between the distinct categories of origin and
+destination points described above.
 
 Flow layers were generated in two primary ways: either by dispersing from
 a given set of origin points according to specified densities, or through
@@ -145,48 +206,45 @@ rescaled to relative values of $n_i^\prime = n_i/max_j (n_j)$, as,
 
 Our models comprised a variety of flow layers, each of which was generated by
 applying the spatial interaction models described above between a specified set
-of origin points. Each flow layer was obtained through calculating shortest
-paths between each origin point and destination point in the network, and
-aggregating the corresponding values of $F_{ij} (d_{ij})$ along each segment of
-each shortest path. Layers were also calculated describing undirected dispersal
-throughout the entire network from a set of origin points. These dispersal
-models are equivalent to a set of destination points comprising the entire
-network, with unit destination sizes, $n_j = 1\forall j$.
+of origin points, taken from the eight categories given above. Each flow layer
+was obtained through calculating shortest paths between each origin point and
+destination point in the network, and aggregating the corresponding values of
+$F_{ij} (d_{ij})$ along each segment of each shortest path. Layers were also
+calculated describing undirected dispersal throughout the entire network from
+a set of origin points. These dispersal models are equivalent to a set of
+destination points comprising the entire network, with unit destination sizes,
+$n_j = 1\forall j$.
 
 We used the 8 categories of points shown in Table 1, below, to generate
-8$\times$7/2 = 28 flow layers between all pairwise combinations of origins and
+$8\times7 = 56$ flow layers between all pairwise combinations of origins and
 destinations. An additional 8 layers described dispersal from each of origin
-points defined by each of the categories, for a final total of 36 flow layers.
-
-n | category
---- | ---
-1 | subway
-2 | centrality
-3 | residential
-4 | transportation
-5 | sustenance
-6 | entertainment
-7 | education
-8 | healthcare
+points defined by each of the categories, for a final total of 64 flow layers.
 
 
 ### Statitstical Models
 
-Each of the above variables was examined in pairwise combination with all other
-variables,  plus a disersal model was generated for each category used to
-define origin points, giving 64 possible layers. Our final model incorporated
-only a small fraction of this total number, through applying a step-wise
-variable addition procedure. We first independently correlated all layers with
-the observed counts, independently adjusting the two model parameters of $k$
-and $#alpha$ for each layer in order to minimise model error. The minimal-error
-layer was then selected. The next layer-selection step incorporated that layer,
-again independently adjusting values of $k$ and $\alpha$ for each layer to
-identify the layer giving the lowest error as part of a multiple-linear
-regression model including the previously selected layer. The third layer was
-then selected through again adjusting values of $k$ and $\alpha$ for each
+The 64 pairwise combinations of origin and destination categories represents 64
+potential independent variables in a statistical model. Our final model
+incorporated only a small fraction of this total number, through applying
+a step-wise variable addition procedure. We first independently correlated all
+layers with the observed counts, independently adjusting the single model
+parameters of $k$ for each layer in order to minimise model error, holding the
+second parameter at $\alpha = 0$ throughout. The minimal-error layer was then
+selected, and the value of $\alpha$ adjusted to further minimise the model error.
+
+The next layer-selection step incorporated that layer, and again independently
+adjusted values of $k$ for each layer to identify the layer giving the lowest
+error as part of a multiple-linear regression model including the previously
+selected layer. Having selected the second layer, the corresponding value of
+$\alpha$ was then adjusted to further minimise the overall model error. The
+third layer was then selected through again adjusting values of $k$ for each
 remaining layer, and identifying the layer yielding the lowest error in a model
-including the previous two layers. This procedure was repeated as long as the
-contribution of each new layer to the model was statistically significant.
+including the previous two layers. Having selected this layer by adjusting $k$
+while holding $\alpha = 0$, the overall error was again further minimised by
+adjusting the value of $\alpha$ for this layer. This procedure was repeated as
+long as the contribution of each new layer to the model was statistically
+significant, generally resulting in the selection of only a handful of the 64
+layers.
 
 
 # References
