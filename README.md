@@ -1,3 +1,6 @@
+Development of a prototype web application for active transport planning
+================
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Introduction
@@ -129,7 +132,8 @@ application, building on the experimental software development and
 proof-of-concept production focus of phases 1 and 2. As outlined in the
 next section, the ‘stable application’ will have a dedicated domain and
 be available for at least 2 months after completion of the project. The
-main stages of the work will be:
+main stages of the work will
+be:
 
 <!-- 1. **Analytic Methods and Software** Phase II resulted in a prototype ATT representing patterns of active travel in Accra only.  -->
 

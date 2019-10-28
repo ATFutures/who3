@@ -8,6 +8,11 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 ```
 
+# Introduction
+
+This report documents deliverable 2, scenario developement, for the WHO UPTHAT project, which involves:
+(1) setting out high level policy scenarios of active transport uptake; (2) converting these changes into estimates of rates of shift towards walking and cycling down to route network levels; and (3) simulating the impacts of these scenarios on walking and cycling levels citywide. Scenario development will also be strongly informed by the transport scenarios assessed in Accra and Kathmandu as part of UHI project activities.
+
 
 # High level policy scenarios of active transport uptake
 

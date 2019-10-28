@@ -39,3 +39,59 @@ dev.off()
 # now: get predictors that policy makers control
 # - speeds
 # - car parking spaces
+
+
+# get explanatory variables -----------------------------------------------
+
+# u = "https://data.london.gov.uk/download/global-city-data/ffcefcba-829c-4220-911f-d4bf17ef75d6/global-city-indicators.xlsx"
+# download.file(u, "global-city-indicators.xlsx")
+# gci = readxl::read_excel("global-city-indicators.xlsx", 2)
+# gci_mat = t(gci)
+# gci_names = gci_mat[1, ]
+# explanatory_variables = gci_mat[-c(1, 2), !is.na(gci_names)] %>% as_tibble()
+# names(explanatory_variables) = gci_names[!is.na(gci_names)]
+# explanatory_variables = explanatory_variables %>% select(People, everything()) 
+# contains_london = explanatory_variables[1, ] %>% str_detect(pattern = "London")
+# contains_london[1] = FALSE
+# explanatory_variables = explanatory_variables %>% select(which(!contains_london))
+# could_be_numeric = function(x) sum(is.na(as.numeric(x))) < 0.8 * length(x)
+# # could_be_numeric(explanatory_variables$`City Area (km2)`, 0.8)
+# # could_be_numeric(explanatory_variables$`Primary Industry`, 0.8)
+# num_vars = map_lgl(explanatory_variables, could_be_numeric)
+# explanatory_variables = explanatory_variables %>%
+#   mutate_if(could_be_numeric, as.numeric) %>% 
+#   rename(City = People)
+# saveRDS(explanatory_variables, "global-data/global-city-indicators.Rds")
+# explanatory_variables = readRDS("global-data/global-city-indicators.Rds")
+# 
+# summary(dc$City %in% explanatory_variables$City)
+# cities_long = inner_join(dt, explanatory_variables)
+# cities_wide = inner_join(dc, explanatory_variables)
+# 
+# X = cities_wide %>% select(2:5) / 100
+# Y = cities_wide %>% select(`Green Spaces (km2)`, `City Area (km2)`, `City Population (millions)`)
+# XY = bind_cols(City = cities_wide$City, X, Y) %>% na.omit()
+# 
+# library(DirichletReg)
+# XY$Y = DR_data(XY[, 2:5])
+# m1 = DirichReg(Y ~ `Green Spaces (km2)` + `City Population (millions)`, XY)
+# m2 = DirichReg(Y ~ `Green Spaces (km2)` + `City Population (millions)` + `City Area (km2)`, XY)
+# anova(m1, m2)
+# plot(m1)
+# 
+# predict(m2, XY) # that's the badger!
+# m1 = fmlogit(XY[2:5], XY[6:ncol(XY)]) # Very slow...
+# summary(m1)
+
+# tests
+# devtools::install_github("f1kidd/fmlogit")
+# ?fmlogit::fmlogit
+# library(fmlogit)
+# data = spending
+# head(spending)
+# X = data[,2:5]
+# y = data[,6:11]
+# results1 = fmlogit(y,X)
+# y2 = predict(results1, X)
+# plot(y$governing, y2$governing)
+summary(results1)
