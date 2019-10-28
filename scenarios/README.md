@@ -106,9 +106,10 @@ variables (Maier
 Scenario development accounting for the transport systems in Accra and
 Kathmandu, as part of UHI project activities, must be based on current
 transport data. An overview for Ghana (a proxy for the travel pattern in
-Accra) is shown below.
+Accra) is shown
+below.
 
-![](../figures/modes-ghana-work.png)<!-- -->
+<img src="../figures/modes-ghana-work.png" width="50%" /><img src="../figures/modes-ghana-work-simple.png" width="50%" />
 
 # References
 

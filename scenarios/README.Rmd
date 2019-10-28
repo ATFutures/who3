@@ -104,8 +104,9 @@ Dirichlet regression is a recently developed technique for modelling proportions
 Scenario development accounting for the transport systems in Accra and Kathmandu, as part of UHI project activities, must be based on current transport data.
 An overview for Ghana (a proxy for the travel pattern in Accra) is shown below.
 
-```{r modes-ghana}
+```{r modes-ghana, out.width="50%", fig.show='hold'}
 knitr::include_graphics("../figures/modes-ghana-work.png")
+knitr::include_graphics("../figures/modes-ghana-work-simple.png")
 ```
 
 # References

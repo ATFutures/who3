@@ -51,6 +51,37 @@ cor_mat = cor(dc[modes])
 png(filename = "figures/city-mode-cor.png")
 corrplot::corrplot(cor_mat, type = "lower", tl.pos = "d")
 dev.off()
+
+
+# mode split results for ghana --------------------------------------------
+
+modes_ghana = read_csv("global-data/travel_to_work_ghana.csv")
+modes_ghana_long = pivot_longer(modes_ghana %>% select(-Male, -Female, -Ghana, -contains("Total")), cols = 2:5, names_to = "Type")
+modes_ghana_long %>%
+  ggplot() + geom_bar(aes(Type, value, fill = `Means of travel`), stat = "identity")
+ggsave(filename = "figures/modes-ghana-work.png")
+
+modes_ghana_long = modes_ghana_long %>% 
+  mutate(mode = case_when(
+    str_detect(`Means of travel`, pattern = "car|Car|indi") ~ "car",
+    str_detect(`Means of travel`, pattern = "Bus|Train|share") ~ "pt",
+    str_detect(`Means of travel`, pattern = "Bicy") ~ "cycling",
+    str_detect(`Means of travel`, pattern = "foot") ~ "walking",
+    # TRUE ~ `Means of travel`
+    TRUE ~ "other"
+  ))
+gmodes = c("other", modes)
+modes_ghana_long = modes_ghana_long %>% 
+  mutate(mode = factor(mode, levels = gmodes)) %>% 
+  mutate(Type = factor(Type, levels = (unique(Type))))
+
+cols_modes = scales::hue_pal()(4)
+cols_gmodes = c("grey", cols_modes) 
+modes_ghana_long %>%
+  ggplot() + geom_bar(aes(Type, value, fill = `mode`), stat = "identity") +
+  scale_fill_manual(values = cols_gmodes)
+
+ggsave("figures/modes-ghana-work-simple.png")
 # corrr::rplot(rdf = .Last.value)
 # now: get predictors that policy makers control
 # - speeds
