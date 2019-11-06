@@ -130,24 +130,6 @@ We refer to these two methods of calculating flow layers as “flow
 dispersal” and “flow aggregation”, and illustrate both in the following
 sub-sections.
 
-Each of the flow layers described below was initially independently
-calibrated against the observed pedestrian flows, by extracting flow
-values along the network segments corresponding to each pedestrian count
-location, and minimising the standardised error of a linear regression
-model. We applied weighted regression, weighting each observed value of
-\(n\) pedestrian counts by some factor, \(0\ge\lambda\le1\), as
-\(n^\lambda\), where \(\lambda = 0\) yields an unweighted regression
-which minimises the overall *relative* error, while values of
-\(\lambda\rightarrow1\) minimise the absolute error, through weighting
-the contributions of errors on observations with high pedestrian counts
-in proportion to those counts. Values of \(\lambda\) were automatically
-selected as those giving the lowest overall model error. Values of
-`lambda` were automatically selected for each regression as that value
-minimising the resultant model error, with all correlation strengths
-reported throughout the following (as \(R^2\) values) corresponding to
-the resultant values of \(\lambda\), which are also stated for all
-reported correlations.
-
 ### Spatial Interaction Models
 
 We generated flows along the shortest paths between all origins, \(i\),
@@ -168,10 +150,10 @@ prominent centres than in more peripheral locations of lower aggregate
 pedestrian activity. We thus introduced an additional parameter in the
 above model, which also retained the possibility that people may in fact
 walk shorter distances in more prominent centres. This parameter,
-\(\alpha\), simply served to scale observed exponential decay
-coefficients according to the sizes of origins, \(n_i\), giving flows
-between origins, \(i\), and destinations, \(j\), according to sizes or
-origins, \(n_i\), rescaled to relative values of
+\(\alpha\), served to scale observed exponential decay coefficients
+according to the sizes of origins, \(n_i\), giving flows between
+origins, \(i\), and destinations, \(j\), according to sizes of origins,
+\(n_i\), rescaled to relative values of
 \(n_i^\prime = n_i/max_j (n_j)\), as, 
 
 ### Flow Layers
@@ -184,43 +166,70 @@ shortest paths between each origin point and destination point in the
 network, and aggregating the corresponding values of \(F_{ij} (d_{ij})\)
 along each segment of each shortest path. Layers were also calculated
 describing undirected dispersal throughout the entire network from a set
-of origin points. These dispersal models are equivalent to a set of
-destination points comprising the entire network, with unit destination
-sizes, \(n_j = 1\forall j\).
+of origin points.
 
 We used the 8 categories of points shown in Table 1, below, to generate
-\(8\times7 = 56\) flow layers between all pairwise combinations of
-origins and destinations. An additional 8 layers described dispersal
-from each of origin points defined by each of the categories, for a
-final total of 64 flow layers.
+8×7 = 56 flow layers between all pairwise combinations of origins and
+destinations. An additional 8 layers described dispersal from each of
+origin points defined by each of the categories, for a final total of 64
+flow layers. Our [`dodgr`](https://github.com/ATFutures/dodgr) software
+enables spatial interaction models to be efficiently calculated for a
+range of exponential decay coefficients, `k`, returning one flow vector
+for each coefficient entered. This enabled us to initially calculate all
+flow layers for defined values of `k`, and to subsequently combine these
+pre-calculated layers in a single model as described in the following
+section. Each layer was calculated for 30 values of `k`, from 100 to
+3000 metres in 100 metre increments.
+
+Finally, the city-wide flows from these flow layers, amounting in each
+layer to values along over 800,000 street segments, were mapped on to
+the locations of the pedestrian count stations. Flow layers contained
+non-zero values for the actual street segments on which count stations
+were located only where the data describing the start and end points
+translated into at least one route passing along that segment. This was
+not always the case, and so values for each pedestrian counter were
+aggregated from a selected number of nearest non-zero flow values. This
+number itself was varied between 1 and 20, and the value chosen which
+gave the minimal error model following the procedures in the subsequent
+section. This approach yielded flow values at pedestrian count stations
+which were aggregated over potentially differing numbers of nearest
+street segments for the different layers, but we argue that this
+procedure is appropriate because actual placements of flow values for
+each layer depend on the spatial location and variability of data as
+recorded in Open Street Map.
 
 ### Statitstical Models
 
 The 64 pairwise combinations of origin and destination categories
 represents 64 potential independent variables in a statistical model.
 Our final model incorporated only a small fraction of this total number,
-through applying a step-wise variable addition procedure. We first
-independently correlated all layers with the observed counts,
-independently adjusting the single model parameters of \(k\) for each
-layer in order to minimise model error, holding the second parameter at
-\(\alpha = 0\) throughout. The minimal-error layer was then selected,
-and the value of \(\alpha\) adjusted to further minimise the model
-error.
+through applying a step-wise variable addition procedure. The first
+layer was selected by applying the same procedure to each layer of
+aggregating flows from each of the 30 value of `k`, across numbers of
+nearest segments, `n`, from 1 to 20 as described above, to determine the
+values of `k` and `n` that minimised the error of a standard linear
+regression against observed pedestrian counts. The layer which yielded
+the overall minimal error was selected as the first model layer.
 
-The next layer-selection step incorporated that layer, and again
-independently adjusted values of \(k\) for each layer to identify the
-layer giving the lowest error as part of a multiple-linear regression
-model including the previously selected layer. Having selected the
-second layer, the corresponding value of \(\alpha\) was then adjusted to
-further minimise the overall model error. The third layer was then
-selected through again adjusting values of \(k\) for each remaining
-layer, and identifying the layer yielding the lowest error in a model
-including the previous two layers. Having selected this layer by
-adjusting \(k\) while holding \(\alpha = 0\), the overall error was
-again further minimised by adjusting the value of \(\alpha\) for this
-layer. This procedure was repeated as long as the contribution of each
-new layer to the model was statistically significant, generally
-resulting in the selection of only a handful of the 64 layers.
+The procedure was then repeated by applying an analogous procedure to
+all 63 remaining layers, and including the flow values from the
+previously-selected layer in a multiple linear regression model. Having
+selected the second layer, it was then also included along with each of
+the remaining 62 layers, in order to determine the third layer yielding
+the model with the lowest overall error. Flow layers were successively
+added to the model as long as their contribution to the model was
+significant; that is, layer addition within the model was terminated as
+soon as the next layer added made no significant contribution.
+
+# Results
+
+The flow layer which made the most significant initial contribution
+reflected dispersal from subway stations. The model error along the 30
+values of exponential decay coefficients is illustrated in Figure 1, and
+was typical for most layers, manifesting a clear and distinctive
+minimum.
+
+<img src="figures/layer-error-with-k-1.png" width="100%" />
 
 # References
 
