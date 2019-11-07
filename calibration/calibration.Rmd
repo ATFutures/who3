@@ -29,6 +29,8 @@ if (!file.exists ("ATF.bib")) { # delete file to auto-update
                     .params = list(collection = "TJEQMXJR", limit = 100))
     RefManageR::WriteBib(refs, "ATF.bib")
 }
+library (ggplot2)
+theme_set (theme_minimal ())
 ```
 
 
@@ -249,6 +251,61 @@ Flow layers were successively added to the model as long as their contribution
 to the model was significant; that is, layer addition within the model was
 terminated as soon as the next layer added made no significant contribution.
 
+## Calibration to Observed Values
+
+The observed pedestrian counts are given as total numbers observed within
+either two- or three-hour windows (twice on weekdays, between 7-9am and 4-7pm;
+and once on Saturdays, between 12-2pm). We used the weekday counts to yield an
+overall aggregate estimate of numbers per day. To scale the observed values, we
+compared them with values derived from the United Kingdom's National Travel 
+Survey, from which we obtained a nation-wide estimate of numbers of walking
+trips for each of the 24 hours of the day (see Figure 1).
+
+
+<span style="background-color:yellow; color:red">
+[Robin: Can you please fill in details on the NTS, plus describe - or ideally,
+add code lines - where you downloaded the data from, and what the table is that
+you're extracting in your [`read-nts.R`
+script](https://github.com/ATFutures/who3/blob/master/code/read-nts.R#L6). Are
+these weekday totals? Or from all 7 days?]
+</span>
+
+```{r hourly-walking, fig.cap = "Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm"}
+f <- "wh.csv"
+if (!file.exists (f))
+{
+    u <- "https://github.com/ATFutures/ATF-ideas/releases/download/0.0.1/wh.csv"
+    invisible (download.file (u = u, destfile = f))
+}
+x <- read.csv ("wh.csv")
+x$hour <- as.integer (substring (x$hour, 1, 2))
+ymax <- max (x$perc)
+ggplot (x, aes (x = hour, y = perc)) +
+    geom_rect (aes (xmin = 7, ymin = 0, xmax = 10, ymax = ymax),
+               fill = "#66666605") +
+    geom_rect (aes (xmin = 16, ymin = 0, xmax = 20, ymax = ymax),
+               fill = "#66666605") +
+    geom_line () +
+    geom_point () +
+    ylab ("hourly proportion of total daily walking trips")
+```
+
+```{r hourly-walking-stats, echo = FALSE}
+index <- which (x$hour %in% c (7:9, 16:19))
+walk_total <- signif (100 * sum (x$perc [index]), 3)
+walk_prop <- signif (sum (x$perc [index]), 2)
+walk_conversion <- signif (1 / sum (x$perc [index]), 3)
+```
+
+
+These data reflected a total proportion of trips between the hours of 7-9am and
+4-7pm of `r walk_total`%. We assumed this figure to approximately reflect
+global pedestrian behaviour, and so converted observed pedestrian counts to
+expected equivalent daily totals for weekdays by multiplying by 1 / 
+`r walk_prop` = `r walk_conversion`.
+
+
+
 
 # Results
 
@@ -301,8 +358,6 @@ ss <- apply (temp, 2, function (j) {
 dat <- data.frame (k = 1:30 * 100, ss = ss)
 x0 <- dat$k [which.min (dat$ss)]
 y0 <- min (dat$ss)
-library (ggplot2)
-theme_set (theme_minimal ())
 ggplot (dat, aes (x = k, y = ss)) +
     geom_line () +
     geom_point (aes (x = x0, y = y0), cex = 3) +

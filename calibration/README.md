@@ -221,6 +221,32 @@ added to the model as long as their contribution to the model was
 significant; that is, layer addition within the model was terminated as
 soon as the next layer added made no significant contribution.
 
+## Calibration to Observed Values
+
+The observed pedestrian counts are given as total numbers observed
+within either two- or three-hour windows (twice on weekdays, between
+7-9am and 4-7pm; and once on Saturdays, between 12-2pm). We used the
+weekday counts to yield an overall aggregate estimate of numbers per
+day. To scale the observed values, we compared them with values derived
+from the United Kingdom’s National Travel Survey, from which we obtained
+a nation-wide estimate of numbers of walking trips for each of the 24
+hours of the day (see Figure 1).
+
+<span style="background-color:yellow; color:red"> \[Robin: Can you
+please fill in details on the NTS, plus describe - or ideally, add code
+lines - where you downloaded the data from, and what the table is that
+you’re extracting in your [`read-nts.R`
+script](https://github.com/ATFutures/who3/blob/master/code/read-nts.R#L6).
+Are these weekday totals? Or from all 7 days?\] </span>
+
+<img src="figures/hourly-walking-1.png" title="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" alt="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" width="100%" />
+
+These data reflected a total proportion of trips between the hours of
+7-9am and 4-7pm of 42.7%. We assumed this figure to approximately
+reflect global pedestrian behaviour, and so converted observed
+pedestrian counts to expected equivalent daily totals for weekdays by
+multiplying by 1 / 0.43 = 2.34.
+
 # Results
 
 The flow layer which made the most significant initial contribution
