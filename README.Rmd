@@ -30,7 +30,6 @@ RefManageR::WriteBib(refs, "ATF.bib")
 file.rename("README.pdf", "phase3-application.pdf")
 ```
 
-
 # Introduction
 
 This document sets out a plan for the third phase of work for the WHO's Urban Health Initiative, and the ongoing development of a web application to explore health benefits of different sustainable transport policies, with the working title of "Active Transport Tool" [ATT; @lovelace_estimating_2018].

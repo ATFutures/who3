@@ -1,5 +1,6 @@
 ---
-output: github_document
+# output: github_document
+output: pdf_document
 title: Scenarios for the urban planning and transport health assessment tool
 bibliography:
   - ../ATF.bib

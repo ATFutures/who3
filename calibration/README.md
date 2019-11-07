@@ -228,16 +228,9 @@ within either two- or three-hour windows (twice on weekdays, between
 7-9am and 4-7pm; and once on Saturdays, between 12-2pm). We used the
 weekday counts to yield an overall aggregate estimate of numbers per
 day. To scale the observed values, we compared them with values derived
-from the United Kingdom’s National Travel Survey, from which we obtained
+from the United Kingdom’s National Travel Survey ([NTS](https://beta.ukdataservice.ac.uk/datacatalogue/series/series?id=2000037), waves 2002-2017 representing 5.8m single stage journeys), from which we obtained
 a nation-wide estimate of numbers of walking trips for each of the 24
 hours of the day (see Figure 1).
-
-<span style="background-color:yellow; color:red"> \[Robin: Can you
-please fill in details on the NTS, plus describe - or ideally, add code
-lines - where you downloaded the data from, and what the table is that
-you’re extracting in your [`read-nts.R`
-script](https://github.com/ATFutures/who3/blob/master/code/read-nts.R#L6).
-Are these weekday totals? Or from all 7 days?\] </span>
 
 <img src="figures/hourly-walking-1.png" title="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" alt="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" width="100%" />
 
