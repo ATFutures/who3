@@ -1,6 +1,6 @@
 ---
-# output: github_document
-output: pdf_document
+output: github_document
+# output: pdf_document
 title: Scenarios for the urban planning and transport health assessment tool
 bibliography:
   - ../ATF.bib
@@ -49,7 +49,11 @@ Specific scenarios of change include:
 
 # Citywide scenarios of change
 
-To calculate scenarios of change, the minimum data requirements are the region's current modal split, data on transport infrastructure and car parking spaces, and data on the provision of public transport options.
+To calculate scenarios of change, the minimum data requirements are the region's current modal split and data that can be used as explanatory variables, including data on transport infrastructure and car parking spaces, and data on the provision of public transport options.
+
+## Mode split data
+
+Mode split is one of the fundamental pieces of information that is known for most cities.
 For context, it's useful to take a step back and consider the range of modal splits observed in a sample of cities worldwide.
 The figure below shows the diversity in mode splits based on (primarily wealthy) cities, based on data of the type shown in the table below from [Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
 
@@ -72,9 +76,10 @@ A more useful way to view travel systems from an active transport perspective is
 This view is shown on the right of the figure, which shows walking mode shares in the sample of cities ranging from only 3% to more than 1/3rd (in Madrid, Spain and Vilnius, Lithuania).
 It is interesting to note that while there is a roughly even distribution of mode shares by car, other modes have more skewed distributions.
 This could reflect the diversity of policies used to promote walking, cycling and public transport and the fact that cars tend to be the default.
+This implication is that **if no policies have been implemented to promote alternatives, cars dominate**.
 
 
-```{r, fig.show='hold', out.width="50%"}
+```{r, fig.show='hold', out.width="100%"}
 # see code/mode-split-cities.R
 knitr::include_graphics("../figures/city-mode-split-wiki-cars.png")
 knitr::include_graphics("../figures/city-mode-split-wiki.png")
@@ -83,15 +88,36 @@ knitr::include_graphics("../figures/city-mode-split-wiki.png")
 The relationships between the different modes is illustrated in the figure below, which suggests competition between all modes and cars (with public transport seeming to be the biggest deterrent to driving in this dataset), and synergies between public transport and walking.
 **This strongly suggests that a reliable way to encourage walking in cities is through investment in public transport.**
 
-
-```{r}
+```{r, out.width="50%"}
 knitr::include_graphics("../figures/city-mode-cor.png")
 ```
 
-This city level data allows models of mode split to be developed.
+This city level data allows models of mode split to be developed, assuming there are sufficient explanatory variables defining the transport system.
+
+## Data characterising transport systems
+
+Transport systems are complex, composed of hundreds of interrelated elements.
+For modelling purposes, it makes sense to condense available datasets down into a few key parameters per city, zone or origin-destination pair.
+The process of identifying and quantifying transport system variables should be be an open-ended and adaptable process that is able to respond when the input data changes (e.g. due to changes in the transport system or improved data availability/collection).
+
+This section therefore provides a framework for including key transport system variables, based on the assumption that additional/modified variables will be used in future iterations of the model.
+Key variables that are readily available for most cities include:
+
+- Percentage of the transport network that is dedicated to motor traffic (an alternative or suplementary measure could be the percentage of the city's surface area dedicated to motor traffic)
+- Provision for public transport, in terms of the percentage of the city's area within walking distance (e.g. 300m) of public transport nodes such as bus stops and rail stations
+- The percentage of the city's transport network that is dedicated to cycling
+- Provision of walking infrastructure, for example the percentage of the city's transport network that is footway
+
+Note that all the high level varibles outlined above are 'scale free', meaning that they do not depend on the city's size.
+
+
+## Modelling mode shift
+
+Treating mode share as a dependent variable involves multiple interrelated dependent variables, which is problematic for standard regression approaches.
+An alternative used in cycling potential research has been to 'expand' mode split data into individual categorical variables [@lovelace_propensity_2017, supplementary information].
+This strategy is computationally intensive however.
 
 # Methods of modelling mode shift at the city level
-
 
 The datasets presented in the previous section are examples of proportional outcomes, where we are interested in the mode split of all travel in a city.
 These types of data are common in ecological modelling [@douma_analysing_2019], which provided a basis for investigating the question of citywide scenarios of mode shift in which modes are analogous to species.

@@ -1,7 +1,8 @@
 # Aim: get mode split for cities
 
 library(tidyverse)
-modes = c("car", "pt", "cycling", "walking")
+modes_min = c("car", "pt", "cycling", "walking")
+modes = c(modes_min, "other")
 
 d1 = htmltab::htmltab("https://en.wikipedia.org/wiki/Modal_share", which = 1)
 d2 = htmltab::htmltab("https://en.wikipedia.org/wiki/Modal_share", which = 2)
@@ -19,8 +20,10 @@ dc = d %>% # clean data
   mutate_at(vars(-1), as.numeric) %>%
   arrange(walking) %>%
   na.omit() %>%
-  filter(rowSums(.[modes]) == 100)
-# saveRDS(dc, "global-data/city-mode-split-wiki.Rds")
+  filter(rowSums(.[modes_min]) <= 100) %>% 
+  mutate(other = 100 - rowSums(.[modes_min])) %>% 
+  select(City, matches("ing|pt|car|other"), year)
+saveRDS(dc, "global-data/city-mode-split-wiki.Rds")
 nrow(dc)
 dc$n = 1:nrow(dc)
 
@@ -44,7 +47,7 @@ dc %>% arrange(car) %>% mutate(n = 1:nrow(dc)) %>%
   mutate(mode = factor(dt$mode, levels = rev(modes))) %>% 
   ggplot() + geom_bar(aes(n, value, fill = mode), stat = "identity", width = 1) +
   # scale_fill_discrete(h = c(0, 360) + 15, c = 100, l = 65, h.start = 0)
-  scale_fill_manual(values = rev(scales::hue_pal()(4)))
+  scale_fill_manual(values = rev(scales::hue_pal()(5)))
 # ggplot(dt) + geom_area(aes(n, value, fill = mode_factor), stat = "identity")
 ggsave(filename = "figures/city-mode-split-wiki-cars.png")
 cor_mat = cor(dc[modes])

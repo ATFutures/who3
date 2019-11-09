@@ -24,6 +24,7 @@ wt = inner_join(w, ts)
 wt = wt %>% filter(str_detect(string = TripStart_B01ID, "0")) %>% 
   mutate(hour = as.character(TripStart_B01ID))
 
+
 table(wt$hour)
 table(wt$hour) %>% barplot()
 
@@ -32,6 +33,8 @@ wh = wt %>%
   summarise(
     n = n(),
     perc = n() / nrow(wt))
+
+summary(wt$SurveyYear)
 
 readr::write_csv(wh, "wh.csv")
 piggyback::pb_upload("wh.csv", repo = "ATFutures/ATF-ideas")

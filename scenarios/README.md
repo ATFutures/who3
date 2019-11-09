@@ -43,22 +43,26 @@ Specific scenarios of change include:
 # Citywide scenarios of change
 
 To calculate scenarios of change, the minimum data requirements are the
-region’s current modal split, data on transport infrastructure and car
-parking spaces, and data on the provision of public transport options.
-For context, it’s useful to take a step back and consider the range of
-modal splits observed in a sample of cities worldwide. The figure below
-shows the diversity in mode splits based on (primarily wealthy) cities,
-based on data of the type shown in the table below from
-[Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
+region’s current modal split and data that can be used as explanatory
+variables, including data on transport infrastructure and car parking
+spaces, and data on the provision of public transport options.
 
-| City       | walking | cycling | pt | car | year |
-| :--------- | ------: | ------: | -: | --: | ---: |
-| Adelaide   |       3 |       1 | 11 |  85 | 2016 |
-| Amsterdam  |       4 |      40 | 29 |  27 | 2014 |
-| Bratislava |       4 |       0 | 70 |  26 | 2004 |
-| Osaka      |      27 |      21 | 34 |  18 | 2000 |
-| Madrid     |      36 |       0 | 34 |  30 | 2006 |
-| Vilnius    |      36 |       0 | 26 |  38 | 2011 |
+## Mode split data
+
+Mode split is one of the fundamental pieces of information that is known
+for most cities. For context, it’s useful to take a step back and
+consider the range of modal splits observed in a sample of cities
+worldwide. The figure below shows the diversity in mode splits based on
+(primarily wealthy) cities, based on data of the type shown in the table
+below from [Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
+
+| City       | walking | cycling | pt | car | other | year |
+| :--------- | ------: | ------: | -: | --: | ----: | ---: |
+| Detroit    |       1 |       0 |  2 |  92 |     5 | 2016 |
+| Amsterdam  |       4 |      40 | 29 |  27 |     0 | 2014 |
+| Bratislava |       4 |       0 | 70 |  26 |     0 | 2004 |
+| Osaka      |      27 |      21 | 34 |  18 |     0 | 2000 |
+| Helsinki   |      37 |      10 | 30 |  22 |     1 | 2016 |
 
 The figure shows that cars dominate the transport systems of most
 cities, accounting for a mode shares ranging from 18% (Osaka, Japan) to
@@ -71,10 +75,11 @@ Spain and Vilnius, Lithuania). It is interesting to note that while
 there is a roughly even distribution of mode shares by car, other modes
 have more skewed distributions. This could reflect the diversity of
 policies used to promote walking, cycling and public transport and the
-fact that cars tend to be the
-default.
+fact that cars tend to be the default. This implication is that **if no
+policies have been implemented to promote alternatives, cars
+dominate**.
 
-<img src="../figures/city-mode-split-wiki-cars.png" width="50%" /><img src="../figures/city-mode-split-wiki.png" width="50%" />
+<img src="../figures/city-mode-split-wiki-cars.png" width="100%" /><img src="../figures/city-mode-split-wiki.png" width="100%" />
 
 The relationships between the different modes is illustrated in the
 figure below, which suggests competition between all modes and cars
@@ -83,9 +88,50 @@ this dataset), and synergies between public transport and walking.
 **This strongly suggests that a reliable way to encourage walking in
 cities is through investment in public transport.**
 
-![](../figures/city-mode-cor.png)<!-- -->
+<img src="../figures/city-mode-cor.png" width="50%" />
 
-This city level data allows models of mode split to be developed.
+This city level data allows models of mode split to be developed,
+assuming there are sufficient explanatory variables defining the
+transport system.
+
+## Data characterising transport systems
+
+Transport systems are complex, composed of hundreds of interrelated
+elements. For modelling purposes, it makes sense to condense available
+datasets down into a few key parameters per city, zone or
+origin-destination pair. The process of identifying and quantifying
+transport system variables should be be an open-ended and adaptable
+process that is able to respond when the input data changes (e.g. due to
+changes in the transport system or improved data
+availability/collection).
+
+This section therefore provides a framework for including key transport
+system variables, based on the assumption that additional/modified
+variables will be used in future iterations of the model. Key variables
+that are readily available for most cities include:
+
+  - Percentage of the transport network that is dedicated to motor
+    traffic (an alternative or suplementary measure could be the
+    percentage of the city’s surface area dedicated to motor traffic)
+  - Provision for public transport, in terms of the percentage of the
+    city’s area within walking distance (e.g. 300m) of public transport
+    nodes such as bus stops and rail stations
+  - The percentage of the city’s transport network that is dedicated to
+    cycling
+  - Provision of walking infrastructure, for example the percentage of
+    the city’s transport network that is footway
+
+Note that all the high level varibles outlined above are ‘scale free’,
+meaning that they do not depend on the city’s size.
+
+## Modelling mode shift
+
+Treating mode share as a dependent variable involves multiple
+interrelated dependent variables, which is problematic for standard
+regression approaches. An alternative used in cycling potential research
+has been to ‘expand’ mode split data into individual categorical
+variables (Lovelace et al. 2017, supplementary information). This
+strategy is computationally intensive however.
 
 # Methods of modelling mode shift at the city level
 
@@ -121,6 +167,15 @@ Douma, Jacob C., and James T. Weedon. 2019. “Analysing Continuous
 Proportions in Ecology and Evolution: A Practical Introduction to Beta
 and Dirichlet Regression.” *Methods in Ecology and Evolution* 10 (9):
 1412–30. <https://doi.org/10.1111/2041-210X.13234>.
+
+</div>
+
+<div id="ref-lovelace_propensity_2017">
+
+Lovelace, Robin, Anna Goodman, Rachel Aldred, Nikolai Berkoff, Ali
+Abbas, and James Woodcock. 2017. “The Propensity to Cycle Tool: An Open
+Source Online System for Sustainable Transport Planning.” *Journal of
+Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
 
 </div>
 
