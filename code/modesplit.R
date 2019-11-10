@@ -20,3 +20,5 @@ m_test$cost.carpool = 5
 
 Mo1 = mlogit.data(m_test, choice = 'choice', shape = 'wide', varying = c(2:9))
 predict(p1, Mo1)
+
+

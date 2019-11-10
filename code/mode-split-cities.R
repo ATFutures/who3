@@ -75,14 +75,14 @@ modes_ghana_long = modes_ghana_long %>%
   ))
 gmodes = c("other", modes)
 modes_ghana_long = modes_ghana_long %>% 
-  mutate(mode = factor(mode, levels = gmodes)) %>% 
+  mutate(mode = factor(mode, levels = modes)) %>% 
   mutate(Type = factor(Type, levels = (unique(Type))))
 
-cols_modes = scales::hue_pal()(4)
+cols_modes = scales::hue_pal()(5)
 cols_gmodes = c("grey", cols_modes) 
 modes_ghana_long %>%
   ggplot() + geom_bar(aes(Type, value, fill = `mode`), stat = "identity") +
-  scale_fill_manual(values = cols_gmodes)
+  scale_fill_manual(values = cols_modes)
 
 ggsave("figures/modes-ghana-work-simple.png")
 # corrr::rplot(rdf = .Last.value)
@@ -97,30 +97,38 @@ summary(dc$City %in% gci$City) # 35 matching cities
 gci_min = gci %>%
   select(City, `City Population (millions)`, `City Area (km2)`, `Public Transportation`, `Green Spaces (km2)`, `Bike Share Program`)
 dcj = inner_join(dc, gci_min) %>% na.omit() %>%  # 28 cities
-  mutate_at(vars(matches("ing|pt|car")), ~./100) %>% 
+  mutate_at(vars(matches("ing|pt|car|other")), ~./100) %>% 
   janitor::clean_names() %>% 
   mutate(bike_share_program = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
   mutate(metro = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
-  mutate(density = city_population_millions / city_area_km2 ) 
+  mutate(density = (city_population_millions * 1000) / city_area_km2 ) 
 names(dcj)
 library(DirichletReg)
 summary(dcj)
-dcj_l = DirichletReg::DR_data(dcj[2:5])
+dcj_l = DirichletReg::DR_data(dcj[2:6])
 plot(dcj_l)
-m1 = DirichReg(dcj_l ~ city_area_km2, data = dcj)
+m1 = DirichReg(dcj_l ~ density, data = dcj)
 summary(m1)
-m2 = update(m1, . ~ . + I(city_area_km2^2) | . + I(city_area_km2^2) | . + I(city_area_km2^2))
+m2 = update(m1, . ~ . + I(density^2) | . + I(density^2) | . + I(density^2))
 
 # get predictions
-predvar = seq(min(dcj$city_area_km2), max(dcj$city_area_km2), length.out = 10)
-res = predict(m1, data.frame(city_area_km2 = predvar))
+predvar = seq(min(dcj$density), max(dcj$density), length.out = 10)
+res = predict(m2, data.frame(density = predvar))
+# res = predict(m1, data.frame(density = predvar))
 plot(res)
 res_df = res %>% as_tibble()
 res_df$Population = predvar
-names(res_df)[1:4] = names(dcj)[2:5] 
+names(res_df)[1:5] = names(dcj)[2:6] 
 res_long = res_df %>% 
-  pivot_longer(matches("ing|pt|car"))
-ggplot(res_long) + geom_line(aes(Population, value, colour = name))
+  pivot_longer(matches("ing|pt|car|other"), names_to = "mode")
+res_long$mode = factor(res_long$mode, levels = modes)
+ggplot(res_long) + geom_area(aes(Population, value, fill = mode)) +
+  xlab("Population density (1000 per km2)") +
+  ylab("Mode share") +
+  ylim(c(0, 1)) +
+  xlim(c(0, 9)) +
+  theme_minimal()
+ggsave(filename = "figures/mode-share-prediction.png")
 # get explanatory variables -----------------------------------------------
 
 # u = "https://data.london.gov.uk/download/global-city-data/ffcefcba-829c-4220-911f-d4bf17ef75d6/global-city-indicators.xlsx"

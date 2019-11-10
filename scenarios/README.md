@@ -152,8 +152,23 @@ travel in a city. These types of data are common in ecological modelling
 question of citywide scenarios of mode shift in which modes are
 analogous to species. Dirichlet regression is a recently developed
 technique for modelling proportions based on a range of dependent
-variables (Maier
-2014).
+variables (Maier 2014).
+
+A basic example of the outputs of a Dirichlet regression model run are
+shown in the figure below, which represents the result of a model run
+for a subset of 28 cities for which we have access to population density
+data.
+
+![](../figures/mode-share-prediction.png)<!-- -->
+
+The result show that, holding all things equal, increasing population
+density is associated with a lower proportion of trips made by driving.
+More explanatory variables can be added using this framework. Of course,
+the quality of the prediction relies on good input data predicting mode
+shift and relies on the assumption that cities are in equilibrium
+states. **This strengthens the need for open data on mode shift at city,
+OD and local levels over time following a range of
+interventions.**
 
 # Estimates of rates of shift towards walking and cycling down to route network levels
 
