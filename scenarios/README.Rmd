@@ -3,8 +3,9 @@ output: github_document
 # output: pdf_document
 title: Scenarios for the urban planning and transport health assessment tool
 bibliography:
-  - ../ATF.bib
-  - ../references.bib
+  # /home/robin/uaf/allrefs.bib
+  # - ../ATF.bib
+  - references.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -14,16 +15,14 @@ library(tidyverse)
 
 ```{r refs, eval=FALSE}
 # refs_cycle_hire = RefManageR::ReadZotero(group = "418217", .params = list(collection = "JAK5PW5K", limit = 100))
-refs_atf = RefManageR::ReadZotero(group = "418217", .params = list(collection = "TJEQMXJR", limit = 100))
-# refs_geo = RefManageR::ReadZotero(group = "418217", .params = list(collection = "9K6FRP6N", limit = 100))
-# refs_gis = RefManageR::ReadZotero(group = "418217", .params = list(collection = "KUXG5CJL", limit = 100))
-o = ls()
-r = o[grepl(pattern = "refs_", x = o)]
-# refs = c(refs_sof, refs_gis, refs_geo, refs_tds)
-refs = do.call(what = c, args = mget(r))
-ref_df = as.data.frame(refs)
-# View(ref_df)
-RefManageR::WriteBib(refs, "references.bib")
+# refs_atf = RefManageR::ReadZotero(group = "418217", .params = list(collection = "TJEQMXJR", limit = 100))
+# o = ls()
+# r = o[grepl(pattern = "refs_", x = o)]
+# refs = do.call(what = c, args = mget(r))
+# ref_df = as.data.frame(refs)
+# # View(ref_df)
+# RefManageR::WriteBib(refs, "references.bib")
+citr::tidy_bib_file(rmd_file = "scenarios/README.Rmd", messy_bibliography = "~/uaf/allrefs.bib", file = "scenarios/references.bib")
 ```
 
 # Introduction
@@ -94,7 +93,7 @@ knitr::include_graphics("../figures/city-mode-cor.png")
 
 This city level data allows models of mode split to be developed, assuming there are sufficient explanatory variables defining the transport system.
 
-## Data characterising transport systems
+## Transport system data
 
 Transport systems are complex, composed of hundreds of interrelated elements.
 For modelling purposes, it makes sense to condense available datasets down into a few key parameters per city, zone or origin-destination pair.
@@ -105,10 +104,12 @@ Key variables that are readily available for most cities include:
 
 - Percentage of the transport network that is dedicated to motor traffic (an alternative or suplementary measure could be the percentage of the city's surface area dedicated to motor traffic)
 - Provision for public transport, in terms of the percentage of the city's area within walking distance (e.g. 300m) of public transport nodes such as bus stops and rail stations
-- The percentage of the city's transport network that is dedicated to cycling
+- The percentage of the city's transport network that is dedicated to cycling. Other important variables include average gradient, type of cycle network, level or car ownership and directness of cycle routes compared with driving routes [@parkin_estimation_2008]. 
 - Provision of walking infrastructure, for example the percentage of the city's transport network that is footway
 
 Note that all the high level varibles outlined above are 'scale free', meaning that they do not depend on the city's size.
+The scale free nature of such measures also means that they can be used to estimate mode shares not only at city levels but also at the level of 'desire lines' connecting origins and destinations, as with the use of average gradient as a predictor of cycling potential in the PCT [@lovelace_propensity_2017].
+Some additional variables, such as distance and relative time/cost for alternative modes, only make sense when measured at the OD level.
 
 
 ## Modelling mode shift
@@ -121,7 +122,7 @@ This strategy is computationally intensive however.
 
 The datasets presented in the previous section are examples of proportional outcomes, where we are interested in the mode split of all travel in a city.
 These types of data are common in ecological modelling [@douma_analysing_2019], which provided a basis for investigating the question of citywide scenarios of mode shift in which modes are analogous to species.
-Dirichlet regression is a recently developed technique for modelling proportions based on a range of dependent variables [@maier_dirichletreg:_2014].
+Dirichlet regression is a recently developed technique for modelling proportions based on a range of dependent variables [@maier_dirichletreg_2014].
 
 
 # Estimates of rates of shift towards walking and cycling down to route network levels

@@ -94,7 +94,7 @@ This city level data allows models of mode split to be developed,
 assuming there are sufficient explanatory variables defining the
 transport system.
 
-## Data characterising transport systems
+## Transport system data
 
 Transport systems are complex, composed of hundreds of interrelated
 elements. For modelling purposes, it makes sense to condense available
@@ -117,12 +117,22 @@ that are readily available for most cities include:
     city’s area within walking distance (e.g. 300m) of public transport
     nodes such as bus stops and rail stations
   - The percentage of the city’s transport network that is dedicated to
-    cycling
+    cycling. Other important variables include average gradient, type of
+    cycle network, level or car ownership and directness of cycle routes
+    compared with driving routes
+    (<span class="citeproc-not-found" data-reference-id="parkin_estimation_2008">**???**</span>).
   - Provision of walking infrastructure, for example the percentage of
     the city’s transport network that is footway
 
 Note that all the high level varibles outlined above are ‘scale free’,
-meaning that they do not depend on the city’s size.
+meaning that they do not depend on the city’s size. The scale free
+nature of such measures also means that they can be used to estimate
+mode shares not only at city levels but also at the level of ‘desire
+lines’ connecting origins and destinations, as with the use of average
+gradient as a predictor of cycling potential in the PCT (Lovelace et al.
+2017). Some additional variables, such as distance and relative
+time/cost for alternative modes, only make sense when measured at the OD
+level.
 
 ## Modelling mode shift
 
@@ -179,11 +189,11 @@ Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
 
 </div>
 
-<div id="ref-maier_dirichletreg:_2014">
+<div id="ref-maier_dirichletreg_2014">
 
 Maier, Marco J. 2014. “DirichletReg: Dirichlet Regression for
-Compositional Data in R.” 125. Department of Statistics; Mathematics, WU
-Vienna. <https://epub.wu.ac.at/4077/>.
+Compositional Data in R.” 125. Department of Statistics and Mathematics,
+WU Vienna.
 
 </div>
 
