@@ -119,8 +119,7 @@ that are readily available for most cities include:
   - The percentage of the city’s transport network that is dedicated to
     cycling. Other important variables include average gradient, type of
     cycle network, level or car ownership and directness of cycle routes
-    compared with driving routes
-    (<span class="citeproc-not-found" data-reference-id="parkin_estimation_2008">**???**</span>).
+    compared with driving routes (Parkin, Wardman, and Page 2008).
   - Provision of walking infrastructure, for example the percentage of
     the city’s transport network that is footway
 
@@ -209,6 +208,15 @@ Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
 Maier, Marco J. 2014. “DirichletReg: Dirichlet Regression for
 Compositional Data in R.” 125. Department of Statistics and Mathematics,
 WU Vienna.
+
+</div>
+
+<div id="ref-parkin_estimation_2008">
+
+Parkin, John, Mark Wardman, and Matthew Page. 2008. “Estimation of the
+Determinants of Bicycle Mode Share for the Journey to Work Using Census
+Data.” *Transportation* 35 (1): 93–109.
+<https://doi.org/10.1007/s11116-007-9137-5>.
 
 </div>
 
