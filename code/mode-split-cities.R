@@ -90,7 +90,37 @@ ggsave("figures/modes-ghana-work-simple.png")
 # - speeds
 # - car parking spaces
 
+# starting point: which cities?
+dc = readRDS("global-data/city-mode-split-wiki.Rds")
+gci = readRDS("global-data/global-city-indicators.Rds")
+summary(dc$City %in% gci$City) # 35 matching cities
+gci_min = gci %>%
+  select(City, `City Population (millions)`, `City Area (km2)`, `Public Transportation`, `Green Spaces (km2)`, `Bike Share Program`)
+dcj = inner_join(dc, gci_min) %>% na.omit() %>%  # 28 cities
+  mutate_at(vars(matches("ing|pt|car")), ~./100) %>% 
+  janitor::clean_names() %>% 
+  mutate(bike_share_program = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
+  mutate(metro = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
+  mutate(density = city_population_millions / city_area_km2 ) 
+names(dcj)
+library(DirichletReg)
+summary(dcj)
+dcj_l = DirichletReg::DR_data(dcj[2:5])
+plot(dcj_l)
+m1 = DirichReg(dcj_l ~ city_area_km2, data = dcj)
+summary(m1)
+m2 = update(m1, . ~ . + I(city_area_km2^2) | . + I(city_area_km2^2) | . + I(city_area_km2^2))
 
+# get predictions
+predvar = seq(min(dcj$city_area_km2), max(dcj$city_area_km2), length.out = 10)
+res = predict(m1, data.frame(city_area_km2 = predvar))
+plot(res)
+res_df = res %>% as_tibble()
+res_df$Population = predvar
+names(res_df)[1:4] = names(dcj)[2:5] 
+res_long = res_df %>% 
+  pivot_longer(matches("ing|pt|car"))
+ggplot(res_long) + geom_line(aes(Population, value, colour = name))
 # get explanatory variables -----------------------------------------------
 
 # u = "https://data.london.gov.uk/download/global-city-data/ffcefcba-829c-4220-911f-d4bf17ef75d6/global-city-indicators.xlsx"
