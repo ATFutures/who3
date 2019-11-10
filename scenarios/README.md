@@ -153,20 +153,31 @@ analogous to species. Dirichlet regression is a recently developed
 technique for modelling proportions based on a range of dependent
 variables (Maier 2014).
 
-A basic example of the outputs of a Dirichlet regression model run are
-shown in the figure below, which represents the result of a model run
-for a subset of 28 cities for which we have access to population density
-data.
+Building on this work, support for Dirichlet regression was added to the
+R package `brms`
+(<span class="citeproc-not-found" data-reference-id="burkner_brms_2017">**???**</span>),
+which implements a Bayesian modelling framework based on the stan C++
+library, in 2018. The advantage of `brms` is that it estimates
+uncertainty, vital for effective ‘no-regrets’ policy making. A basic
+example of the outputs of a Dirichlet regression model run are shown in
+the figure below, which represents the result of a model run for a
+subset of 28 cities for which we have access to population (other
+explanatory variables included provision of metro and bikeshare
+schemes).
 
-![](../figures/mode-share-prediction.png)<!-- -->
+<img src="../figures/mode-share-prediction.png" width="50%" /><img src="../figures/mode-share-prediction-metro.png" width="50%" />
 
-The result show that, holding all things equal, increasing population
-density is associated with a lower proportion of trips made by driving.
-More explanatory variables can be added using this framework. Of course,
-the quality of the prediction relies on good input data predicting mode
-shift and relies on the assumption that cities are in equilibrium
-states. **This strengthens the need for open data on mode shift at city,
-OD and local levels over time following a range of
+The result suggest that beyond a certain size, increasingly large city
+populations are associated with a lower proportion of trips made by
+driving in the sample of cities used. More explanatory variables can be
+added using this framework, including categorical variables such as
+`has_metro`, the results of which (that increase the mode share by
+public transport and notably walking in the results, which also show
+confidence intervals) are shown. Of course, the quality of the
+prediction relies on good input data predicting mode shift and relies on
+the assumption that cities are in equilibrium states. **This strengthens
+the need for open data on mode shift at city, OD and local levels over
+time following a range of
 interventions.**
 
 # Estimates of rates of shift towards walking and cycling down to route network levels

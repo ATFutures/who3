@@ -102,6 +102,7 @@ dcj = inner_join(dc, gci_min) %>% na.omit() %>%  # 28 cities
   mutate(bike_share_program = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
   mutate(metro = case_when(bike_share_program == "Yes" ~ TRUE, TRUE ~ FALSE )) %>% 
   mutate(density = (city_population_millions * 1000) / city_area_km2 ) 
+saveRDS(dcj, "global-data/data-cities-mode-share-predictors.Rds")
 names(dcj)
 library(DirichletReg)
 summary(dcj)
