@@ -208,7 +208,7 @@ procedure is appropriate because actual placements of flow values for
 each layer depend on the spatial location and variability of data as
 recorded in Open Street Map.
 
-### Statitstical Models
+### Statistical Models
 
 The 64 pairwise combinations of origin and destination categories
 represents 64 potential independent variables in a statistical model.
@@ -234,11 +234,25 @@ soon as the next layer added made no significant contribution.
 
 Where the addition of new layers rendered the contribution any any prior
 layers no longer significant, those non-significant layers were removed
-from the model. Finally, it is statistically possible that a flow layer
-is significantly *negatively* correlated with observed counts. Such
-layers were not included with our models, which were constructed
-exclusively from layers which were positively correlated with observed
-counts.
+from the model. Finally, it is statistically possible for flow layers to
+be significantly *negatively* correlated with observed counts. For
+example, dispersal from subway exits (presuming exit numbers to equal
+the provided entrance numbers as described above) may be positively
+correlated with observed pedestrian counts, yet movement from subway
+exits to some specific category may be negatively correlated. This would
+reflect an ultimate positive correlation with movement away from subway
+exits that was effectively dispersive, yet actively *not* directed
+towards that specific category. Because each layer was formed from
+effectively arbitrary categories, and because there was no way of
+knowing at the outset which categories may or may not be significantly
+related to pedestrian behaviour, negatively correlations must be
+expected. It is nevertheless not easy to interpret the meaning of a
+negative correlation between an inherently positive independent variable
+represented by a flow layer, and a positive dependent variable of
+absolute pedestrian counts. We thus permitted negatively-correlated
+variables to be added during the model construction phase, yet
+ultimately removed them from our final model, so leaving only layers
+which were positively correlated with observed counts.
 
 ## Calibration to Observed Values
 
@@ -258,8 +272,61 @@ the 24 hours of the day (see Figure 1).
 These data reflected a total proportion of trips between the hours of
 7-9am and 4-7pm of 42.7%. We assumed this figure to approximately
 reflect global pedestrian behaviour, and so converted observed
-pedestrian counts to expected equivalent daily totals for weekdays by
-multiplying by 1 / 0.43 = 2.34.
+pedestrian counts – as the sum of the morning plus afternoon values – to
+expected equivalent daily totals for weekdays by multiplying by 1 / 0.43
+= 2.34.
+
+One of our motivating aims was to derive a model that could accurately
+predict absolute pedestrian counts. Our final models were regression
+models, and so the resultant estimates for each layer provided relative
+scaling coefficients for those layers. Flow values for the layers
+themselves were determined by values at the points of origin for each
+layer, such that the sum of flows for each layer was equal to the sum of
+values for all origins in that layer. For example, the sum across the
+entire network of flows dispersing away from all subway exits was equal
+to the total number of passengers entering and, according to our
+assumption, exiting all stations of the subway system. Note, however,
+that even this layer may result in a model estimate greater than one,
+because the contribution to observed pedestrian counts of numbers
+*effectively* dispersing from subway exits may in fact exceed the actual
+numbers exiting, because this layer may in fact capture more pedestrian
+activity than just dispersive movement of actual subway passengers. A
+resultant model estimate for layer representing dispersal away from
+subway exits would nevertheless provide a direct quantification of any
+such effect, and be able to be directly translated into absolute terms.
+The number of pedestrians according to such a resultant model
+effectively dispersing from subway exits would equal actual numbers
+measured in the subway times the resultant model coefficient.
+
+Other layers result in more abstract scaling, but scales that are
+nevertheless straightforward to interpret. Four of the categories are
+directly associated with the location and form of built structures:
+sustenance, entertainment, education, and healthcare. In each case,
+sizes of origins were aggregate numbers of building of these categories
+associated with each junction of the street network. The reason these
+categories were treated independently was because each is generally
+associated with different scales – healthcare includes hospitals, which
+can be very large, and be the origins and destinations of large numbers
+of pedestrians. Educational institutions can be similarly large, but
+potentially cater for distinctly different social groups. The category
+of sustenance includes restaurants and supermarkets (and any categories
+in between), and so may vary markedly in effective size. Entertainment
+may be similarly diverse, and was included as its own separate category
+primarily because pedestrian movement to and from entertainment centres
+is likely to occur at markedly different times of day (or night, as the
+case may be) than movement in relation to the other categories.
+
+Transportation was considered its own distinct category in the
+hypothesis that movement to or from transportation centres may capture
+pedestrian behaviour in relation to both cycling and the driving of
+automobiles. As described above, sizes of transportation sources were
+quantified in numbers of parking places where given, with local averages
+assigned to locations lacking specific capacities. Finally, centrality
+has its own absolute scale equal to the square of the total number of
+distinct vertices or points within a network. In our case, this was
+equal to the total number of street junctions, which was 134,732.
+Centrality was simply rescaled to a maximum of one, and was the only
+category to which an absolute scale could not be assigned.
 
 # Results
 
