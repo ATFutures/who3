@@ -60,9 +60,31 @@ collected bi-annually at 114 stations throughout the city, and on cyclist
 densities from data provided by the city's "citibike" public hire bicycle
 system. Additional data on subway usage was obtained from the city's
 [Metropolitan Transit
-Authority](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm),
+Authority (MTA)](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm),
 with data on locations obtained through the city's [open data
 portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
+The MTA figures are annual "ridership totals" for each station, which are
+counts of number of passengers entering the system at each of 424 stations (or,
+in a few cases, "station complexes", at which a single entrance provides access
+to multiple proximate stations and multiple lines). There are no data for
+system exits, and so we assumed that exit numbers equalled entrance
+numbers throughout. The station locations given by the City of New York are
+single coordinates for each station (473 in total). The City also provides
+coordinates of all subway *entrances* (1,926 in total), along with associated
+subway lines to which those entrances lead, with entrances often providing
+access to multiple subway lines. We allocated the ridership data to subway
+entrances by associating each entrance for a given line with the station
+coordinates for that line, and associating each subway entrance with the
+nearest station for that line. Entrances were associated with individual
+stations by repeating this procedure for all subway lines, resulting in many
+entrances being associated with both different subway lines and different
+stations, but nevertheless providing an accurate connection between subway
+entrances, the stations to which they lead, and the MTA's ridership counts.
+Counts for each station were then distributed equally among all associated
+subway entrances, ultimately converting 424 counts into 1,926 locations of
+associated pedestrian flows.
+
+
 
 ### The Street Network
 
@@ -179,14 +201,15 @@ was obtained through calculating shortest paths between each origin point, $i$,
 and destination point, $j$, in the network, and aggregating flows according to
 exponential spatial interaction models [@wilson_boltzmann_2008] of the form,
 \begin{equation}
-    SI_{ij} (d_{ij}) = \frac{n_in_j}{\sum_j n_j exp (-d_{ij} / k)} exp (-d_{ij} / k),
+    SI_{ij} (d_{ij}) = \frac{n_in_{j\ne i}}{\sum_{j\ne i} n_j exp (-d_{ij} / k)} exp (-d_{ij} / k),
 \end{equation}
-where $d_{ij}$ denotes the distance between the points $i$ and $j$. The
-denominator ensured that our models were singly-constrained to unit sums for
-each origin, $i$, over densities at destinations, $j$. The above form gives the
-expected flow, in direct units of $n_i$, along the path between the points $i$
-and $j$. Layers were also calculated describing undirected dispersal throughout
-the entire network from a set of origin points.
+where $d_{ij}$ denotes the distance between the points $i$ and $j$ (and
+self-flows $SI_{ii}$ were excluded). The denominator ensured that our models
+were singly-constrained to unit sums for each origin, $i$, over densities at
+destinations, $j$. The above form gives the expected flow, in direct units of
+$n_i$, along the path between the points $i$ and $j$. Layers were also
+calculated describing undirected dispersal throughout the entire network from
+a set of origin points.
 
 Our [`dodgr`](https://github.com/ATFutures/dodgr) software enables spatial
 interaction models to be efficiently calculated for a range of exponential
