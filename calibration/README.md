@@ -245,9 +245,9 @@ exits that was effectively dispersive, yet actively *not* directed
 towards that specific category. Because each layer was formed from
 effectively arbitrary categories, and because there was no way of
 knowing at the outset which categories may or may not be significantly
-related to pedestrian behaviour, negatively correlations must be
-expected. It is nevertheless not easy to interpret the meaning of a
-negative correlation between an inherently positive independent variable
+related to pedestrian behaviour, negative correlations must be expected.
+It is nevertheless not easy to interpret the meaning of a negative
+correlation between an inherently positive independent variable
 represented by a flow layer, and a positive dependent variable of
 absolute pedestrian counts. We thus permitted negatively-correlated
 variables to be added during the model construction phase, yet

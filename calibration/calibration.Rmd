@@ -259,18 +259,18 @@ to the model was significant; that is, layer addition within the model was
 terminated as soon as the next layer added made no significant contribution.
 
 Where the addition of new layers rendered the contribution any any prior layers
-no longer significant, those non-significant layers were removed from the model.
-Finally, it is statistically possible for flow layers to be significantly
-*negatively* correlated with observed counts. For example, dispersal from
-subway exits (presuming exit numbers to equal the provided entrance numbers as
-described above) may be positively correlated with observed pedestrian counts,
-yet movement from subway exits to some specific category may be negatively
-correlated. This would reflect an ultimate positive correlation with movement
-away from subway exits that was effectively dispersive, yet actively *not*
-directed towards that specific category. Because each layer was formed from
-effectively arbitrary categories, and because there was no way of knowing at
-the outset which categories may or may not be significantly related to
-pedestrian behaviour, negatively correlations must be expected. It is
+no longer significant, those non-significant layers were removed from the
+model. Finally, it is statistically possible for flow layers to be
+significantly *negatively* correlated with observed counts. For example,
+dispersal from subway exits (presuming exit numbers to equal the provided
+entrance numbers as described above) may be positively correlated with observed
+pedestrian counts, yet movement from subway exits to some specific category may
+be negatively correlated. This would reflect an ultimate positive correlation
+with movement away from subway exits that was effectively dispersive, yet
+actively *not* directed towards that specific category. Because each layer was
+formed from effectively arbitrary categories, and because there was no way of
+knowing at the outset which categories may or may not be significantly related
+to pedestrian behaviour, negative correlations must be expected. It is
 nevertheless not easy to interpret the meaning of a negative correlation
 between an inherently positive independent variable represented by a flow
 layer, and a positive dependent variable of absolute pedestrian counts. We thus
