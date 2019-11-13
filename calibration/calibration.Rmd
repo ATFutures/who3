@@ -57,36 +57,84 @@ from Open Street Map and "worldpop" (www.worldpop.org). The latter data enable
 estimates of population flows to be made in absolute terms, given aggregate
 data on proportions and typical frequencies of trips.
 
-Additional data on pedestrian densities was obtained from New York City
-Government [pedestrian count
+```{r ped-station-stats}
+suppressPackageStartupMessages (requireNamespace ("sf"))
+# just used to get the overall area of convex hull surrounding the stations
+f <- "nycdot-bi-annual-pedestrian-index.zip"
+if (!file.exists (f))
+{
+    u <- paste0 ("https://www1.nyc.gov/html/dot/downloads/misc/",
+                 "nycdot-bi-annual-pedestrian-index.zip")
+    check <- utils::download.file (url = u, destfile = f, quiet = TRUE)
+}
+utils::unzip (f, exdir = "./nyped")
+files <- list.files (file.path (".", "nyped", "Shapefile"), full.names = TRUE)
+f <- files [grep ("\\.shp", files)]
+
+x <- sf::st_read (f, stringsAsFactors = FALSE, quiet = TRUE)
+unlink ("./nyped", recursive = TRUE)
+x <- sf::st_transform (x, 4326)
+xdat <- x
+xdat$geometry <- NULL
+index <- grep ("\\_AM|\\_PM|\\_MD", names (xdat))
+for (i in index)
+{
+    xdat [, i] [xdat [, i] == "-"] <- "0"
+    xdat [, i] <- as.integer (gsub (",", "", xdat [, i]))
+}
+# average measures over the various count days, obtaining single estimates
+# of pedestrian volumes within a 3-hour window
+index <- grep ("\\_AM|\\_PM", names (xdat))
+weekday <- round (rowSums (xdat [, index]) / length (index))
+index <- grep ("\\_MD", names (xdat))
+weekend <- round (rowSums (xdat [, index]) / length (index))
+
+x <- sf::st_sf (borough = xdat$Borough,
+                street = xdat$Street_Nam,
+                from = xdat$From_Stree,
+                to = xdat$To_Street,
+                weekday = weekday,
+                weekend = weekend,
+                week = round ((5 * weekday + 2 * weekend) / 7),
+                geometry = x$geometry,
+                stringsAsFactors = FALSE)
+xmp <- sf::st_cast (do.call (c, x$geometry), to = "MULTIPOINT") %>%
+    sf::st_sfc (crs = 4326)
+suppressMessages (
+a <- round (as.numeric (sf::st_area (sf::st_convex_hull (xmp))) / 1e6)
+)
+```
+
+Data on pedestrian densities was obtained from New York City Government
+[pedestrian count
 data](https://www1.nyc.gov/html/dot/html/about/datafeeds.shtml#Pedestrians),
-collected bi-annually at 114 stations throughout the city, and on cyclist
-densities from data provided by the city's "citibike" public hire bicycle
-system. Additional data on subway usage was obtained from the city's
-[Metropolitan Transit
-Authority (MTA)](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm),
-with data on locations obtained through the city's [open data
+collected bi-annually at `r nrow(x)` stations throughout the city, encompassing
+a total area of `r a` km<sup>2</sup>. Additional data on subway usage was
+obtained from the city's [Metropolitan Transit Authority
+(MTA)](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm), with
+data on locations obtained through the city's [open data
 portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
 The MTA figures are annual "ridership totals" for each station, which are
 counts of number of passengers entering the system at each of 424 stations (or,
 in a few cases, "station complexes", at which a single entrance provides access
 to multiple proximate stations and multiple lines). There are no data for
-system exits, and so we assumed that exit numbers equalled entrance
-numbers throughout. The station locations given by the City of New York are
-single coordinates for each station (473 in total). The City also provides
-coordinates of all subway *entrances* (1,926 in total), along with associated
-subway lines to which those entrances lead, with entrances often providing
-access to multiple subway lines. We allocated the ridership data to subway
-entrances by associating each entrance for a given line with the station
-coordinates for that line, and associating each subway entrance with the
-nearest station for that line. Entrances were associated with individual
-stations by repeating this procedure for all subway lines, resulting in many
-entrances being associated with both different subway lines and different
-stations, but nevertheless providing an accurate connection between subway
-entrances, the stations to which they lead, and the MTA's ridership counts.
-Counts for each station were then distributed equally among all associated
-subway entrances, ultimately converting 424 counts into 1,926 locations of
-associated pedestrian flows.
+system exits, and so we assumed that exit numbers equalled entrance numbers
+throughout. The station locations given by the City of New York are single
+coordinates for each station (473 in total). The City also provides coordinates
+of all subway *entrances* (1,926 in total), along with associated subway lines
+to which those entrances lead, with entrances often providing access to
+multiple subway lines. We allocated the ridership data to subway entrances by
+associating each entrance for a given line with the station coordinates for
+that line, and associating each subway entrance with the nearest station for
+that line. Entrances were associated with individual stations by repeating this
+procedure for all subway lines, resulting in many entrances being associated
+with both different subway lines and different stations, but nevertheless
+providing an accurate connection between subway entrances, the stations to
+which they lead, and the MTA's ridership counts. Counts for each station were
+then distributed equally among all associated subway entrances, ultimately
+converting 424 counts into 1,926 locations of associated pedestrian flows.
+
+
 
 
 
@@ -411,9 +459,10 @@ a central part of the results that follow.
 # Results
 
 The flow layer which made the most significant initial contribution reflected
-dispersal from subway stations. The model error along the 30 values of
-exponential decay coefficients is illustrated in Figure 1, and was typical for
-most layers, manifesting a clear and distinctive minimum.
+movement from subway stations towards network centrality. The model error as
+a function of the 30 values of exponential decay coefficients is illustrated in
+Figure 1, and was typical for most layers, manifesting a clear and distinctive
+minimum at 600m.
 
 ```{r get-layer-data, echo = FALSE}
 f <- file.path (here::here (), "calibration", "sub-cen-model.Rds")
@@ -467,6 +516,33 @@ ggplot (dat, aes (x = k, y = ss)) +
 ```
 
 
+Following the procedure described above of adding the next minimal error layer
+that was significant, while removing any layers rendered non-significant
+through the addition of subsequent layers, resulted in the final model
+statistically summarised in Table 1, in which the .
 
+```{r final-model, echo = FALSE}
+dat <- readRDS ("final-model.Rds")
+f_ <- dat$flowvars
+mod <- summary (lm (dat$p ~ f_))
+coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
+# for some reason, colnames do not transfer properly:
+names (coeffs) <- colnames (mod$coefficients)
+coeffs <- cbind ("Layer Name" = gsub ("f_", "", rownames (coeffs)),
+                 coeffs)
+rownames (coeffs) <- NULL
+knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
+```
+
+That model was able to explain R<sup>2</sup> = `r signif (mod$r.squared, 3)` of the
+observed variation in pedestrian counts across New York City. Converting the
+estimates of the resultant statistical model into absolute scales of
+pedestrians per day yielded the scales shown in Figure 2.
+
+# Discussion
+
+The model developed here was able to reproduce over 70% of the observed
+variation in pedestrian counts at 114 stations encompassing a large portion of
+New York City.
 
 # References

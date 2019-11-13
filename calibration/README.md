@@ -21,13 +21,12 @@ latter data enable estimates of population flows to be made in absolute
 terms, given aggregate data on proportions and typical frequencies of
 trips.
 
-Additional data on pedestrian densities was obtained from New York City
-Government [pedestrian count
+Data on pedestrian densities was obtained from New York City Government
+[pedestrian count
 data](https://www1.nyc.gov/html/dot/html/about/datafeeds.shtml#Pedestrians),
-collected bi-annually at 114 stations throughout the city, and on
-cyclist densities from data provided by the city’s “citibike” public
-hire bicycle system. Additional data on subway usage was obtained from
-the city’s [Metropolitan Transit Authority
+collected bi-annually at 114 stations throughout the city, encompassing
+a total area of 705 km<sup>2</sup>. Additional data on subway usage was
+obtained from the city’s [Metropolitan Transit Authority
 (MTA)](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm),
 with data on locations obtained through the city’s [open data
 portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
@@ -363,12 +362,41 @@ results that follow.
 # Results
 
 The flow layer which made the most significant initial contribution
-reflected dispersal from subway stations. The model error along the 30
-values of exponential decay coefficients is illustrated in Figure 1, and
-was typical for most layers, manifesting a clear and distinctive
-minimum.
+reflected movement from subway stations towards network centrality. The
+model error as a function of the 30 values of exponential decay
+coefficients is illustrated in Figure 1, and was typical for most
+layers, manifesting a clear and distinctive minimum at 600m.
 
 <img src="figures/layer-error-with-k-1.png" width="100%" />
+
+Following the procedure described above of adding the next minimal error
+layer that was significant, while removing any layers rendered
+non-significant through the addition of subsequent layers, resulted in
+the final model statistically summarised in Table 1, in which the .
+
+| Layer Name | Estimate | Std. Error | t value | Pr(\>|t|) |
+| :--------- | -------: | ---------: | ------: | --------: |
+| ent-dis    |    92585 |      23150 |    4.00 |    0.0001 |
+| sub-hea    |        0 |          0 |    3.18 |    0.0019 |
+| sus-ent    |       55 |         25 |    2.17 |    0.0321 |
+| sub-dis    |        8 |          2 |    3.86 |    0.0002 |
+| sub-tra    |        0 |          0 |    2.63 |    0.0098 |
+| cen-ent    |     1985 |       1339 |    1.48 |    0.1411 |
+| edu-tra    |      751 |        805 |    0.93 |    0.3529 |
+
+Table 1. Statistical parameters of final model of pedestrian flows
+through New York City. (Placeholder only in rendered version)
+
+That model was able to explain R<sup>2</sup> = 0.746 of the observed
+variation in pedestrian counts across New York City. Converting the
+estimates of the resultant statistical model into absolute scales of
+pedestrians per day yielded the scales shown in Figure 2.
+
+# Discussion
+
+The model developed here was able to reproduce over 70% of the observed
+variation in pedestrian counts at 114 stations encompassing a large
+portion of New York City.
 
 # References
 
