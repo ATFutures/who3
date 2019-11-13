@@ -4,7 +4,8 @@
 
 Calibration of UPTHAT (the Urban Planning and Transport Health
 Assessment Toolkit) relies primarily on new high performace software
-(Padgham 2019) for analysing dynamic movement through urban areas.
+(Padgham and Peutschnig 2019) for analysing dynamic movement through
+urban areas.
 
 This manuscript details procedures developed for calibrating UPTHAT
 estimates of both pedestrian and cyclist densities along individual
@@ -57,14 +58,15 @@ into 1,926 locations of associated pedestrian flows.
 Both the street network used to route pedestrian journeys, and the
 structure, nature, and location of buildings serving as origins and/or
 destinations of those journeys were obtained from Open Street Map,
-accessed via the R package, `osmdata` (Padgham et al. 2017). The network
-consisted of 813,402 street segments, representing a total 30,226 km.
-These segments are simply those used to represent Open Street Map, such
-that a single linear length of way may be represented by several points,
-and several corresponding edges in our internal representation. We then
-used the `dodgr` software (Padgham 2019) to “contract” this network down
-to segments between junctions points only, reducing it to 407,840
-segments.
+accessed via the R package, `osmdata`
+(<span class="citeproc-not-found" data-reference-id="padgham_osmdata_2017">**???**</span>).
+The network consisted of 813,402 street segments, representing a total
+30,226 km. These segments are simply those used to represent Open Street
+Map, such that a single linear length of way may be represented by
+several points, and several corresponding edges in our internal
+representation. We then used the `dodgr` software (Padgham and
+Peutschnig 2019) to “contract” this network down to segments between
+junctions points only, reducing it to 407,840 segments.
 
 Each of these 407,840 segments had an associated length, along with
 further detail as contained in the Open Street Map data, including the
@@ -86,7 +88,7 @@ principle, but introduces several categories of additional time-based
 penalties, notably for waiting at traffic lights, or for waiting to
 cross busy, multi-lane roads (where such crossing is permitted). All
 routing was implemented using the authors’ own `dodgr` software (Padgham
-2019).
+and Peutschnig 2019).
 
 ### Trip categories
 
@@ -159,7 +161,8 @@ Flow layers were generated in two primary ways: either by dispersing
 from a given set of origin points according to specified densities, or
 through routing flows between specific sets of origin and destination
 points, with densities calculated by a doubly-constrained spatial
-interaction model, with exponential form used throughout (Wilson 2008).
+interaction model, with exponential form used throughout
+(<span class="citeproc-not-found" data-reference-id="wilson_boltzmann_2008">**???**</span>).
 We refer to these two methods of calculating flow layers as “flow
 dispersal” and “flow aggregation”, and illustrate both in the following
 sub-sections.
@@ -172,14 +175,17 @@ between a specified set of origin points, taken from the eight
 categories given above. Each flow layer was obtained through calculating
 shortest paths between each origin point, \(i\), and destination point,
 \(j\), in the network, and aggregating flows according to exponential
-spatial interaction models (Wilson 2008) of the form,  where \(d_{ij}\)
-denotes the distance between the points \(i\) and \(j\) (and self-flows
-\(SI_{ii}\) were excluded). The denominator ensured that our models were
-singly-constrained to unit sums for each origin, \(i\), over densities
-at destinations, \(j\). The above form gives the expected flow, in
-direct units of \(n_i\), along the path between the points \(i\) and
-\(j\). Layers were also calculated describing undirected dispersal
-throughout the entire network from a set of origin points.
+spatial interaction models
+(<span class="citeproc-not-found" data-reference-id="wilson_boltzmann_2008">**???**</span>)
+of the form,  where \(d_{ij}\) denotes the distance between the points
+\(i\) and \(j\) (and self-flows \(SI_{ii}\) were excluded), and \(n_i\)
+denotes the number or densities of individuals at origin point \(i\).
+The denominator ensured that our models were singly-constrained to unit
+sums for each origin, \(i\), over densities at destinations, \(j\). The
+above form gives the expected flow, in direct units of \(n_i\), along
+the path between the points \(i\) and \(j\). Layers were also calculated
+describing undirected dispersal throughout the entire network from a set
+of origin points.
 
 Our [`dodgr`](https://github.com/ATFutures/dodgr) software enables
 spatial interaction models to be efficiently calculated for a range of
@@ -190,6 +196,21 @@ calculate all flow layers for defined values of `k`, and to subsequently
 combine these pre-calculated layers in a single model as described in
 the following section. Each layer was calculated for 30 values of `k`,
 from 100 to 3000 metres in 100 metre increments.
+
+The strength of spatial interaction (SI) given above was used to
+determine the flow between each pair of origins and destinations in a
+given layer. The flow along the path between any given pair was then
+equal to the SI value divided by the length of the path. Such division
+has the important effect of ensuring that the sum of flows throughout
+the entire network is equal to the sum of densities at all origins for
+that layer, \(\sum_i n_i\). This procedure is also equivalent to
+presuming that the SI specifies a static property such as aggregate
+flows per unit time, whereas the flow layer itself provides a dynamic or
+probabilistic snapshot such that, for a flow of \(F\) between two
+points, \(i\) and \(j\), separated by \(n\) edges, the flow along any
+one of those edges at any instant of time will equal \(F/n\) (Figure 1).
+
+<img src="figures/flow-diagram-1.png" title="Figure 1. All panels depict unit flows from A to B (black lines in left panels) and from C to D (gray lines in left panels). Panel A shows the unnormalised flows; Panel B the direct aggregation of those values. Panel C shows the normalised flows such that the sums of flows from both A to B and C to D equal one; Panel D shows the aggregation of normalised flows. Sums of flows in B equal 5, while sums in D equal 2, the same as flows from the two origins. Our models were based on flows normalised and aggregated as depicted in Panel D." alt="Figure 1. All panels depict unit flows from A to B (black lines in left panels) and from C to D (gray lines in left panels). Panel A shows the unnormalised flows; Panel B the direct aggregation of those values. Panel C shows the normalised flows such that the sums of flows from both A to B and C to D equal one; Panel D shows the aggregation of normalised flows. Sums of flows in B equal 5, while sums in D equal 2, the same as flows from the two origins. Our models were based on flows normalised and aggregated as depicted in Panel D." width="100%" />
 
 Finally, the city-wide flows from these flow layers, amounting in each
 layer to values along over 800,000 street segments, were mapped on to
@@ -354,26 +375,9 @@ International Conference on Advances in Geographic Information Systems*,
 
 <div id="ref-padgham_dodgr:_2019">
 
-Padgham, Mark. 2019. *Dodgr: An R Package for Network Flow Aggregation*.
-Vol. 2. Transport Findings. Network Design Lab.
-<https://doi.org/10.32866/6945>.
-
-</div>
-
-<div id="ref-padgham_osmdata_2017">
-
-Padgham, Mark, Robin Lovelace, Maëlle Salmon, and Bob Rudis. 2017.
-“Osmdata.” *The Journal of Open Source Software* 2 (14).
-<https://doi.org/10.21105/joss.00305>.
-
-</div>
-
-<div id="ref-wilson_boltzmann_2008">
-
-Wilson, Alan. 2008. “Boltzmann, Lotka and Volterra and Spatial
-Structural Evolution: An Integrated Methodology for Some Dynamical
-Systems.” *Journal of the Royal Society Interface* 5 (25): 865–71.
-<https://doi.org/10.1098/rsif.2007.1288>.
+Padgham, Mark, and Andreas Peutschnig. 2019. *Dodgr: An R Package for
+Network Flow Aggregation*. Vol. 2. Transport Findings. Network Design
+Lab. <https://doi.org/10.32866/6945>.
 
 </div>
 
