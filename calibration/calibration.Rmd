@@ -353,17 +353,17 @@ absolute pedestrian counts. Our final models were regression models, and so the
 resultant estimates for each layer provided relative scaling coefficients for
 those layers. Flow values for the layers themselves were determined by values
 at the points of origin for each layer, such that the sum of flows for each
-layer was equal to the sum of values for all origins in that layer. For
-example, the sum across the entire network of flows dispersing away from all
-subway exits was equal to the total number of passengers entering and,
+layer was equal to the sum of values for all origins in that layer (see Figure
+1). For example, the sum across the entire network of flows dispersing away
+from all subway exits was equal to the total number of passengers entering and,
 according to our assumption, exiting all stations of the subway system. Note,
 however, that even this layer may result in a model estimate greater than one,
 because the contribution to observed pedestrian counts of numbers *effectively*
 dispersing from subway exits may in fact exceed the actual numbers exiting,
 because this layer may in fact capture more pedestrian activity than just
 dispersive movement of actual subway passengers. A resultant model estimate for
-layer representing dispersal away from subway exits would nevertheless provide
-a direct quantification of any such effect, and be able to be directly
+the layer representing dispersal away from subway exits would nevertheless
+provide a direct quantification of any such effect, and be able to be directly
 translated into absolute terms. The number of pedestrians according to such
 a resultant model effectively dispersing from subway exits would equal actual
 numbers measured in the subway times the resultant model coefficient.
@@ -375,26 +375,36 @@ education, and healthcare. In each case, sizes of origins were aggregate
 numbers of building of these categories associated with each junction of the
 street network. The reason these categories were treated independently was
 because each is generally associated with different scales -- healthcare
-includes hospitals, which can be very large, and be the origins and
-destinations of large numbers of pedestrians. Educational institutions can be
-similarly large, but potentially cater for distinctly different social groups.
-The category of sustenance includes restaurants and supermarkets (and any
-categories in between), and so may vary markedly in effective size.
+includes hospitals, which can be very large, and serve as origins and
+destinations for large numbers of pedestrian journeys. Educational institutions
+can be similarly large, but potentially cater for distinctly different social
+groups. The category of sustenance includes restaurants and supermarkets (and
+any categories in between), and so may vary markedly in effective size.
 Entertainment may be similarly diverse, and was included as its own separate
 category primarily because pedestrian movement to and from entertainment
 centres is likely to occur at markedly different times of day (or night, as the
-case may be) than movement in relation to the other categories.
+case may be) than movement in relation to the other categories and, even if
+only through this difference alone, may manifest categorically distinct
+patterns of movement.
 
-Transportation was considered its own distinct category in the hypothesis that
-movement to or from transportation centres may capture pedestrian behaviour in
-relation to both cycling and the driving of automobiles. As described above,
-sizes of transportation sources were quantified in numbers of parking places
-where given, with local averages assigned to locations lacking specific
-capacities. Finally, centrality has its own absolute scale equal to the square
-of the total number of distinct vertices or points within a network. In our
-case, this was equal to the total number of street junctions, which was
-134,732. Centrality was simply rescaled to a maximum of one, and was the only
-category to which an absolute scale could not be assigned.
+Transportation was considered its own distinct category according to an
+hypothesis that movement to or from transportation centres may capture
+pedestrian behaviour in relation to both cycling and the driving of
+automobiles. As described above, sizes of transportation sources were
+quantified in numbers of parking places where given, with local averages
+assigned to locations lacking specific capacities. Finally, centrality has its
+own absolute scale equal to the square of the total number of distinct vertices
+or points within a network. In our case, this was equal to the total number of
+street junctions, which was 134,732. Centrality was simply rescaled to
+a maximum of one, and was the only category to which an absolute scale could
+not be assigned.
+
+For all other categories, the results below give effective numbers of
+pedestrians observed in the final model for each unit of the corresponding type
+of origin; for example, $n$ pedestrians per restaurant or supermarket for the
+sustenance category, or $n$ pedestrians per unit of parking capacity for
+transportation. These scale of layers to absolute numbers of pedestrians form
+a central part of the results that follow.
 
 
 
