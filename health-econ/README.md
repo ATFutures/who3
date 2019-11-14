@@ -249,7 +249,7 @@ x_accra <- exposure (1:10 / 100, accra_pop, mortality, rel_exp = "xx")
 ylims <- range (c (x$d_mortality, x$d_exposure))
 plot (x$mode_shift, x$d_mortality, "l", col = "grey", lwd = 2, ylim = ylims,
       xlab = "Relative mode shift to walking",
-      ylab = "Relative risk increase (blue) or reduction (red)")
+      ylab = "Absolute change in all-cause mortality")
 lines (x$mode_shift, x$d_exposure, col = "grey", lwd = 2)
 lines (x$mode_shift, x$d_net, lwd = 2)
 lines (x$mode_shift, x_accra$d_net, lwd = 2, lty = 2)
