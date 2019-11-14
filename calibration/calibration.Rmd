@@ -285,7 +285,7 @@ probabilistic snapshot such that, for a flow of $F$ between two points, $i$ and
 $j$, separated by $n$ edges, the flow along any one of those edges at any
 instant of time will equal $F/n$ (Figure 1). 
 
-```{tikz, flow-diagram, fig.ext = 'png', cache=FALSE, code=readLines("figures/fig1.tex"), fig.cap = "Figure 1. All panels depict unit flows from A to B (black lines in left panels) and from C to D (gray lines in left panels). Panel A shows the unnormalised flows; Panel B the direct aggregation of those values. Panel C shows the normalised flows such that the sums of flows from both A to B and C to D equal one; Panel D shows the aggregation of normalised flows. Sums of flows in B equal 5, while sums in D equal 2, the same as flows from the two origins. Our models were based on flows normalised and aggregated as depicted in Panel D."}
+```{tikz, flow-diagram, fig.ext = 'png', cache=FALSE, code=readLines("figures/fig1.tex"), fig.cap = "Figure 1. All panels depict unit flows from A to B (black lines in left panels) and from C to D (gray lines in left panels). Panel A shows the unnormalised unit flows from A to B, and from C to D; Panel B the direct aggregation of those values. Panel C shows the normalised flows such that the sums of flows from both A to B and C to D equal one; Panel D shows the aggregation of normalised flows. Sums of flows in B equal 5, while sums in D equal 2, the same as flows from the two origins. Our models were based on flows normalised and aggregated as depicted in Panel D."}
 ```
 
 
