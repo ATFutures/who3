@@ -1,0 +1,290 @@
+
+Notes from https://www.heatwalkingcycling.org/
+
+## Data inputs https://www.heatwalkingcycling.org/#data_needed
+
+- Need estimate of average amount of activity per person per day.
+- Can be either distance or time, other other correlated measures
+
+Default values are given at
+https://www.heatwalkingcycling.org/#generic_data
+
+## Calculations
+
+Impact of physical activity is at
+https://www.heatwalkingcycling.org/#how_does_PA_work
+with the calculation for mortality impact described at
+https://www.heatwalkingcycling.org/#impact_calculation
+
+Calculation of effects of exposure to air pollution are at
+https://www.heatwalkingcycling.org/#how_does_AP_work
+
+## Code 
+
+https://github.com/HEAT-WHO/HEAT_4.0/tree/master/impact_calculations/heatr/R
+
+## Background mortality
+
+The WHO mortality database is at
+http://apps.who.int/healthinfo/statistics/mortality/whodpms/
+
+```{r who-mortality}
+x <- read.csv ("./who-mortality.csv")
+names (x) <- c ("country", "population", "deaths", "remove")
+x$remove <- NULL
+x <- x [!is.na (x$deaths), ]
+mortality <- mean (x$deaths / x$population)
+message ("global mortality = ", mortality)
+```
+
+
+------
+
+# How to adapt HEAT to flow layers
+
+## Physical activity
+
+As stated in https://www.heatwalkingcycling.org/#how_does_PA_work, the basic
+functioning is the simple formula,
+
+(1 - RR) * (local / reference) volumes of walking, where RR = 0.886 for walking,
+and the reference volume is 168 minutes per week at 5.3 km/hour. This
+translates to 14.84 km per person per week, and an effect according to this
+formula of 
+
+0.114 * d / 14.84
+
+where `d` is the distance per person per week walked.
+
+- Risk reduction for walking is capped at 30%
+- Relative risk for walking without air pollution = 0.883
+
+## Exposure
+
+- Assumed ventilation rate during walking of 1.37 m^3/hour, with exposure for
+  walking assumed to be 1.6 times background.
+- Calculated intake is added to base intake.
+- Staying at home assumes ventilation of 0.61 m^3/hour, at background pollutant
+  concentrations.
+- Each increment of +10 ug/m^3 increases all-cause mortality risk by 1.07
+- But only up to 50ug/m^3, beyond which no further increases occur
+
+## Impact
+
+- Final deaths attributable are (MRe - MRu) * pop, where `e` and `u` are
+  exposed and unexposed groups, respectively.
+- The basline mortality is
+  MRu = MRpop / (1 – (Pe*(1 – RR))) ~= MRpop
+  because the value of Pe - the proportion of the population exposed - is
+  presumed to be 0.001.
+- Similarly MRe = MRpop x RR / (1 – (Pe x (1 – RR))) ~= MRpop x RR
+
+## Application
+
+- Global mortality rate is given above at 0.007426
+- Population of Accra is 2.27 million (wikipedia)
+- Background PM2.5 concentrations range from a few ug/m^3 up to several tens
+
+### Baseline
+
+Data for Accra in https://github.com/ATFutures/whoIIreport/tree/master/docs
+
+Trips to school: 63.7% walk, and 15.3 take trotro
+Trips to healthcare: 58% walk, 36% take taxis or trotros
+Trips to work (male+female): 47.4% walk, 19% trotro
+
+Accra distance to nearest market (km):
+<1      | 1.1-2   | 2.1-3 | 3.1-6   | 6.1-10
+27.3    | 21.2    | 6.1   | 42.4    | 3.0
+
+Trips per day on foot
+0-10    | 11-20 | 21-30 | 31-40 | 41-60 | 61-100 | > 100
+64.0    | 20.4  | 6.2   | 2.9   | 3.4   | 0.7    | 0.0
+
+Distance from home to trotro
+0-0.5   | 0.6-1 | 1.1-2 | 2.1-5 | > 5
+83.2    | 11.9  | 2.3   | 0.5   | 2.2
+
+Mode of transport to nearest food shop: walk = 93%
+Mode of transport to nearest other shop: walk = 78.2%, trotro = 15.8%
+
+```{r}
+d_market <- c (0.5, 1.5, 2.5, 4.5, 8.5)
+p_market <- c (0.273, 0.212, 0.061, 0.424, 0.03)
+d_market <- sum (d_market * p_market)
+
+d_tro <- c (0.25, 0.75, 1.5, 3.5, 7.5)
+p_tro <- c (0.832, 0.119, 0.023, 0.005, 0.022)
+d_tro <- sum (d_tro * p_tro)
+
+d_work <- 0.474 * d_market + 0.19 * d_tro
+message ("Average distance to work = ", signif (d_work, 4), " km")
+```
+
+number of walking trips per day:
+```{r}
+n_walk <- c (5, 15.5, 25.5, 35.5, 50.5, 80.5)
+p_walk <- c (0.64, 0.204, 0.062, 0.029, 0.034, 0.007)
+n_walk <- sum (n_walk * p_walk)
+message ("Number of walking trips per day = ", n_walk,
+         " or per week = ", n_walk * 7)
+n_walk <- n_walk * 7 # use weekly figures throughout
+```
+
+
+Then presume weekly trips:
+- to work = 2.5 * 0.474
+- to market = 2.5
+- remainder:
+```{r}
+n_walk - 2.5 * 1.474
+```
+
+presuming that distance of those is typical trotro distance, total weekly
+average distance is
+```{r}
+d_walk_ref <- n_walk * d_tro + 2.5 * 0.474 * d_work + 2.5 * d_market
+message ("Average reference weekly distance walked = ",
+         signif (d_walk_ref, 4), " km")
+```
+... and that compares with the HEAT-assumed baseline value of 14.84
+
+
+## Scenarios
+
+Mode shift towards walking will increase effective distances according to the
+following calculations:
+```{r}
+mode_incr <- 0.01 # proportional increase in walking
+d_work <- (0.474 * (1 + mode_incr)) * d_market +
+    (0.19 * (1 + mode_incr)) * d_tro
+d_walk <- n_walk * (1 + mode_incr) * d_tro +
+    2.5 * 0.474 * (1 + mode_incr) * d_work +
+    2.5 * (1 + mode_incr) * d_market
+message ("Walking distance increased to ", signif (d_walk, 4),
+         " or ", signif (100 * d_walk / d_walk_ref - 100, 3), "%")
+```
+Wrap that in a function:
+```{r}
+x <- read.csv ("./who-mortality.csv")
+names (x) <- c ("country", "population", "deaths", "remove")
+x$remove <- NULL
+x <- x [!is.na (x$deaths), ]
+mortality <- mean (x$deaths / x$population)
+mode_shift <- function (mode_incr = 0.01, accra_pop, mortality)
+{
+    d_market <- c (0.5, 1.5, 2.5, 4.5, 8.5)
+    p_market <- c (0.273, 0.212, 0.061, 0.424, 0.03)
+    d_market <- sum (d_market * p_market)
+
+    d_tro <- c (0.25, 0.75, 1.5, 3.5, 7.5)
+    p_tro <- c (0.832, 0.119, 0.023, 0.005, 0.022)
+    d_tro <- sum (d_tro * p_tro)
+
+    d_work <- 0.474 * d_market + 0.19 * d_tro
+
+    n_walk <- c (5, 15.5, 25.5, 35.5, 50.5, 80.5)
+    p_walk <- c (0.64, 0.204, 0.062, 0.029, 0.034, 0.007)
+    n_walk <- 7 * sum (n_walk * p_walk)
+
+    d_walk_ref <- n_walk * d_tro + 2.5 * 0.474 * d_work + 2.5 * d_market
+
+    d_work <- (0.474 * (1 + mode_incr)) * d_market +
+        (0.19 * (1 + mode_incr)) * d_tro
+    d_walk <- n_walk * (1 + mode_incr) * d_tro +
+        2.5 * 0.474 * (1 + mode_incr) * d_work +
+        2.5 * (1 + mode_incr) * d_market
+
+    rr <- 0.114 * d_walk / d_walk_ref - 0.114
+    accra_mortality <- accra_pop * mortality * rr
+    data.frame (mode_shift = mode_incr,
+                dist_ref = d_walk_ref,
+                dist = d_walk,
+                increase = d_walk / d_walk_ref - 1,
+                rr = rr,
+                d_mortality = accra_mortality)
+}
+mode_incr <- 0:10 / 100
+accra_pop <- 2.27e6
+x <- mode_shift (mode_incr, accra_pop, mortality)
+
+par (mfrow = c (1, 2))
+plot (x$mode_shift, x$increase, "l", col = "red", lwd = 2,
+      xlab = "Relative mode shift",
+      ylab = "Proportional increase in average trip length")
+lines (c (0, 1), c (0, 1), col = "black", lty = 2)
+
+plot (x$mode_shift, accra_mortality, "l", col = "red", lwd = 2,
+      xlab = "Relative mode shift",
+      ylab = "Absolute reduction in all-cause mortality")
+```
+
+
+## scenarios and exposure
+
+
+This article on air pollution in sub-Saharan African cities:
+https://link.springer.com/article/10.1007%2Fs11869-013-0199-6
+has an appendix here
+https://static-content.springer.com/esm/art%3A10.1007%2Fs11869-013-0199-6/MediaObjects/11869_2013_199_MOESM1_ESM.docx
+that includes figures for Accra from
+https://pubs.acs.org/doi/10.1021/es903276s
+That estimates average PM2.5 concentrations throughout the year *apart from*
+Dec-Jan, when dust blows in from the Sahara, of 39-53ug/m^3 at roadside sites,
+and 30-70ug/m^3 at residential sites. Across the whole year, average values at
+roadside sites were 80-108ug/m^3, and at residential sites 57-106ug/m^3.
+
+The paper helpfully simply states that PM2.5 concentrations at roadside sites
+were 8-14ug/m^3 higher at roadside than at residential sites. This suggests we
+can assume a background value of 35ug/m^3, with road-borne emissions adding
+another 14ug/m^3 at the highest vehicular intensities.
+
+```{r}
+# mode_offset is the proportion of polluting-emitting transport that responds
+# to the scenario
+exposure <- function (mode_incr = 0.01, accra_pop, mortality, mode_offset = 0.5)
+{
+    x <- mode_shift (mode_incr, accra_pop, mortality)
+
+    heat_vol_pm25_walk <- 1.37
+    heat_vol_pm25_inactive <- 0.61
+
+    # PM2.5 figures for Accra
+    pm25bg <- 35
+    pm25road <- pm25bg + 11
+    rel_exp_walking <- pm25road / pm25bg # 1.31
+    rel_exp_walking <- 1.6 # HEAT standard value
+
+    # simple 1.6 factor for increased time
+    # average weekly concentration for reference case:
+    walk_time <- x$dist_ref / 5.3
+    non_walk_time <- 24 * 7 - walk_time
+    pm10_ref <- pm25bg * (walk_time * rel_exp_walking + non_walk_time) / (24 * 7)
+    # modified average weekly concentration for scenario
+    walk_time <- x$dist / 5.3
+    non_walk_time <- 24 * 7 - walk_time
+    pm10_scenario <- pm25bg * (walk_time * rel_exp_walking + non_walk_time) / (24 * 7)
+
+    d_exposure <- pm10_scenario - pm10_ref
+    exposure <- accra_pop * mortality * d_exposure * 0.07 / 10
+
+    data.frame (x,
+                d_exposure = exposure,
+                d_net = x$d_mortality - exposure)
+}
+x <- exposure (1:10 / 100, accra_pop, mortality)
+ylims <- range (c (x$d_mortality, x$d_exposure))
+plot (x$mode_shift, x$d_mortality, "l", col = "red", lwd = 2, ylim = ylims,
+      xlab = "Relative mode shift to walking",
+      ylab = "Relative risk increase (blue) or reduction (red)")
+lines (x$mode_shift, x$d_exposure, col = "blue", lwd = 2)
+lines (x$mode_shift, x$d_net, col = "orange", lwd = 2, lty = 2)
+legend ("topleft", lwd = 2, col = c ("red", "blue", "orange"), bty = "n",
+        lty = c (1, 1, 2),
+        legend = c ("Reduction due to physical activity",
+                    "Increase due to pollutant exposure",
+                    "Net reduction"))
+```
+
+
+
