@@ -521,8 +521,8 @@ ggplot (dat, aes (x = k, y = ss)) +
 Following the procedure described above of adding the next minimal error layer
 that was significant, while removing any layers rendered non-significant
 through the addition of subsequent layers, resulted in the final model
-statistically summarised in Table 1, ordered in decreasing values of
-T-statistics.
+statistically summarised in Table 1, ordered by layer origins, and for each of
+these in decreasing absolute values of T-statistics.
 
 ```{r final-model, echo = FALSE}
 dat <- readRDS ("ped-model-final.Rds")
@@ -533,11 +533,16 @@ coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
 names (coeffs) <- colnames (mod$coefficients)
 coeffs <- cbind ("Layer Name" = gsub ("f_", "", rownames (coeffs)),
                  coeffs)
-coeffs <- coeffs [order (abs (coeffs$`t value`), decreasing = TRUE), ]
 # Next line is critical, because the vertical lines are interpreted by markdown
 # as table column breaks, which mucks the whole thing up!
 names (coeffs) [length (names (coeffs))] <- "Pr(>t)"
+# order by origin, then by decreasing absolute T value
+coeffs$origin <- substr (coeffs$`Layer Name`, 1, 3)
+names (coeffs) [which (names (coeffs) == "t value")] <- "t"
+coeffs <- arrange (coeffs, origin, desc (t))
 rownames (coeffs) <- NULL
+coeffs$origin <- NULL
+names (coeffs) [which (names (coeffs) == "t")] <- "t value"
 knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), row.names = FALSE, caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
 ```
 
@@ -561,6 +566,7 @@ ggplot (res, aes (x = modelled, y = observed)) +
     geom_point () +
     geom_smooth (method = "lm")
 ```
+
 
 
 # Discussion
