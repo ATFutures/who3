@@ -326,26 +326,28 @@ to determine the third layer yielding the model with the lowest overall error.
 Flow layers were successively added to the model as long as their contribution
 to the model was significant; that is, layer addition within the model was
 terminated as soon as the next layer added made no significant contribution.
-
-Where the addition of new layers rendered the contribution any any prior layers
+Where the addition of new layers rendered the contribution of any prior layers
 no longer significant, those non-significant layers were removed from the
-model. Finally, it is statistically possible for flow layers to be
-significantly *negatively* correlated with observed counts. For example,
-dispersal from subway exits (presuming exit numbers to equal the provided
-entrance numbers as described above) may be positively correlated with observed
-pedestrian counts, yet movement from subway exits to some specific category may
-be negatively correlated. This would reflect an ultimate positive correlation
-with movement away from subway exits that was effectively dispersive, yet
-actively *not* directed towards that specific category. Because each layer was
+model. We used two degrees of significance to generate the results given below:
+initial model construction used a significance of $p\le0.05$, while final
+models only retained layers with $p\le0.01$. Removal of layers modifies
+resultant models, including significance values, and so removal of layers with
+$0.01<p\le0.05$ was iterated until all remaining layers in the final model had
+$p\le0.01$.
+
+Finally, it is statistically possible for flow layers to be significantly
+*negatively* correlated with observed counts (Figure 2). Because each layer was
 formed from effectively arbitrary categories, and because there was no way of
 knowing at the outset which categories may or may not be significantly related
-to pedestrian behaviour, negative correlations must be expected. It is
-nevertheless not easy to interpret the meaning of a negative correlation
-between an inherently positive independent variable represented by a flow
-layer, and a positive dependent variable of absolute pedestrian counts. We thus
-permitted negatively-correlated variables to be added during the model
-construction phase, yet ultimately removed them from our final model, so
-leaving only layers which were positively correlated with observed counts.
+to pedestrian behaviour, negative correlations must be expected. In the context
+of Fig. 2, a negative correlation could only be avoided if the layers L1 and L2
+were combined at the outset to generate a single composite layer. In general,
+there can be no way of knowing in advance which combinations of layers might be
+necessary to avoid negative correlations.
+
+```{tikz, neg-cor, out.width="40%", fig.ext = 'png', cache=FALSE, code=readLines("figures/fig2.tex"), fig.cap = "Figure 2. Illustration of negative correlations, with flow from two layers (L1 and L2) to two points in the network (A and B) having the indicated values. If observed pedestrian counts at the points A and B were both equal to 1, the minimal-error combination of flow layers would be L1 - L2, and the latter would be negatively correlated."}
+```
+
 
 
 ## Calibration to Observed Values
@@ -359,10 +361,10 @@ from the United Kingdom’s National Travel Survey
 ([NTS](https://beta.ukdataservice.ac.uk/datacatalogue/series/series?id=2000037),
 waves 2002-2017 representing 5.8m single stage journeys), from which we
 obtained a nation-wide estimate of numbers of walking trips for each of the 24
-hours of the day (see Figure 1).
+hours of the day (see Figure 3).
 
 
-```{r hourly-walking, fig.cap = "Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm"}
+```{r hourly-walking, fig.cap = "Figure 3: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm"}
 f <- "wh.csv"
 if (!file.exists (f))
 {
@@ -461,7 +463,7 @@ a central part of the results that follow.
 The flow layer which made the most significant initial contribution reflected
 movement from subway stations towards network centrality. The model error as
 a function of the 30 values of exponential decay coefficients is illustrated in
-Figure 1, and was typical for most layers, manifesting a clear and distinctive
+Figure 4, and was typical for most layers, manifesting a clear and distinctive
 minimum at 600m.
 
 ```{r get-layer-data, echo = FALSE}
@@ -471,7 +473,7 @@ dolayer <- !file.exists (f)
 
 
 ```{r layer-error-with-k-calc, eval = dolayer}
-library (calibration)
+library (nyped)
 data_dir <- "/data/data/moveability/nyc"
 net <- readRDS (file.path (data_dir, "calibration", "net-sub-cen.Rds"))
 p <- ped_osm_id (data_dir = data_dir, net = net, quiet = TRUE)
@@ -499,7 +501,7 @@ n <- 5 # number of neighbours to aggregate
 temp <- rcpp_match_flow_mats (flowmat, index0 - 1, index1 - 1, fcols - 1, n)
 saveRDS (temp, file = f)
 ```
-```{r layer-error-with-k}
+```{r layer-error-with-k, fig.cap = "Figure 4: Squared residual error of linear model against single flow layer for a range of values of k, the width of the exponential spatial interaction model."}
 p <- readRDS (file.path (here::here (), "calibration", "p.Rds"))
 temp <- readRDS (f)
 ss <- apply (temp, 2, function (j) {
@@ -519,10 +521,11 @@ ggplot (dat, aes (x = k, y = ss)) +
 Following the procedure described above of adding the next minimal error layer
 that was significant, while removing any layers rendered non-significant
 through the addition of subsequent layers, resulted in the final model
-statistically summarised in Table 1, in which the .
+statistically summarised in Table 1, ordered in decreasing values of
+T-statistics.
 
 ```{r final-model, echo = FALSE}
-dat <- readRDS ("final-model.Rds")
+dat <- readRDS ("ped-model-final.Rds")
 f_ <- dat$flowvars
 mod <- summary (lm (dat$p ~ f_))
 coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
@@ -531,17 +534,35 @@ names (coeffs) <- colnames (mod$coefficients)
 coeffs <- cbind ("Layer Name" = gsub ("f_", "", rownames (coeffs)),
                  coeffs)
 rownames (coeffs) <- NULL
+coeffs <- coeffs [order (abs (coeffs$`t value`), decreasing = TRUE), ]
 knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
 ```
 
 That model was able to explain R<sup>2</sup> = `r signif (mod$r.squared, 3)` of the
 observed variation in pedestrian counts across New York City. Converting the
 estimates of the resultant statistical model into absolute scales of
-pedestrians per day yielded the scales shown in Figure 2.
+pedestrians per day and summing the result yielded the model shown in Figure 5.
+
+```{r final-model-plot, echo = FALSE}
+dat <- readRDS ("ped-model-final.Rds")
+mod <- lm (dat$p ~ dat$flowvars)
+smod <- summary (mod)
+estmat <- t (matrix (as.numeric (smod$coefficients [, 1] [-1]),
+                     nrow = ncol (dat$flowvars), ncol = nrow (dat$flowvars)))
+f <- rowSums (dat$flowvars * estmat)
+# same as predict(lm(dat$p ~ dat$flowvars)), except for intercept factor
+#f <-  as.numeric (predict(lm(dat$p ~ dat$flowvars)))
+res <- data.frame (modelled = f,
+                   observed = dat$ped_counts)
+ggplot (res, aes (x = modelled, y = observed)) +
+    geom_point () +
+    geom_smooth (method = "lm")
+```
+
 
 # Discussion
 
-The model developed here was able to reproduce over 70% of the observed
+The model developed here was able to reproduce over 85% of the observed
 variation in pedestrian counts at 114 stations encompassing a large portion of
 New York City.
 

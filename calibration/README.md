@@ -250,29 +250,28 @@ the remaining 62 layers, in order to determine the third layer yielding
 the model with the lowest overall error. Flow layers were successively
 added to the model as long as their contribution to the model was
 significant; that is, layer addition within the model was terminated as
-soon as the next layer added made no significant contribution.
+soon as the next layer added made no significant contribution. Where the
+addition of new layers rendered the contribution of any prior layers no
+longer significant, those non-significant layers were removed from the
+model. We used two degrees of significance to generate the results given
+below: initial model construction used a significance of \(p\le0.05\),
+while final models only retained layers with \(p\le0.01\). Removal of
+layers modifies resultant models, including significance values, and so
+removal of layers with \(0.01<p\le0.05\) was iterated until all
+remaining layers in the final model had \(p\le0.01\).
 
-Where the addition of new layers rendered the contribution any any prior
-layers no longer significant, those non-significant layers were removed
-from the model. Finally, it is statistically possible for flow layers to
-be significantly *negatively* correlated with observed counts. For
-example, dispersal from subway exits (presuming exit numbers to equal
-the provided entrance numbers as described above) may be positively
-correlated with observed pedestrian counts, yet movement from subway
-exits to some specific category may be negatively correlated. This would
-reflect an ultimate positive correlation with movement away from subway
-exits that was effectively dispersive, yet actively *not* directed
-towards that specific category. Because each layer was formed from
-effectively arbitrary categories, and because there was no way of
-knowing at the outset which categories may or may not be significantly
-related to pedestrian behaviour, negative correlations must be expected.
-It is nevertheless not easy to interpret the meaning of a negative
-correlation between an inherently positive independent variable
-represented by a flow layer, and a positive dependent variable of
-absolute pedestrian counts. We thus permitted negatively-correlated
-variables to be added during the model construction phase, yet
-ultimately removed them from our final model, so leaving only layers
-which were positively correlated with observed counts.
+Finally, it is statistically possible for flow layers to be
+significantly *negatively* correlated with observed counts (Figure 2).
+Because each layer was formed from effectively arbitrary categories, and
+because there was no way of knowing at the outset which categories may
+or may not be significantly related to pedestrian behaviour, negative
+correlations must be expected. In the context of Fig. 2, a negative
+correlation could only be avoided if the layers L1 and L2 were combined
+at the outset to generate a single composite layer. In general, there
+can be no way of knowing in advance which combinations of layers might
+be necessary to avoid negative correlations.
+
+<img src="figures/neg-cor-1.png" title="Figure 2. Illustration of negative correlations, with flow from two layers (L1 and L2) to two points in the network (A and B) having the indicated values. If observed pedestrian counts at the points A and B were both equal to 1, the minimal-error combination of flow layers would be L1 - L2, and the latter would be negatively correlated." alt="Figure 2. Illustration of negative correlations, with flow from two layers (L1 and L2) to two points in the network (A and B) having the indicated values. If observed pedestrian counts at the points A and B were both equal to 1, the minimal-error combination of flow layers would be L1 - L2, and the latter would be negatively correlated." width="40%" />
 
 ## Calibration to Observed Values
 
@@ -285,9 +284,9 @@ from the United Kingdom’s National Travel Survey
 ([NTS](https://beta.ukdataservice.ac.uk/datacatalogue/series/series?id=2000037),
 waves 2002-2017 representing 5.8m single stage journeys), from which we
 obtained a nation-wide estimate of numbers of walking trips for each of
-the 24 hours of the day (see Figure 1).
+the 24 hours of the day (see Figure 3).
 
-<img src="figures/hourly-walking-1.png" title="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" alt="Figure 1: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" width="100%" />
+<img src="figures/hourly-walking-1.png" title="Figure 3: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" alt="Figure 3: Hourly proportions of total daily walking trips as obtained from the UK's National Travel Survey, with shaded areas illustrating the hours of pedestrian counting start between 7-9am and 4-7pm" width="100%" />
 
 These data reflected a total proportion of trips between the hours of
 7-9am and 4-7pm of 42.7%. We assumed this figure to approximately
@@ -364,37 +363,48 @@ results that follow.
 The flow layer which made the most significant initial contribution
 reflected movement from subway stations towards network centrality. The
 model error as a function of the 30 values of exponential decay
-coefficients is illustrated in Figure 1, and was typical for most
+coefficients is illustrated in Figure 4, and was typical for most
 layers, manifesting a clear and distinctive minimum at 600m.
 
-<img src="figures/layer-error-with-k-1.png" width="100%" />
+<img src="figures/layer-error-with-k-1.png" title="Figure 4: Squared residual error of linear model against single flow layer for a range of values of k, the width of the exponential spatial interaction model." alt="Figure 4: Squared residual error of linear model against single flow layer for a range of values of k, the width of the exponential spatial interaction model." width="100%" />
 
 Following the procedure described above of adding the next minimal error
 layer that was significant, while removing any layers rendered
 non-significant through the addition of subsequent layers, resulted in
-the final model statistically summarised in Table 1, in which the .
+the final model statistically summarised in Table 1, ordered in
+decreasing values of T-statistics.
 
-| Layer Name | Estimate | Std. Error | t value | Pr(\>|t|) |
-| :--------- | -------: | ---------: | ------: | --------: |
-| ent-dis    |    92585 |      23150 |    4.00 |    0.0001 |
-| sub-hea    |        0 |          0 |    3.18 |    0.0019 |
-| sus-ent    |       55 |         25 |    2.17 |    0.0321 |
-| sub-dis    |        8 |          2 |    3.86 |    0.0002 |
-| sub-tra    |        0 |          0 |    2.63 |    0.0098 |
-| cen-ent    |     1985 |       1339 |    1.48 |    0.1411 |
-| edu-tra    |      751 |        805 |    0.93 |    0.3529 |
+|    | Layer Name | Estimate | Std. Error | t value | Pr(\>|t|) |
+| -- | :--------- | -------: | ---------: | ------: | --------: |
+| 13 | hea-dis    |   105658 |      10706 |    9.87 |    0.0000 |
+| 1  | sub-dis    |       23 |          3 |    8.99 |    0.0000 |
+| 12 | sub-cen    |     \-10 |          1 |  \-6.99 |    0.0000 |
+| 6  | sub-hea    |        8 |          1 |    6.66 |    0.0000 |
+| 7  | sus-edu    |   \-5924 |        978 |  \-6.06 |    0.0000 |
+| 8  | edu-hea    |  \-24921 |       4445 |  \-5.61 |    0.0000 |
+| 4  | edu-tra    |    23977 |       4484 |    5.35 |    0.0000 |
+| 2  | sub-tra    |        6 |          1 |    5.08 |    0.0000 |
+| 9  | sus-res    |     6258 |       1232 |    5.08 |    0.0000 |
+| 11 | sus-sub    |   \-1337 |        331 |  \-4.04 |    0.0001 |
+| 5  | sus-ent    |     1446 |        361 |    4.00 |    0.0001 |
+| 3  | edu-dis    |  \-78057 |      24521 |  \-3.18 |    0.0020 |
+| 14 | ent-tra    |    38179 |      12019 |    3.18 |    0.0020 |
+| 10 | edu-sus    |    16904 |       5572 |    3.03 |    0.0031 |
 
 Table 1. Statistical parameters of final model of pedestrian flows
 through New York City. (Placeholder only in rendered version)
 
-That model was able to explain R<sup>2</sup> = 0.746 of the observed
+That model was able to explain R<sup>2</sup> = 0.859 of the observed
 variation in pedestrian counts across New York City. Converting the
 estimates of the resultant statistical model into absolute scales of
-pedestrians per day yielded the scales shown in Figure 2.
+pedestrians per day and summing the result yielded the model shown in
+Figure 5.
+
+<img src="figures/final-model-plot-1.png" width="100%" />
 
 # Discussion
 
-The model developed here was able to reproduce over 70% of the observed
+The model developed here was able to reproduce over 85% of the observed
 variation in pedestrian counts at 114 stations encompassing a large
 portion of New York City.
 
