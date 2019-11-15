@@ -1,6 +1,12 @@
 Scenarios for the urban planning and transport health assessment tool
 ================
 
+# Note
+
+This is a draft document to discuss code and analysis that feeds into a
+final report. It should not be seen as finished. See
+<https://atfutures.github.io/upthat/> for outputs.
+
 # Introduction
 
 This report documents deliverable 2, scenario developement, for the WHO
@@ -205,6 +211,45 @@ real city
 datasets.
 
 # Estimates of rates of shift towards walking and cycling down to route network levels
+
+Taking Accra as an example, let’s see how the modelling framework can
+estimate mode shift (remember this is based on a small input dataset and
+a proof of concept rather than final results).
+
+| City  | Density | bus\_stops\_per\_1000 | has\_tram |
+| :---- | ------: | --------------------: | :-------- |
+| Accra | 4787.81 |               1.23008 | FALSE     |
+
+The current mode split can be estimated as follows:
+
+|           | walking | cycling |   pt |  car | other |
+| :-------- | ------: | ------: | ---: | ---: | ----: |
+| Estimate  |    0.14 |    0.05 | 0.18 | 0.59 |  0.04 |
+| Est.Error |    0.11 |    0.07 | 0.13 | 0.16 |  0.07 |
+| Q2.5      |    0.01 |    0.00 | 0.01 | 0.27 |  0.00 |
+| Q97.5     |    0.43 |    0.25 | 0.48 | 0.88 |  0.24 |
+
+In the PT scenario, we can increase the provision of buses to 10 per
+1000 people, representing a high level of provision within the range of
+the sample of cities worldwide:
+
+|           | walking | cycling |   pt |  car | other |
+| :-------- | ------: | ------: | ---: | ---: | ----: |
+| Estimate  |    0.16 |    0.09 | 0.26 | 0.47 |  0.02 |
+| Est.Error |    0.12 |    0.10 | 0.15 | 0.18 |  0.05 |
+| Q2.5      |    0.00 |    0.00 | 0.03 | 0.14 |  0.00 |
+| Q97.5     |    0.46 |    0.36 | 0.61 | 0.82 |  0.17 |
+
+Under this scenario, the central estimate of car use drops by 12
+percentage point while the central estimates for walking and cycling
+grow, by 2 percentage points and 4 percentage points, respectively. This
+highlights the synergies between active transport modes and bus use
+implicit in the data, **suggesting that a combination of strong
+investment in public transport and active transport infrastructure can
+be complimentary.** As mentioned already, larger input datasets, in
+particular with more example datasets from Africa and the developing
+world in general in this context, are needed to reduce the large
+confidence intervals around these estimates.
 
 # Simulating the impacts citywide
 
