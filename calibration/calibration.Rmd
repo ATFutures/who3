@@ -533,9 +533,9 @@ coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
 names (coeffs) <- colnames (mod$coefficients)
 coeffs <- cbind ("Layer Name" = gsub ("f_", "", rownames (coeffs)),
                  coeffs)
-rownames (coeffs) <- NULL
 coeffs <- coeffs [order (abs (coeffs$`t value`), decreasing = TRUE), ]
-knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
+rownames (coeffs) <- NULL
+knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), row.names = FALSE, caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
 ```
 
 That model was able to explain R<sup>2</sup> = `r signif (mod$r.squared, 3)` of the
