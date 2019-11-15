@@ -36,7 +36,7 @@ cities$m_cycleway_per_1000 = round(distance_cycleway_cities / (cities$Population
 cities$has_tram = purrr::map_lgl(has_tram_cities, ~nrow(.$osm_points) > 0)
 summary(cities$m_cycleway_per_1000)
 
-saveRDS(cities, "global-data/cities-101-osm-bus.Rds")
+saveRDS(cities, "global-data/cities-42-osm-bus-cycleway.Rds")
 
 
 # download global osm data ------------------------------------------------
