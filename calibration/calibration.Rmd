@@ -522,7 +522,8 @@ Following the procedure described above of adding the next minimal error layer
 that was significant, while removing any layers rendered non-significant
 through the addition of subsequent layers, resulted in the final model
 statistically summarised in Table 1, ordered in decreasing values of
-T-statistics.
+T-statistics. (NOTE: This table does not render properly on the github readme;
+compile document elsewhere to see final version.)
 
 ```{r final-model, echo = FALSE}
 dat <- readRDS ("ped-model-final.Rds")

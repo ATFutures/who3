@@ -372,26 +372,26 @@ Following the procedure described above of adding the next minimal error
 layer that was significant, while removing any layers rendered
 non-significant through the addition of subsequent layers, resulted in
 the final model statistically summarised in Table 1, ordered in
-decreasing values of T-statistics.
+decreasing values of T-statistics. (NOTE: This table does not render
+properly on the github readme; compile document elsewhere to see final
+version.)
 
-
-Layer Name | Estimate | Std. Error | t value | Pr(>|t|)
---------- | ------- | --------- | ------ | --------
-hea-dis    |   105658 |      10706 |    9.87 |    0.0000
-sub-dis    |       23 |          3 |    8.99 |    0.0000
-sub-cen    |     -10 |          1 |  -6.99 |    0.0000
-sub-hea    |        8 |          1 |    6.66 |    0.0000
-sus-edu    |   -5924 |        978 |  -6.06 |    0.0000
-edu-hea    |  -24921 |       4445 |  -5.61 |    0.0000
-edu-tra    |    23977 |       4484 |    5.35 |    0.0000
-sub-tra    |        6 |          1 |    5.08 |    0.0000
-sus-res    |     6258 |       1232 |    5.08 |    0.0000
-sus-sub    |   -1337 |        331 |  -4.04 |    0.0001
-sus-ent    |     1446 |        361 |    4.00 |    0.0001
-edu-dis    |  -78057 |      24521 |  -3.18 |    0.0020
-ent-tra    |    38179 |      12019 |    3.18 |    0.0020
-edu-sus    |    16904 |       5572 |    3.03 |    0.0031
-
+| Layer Name | Estimate | Std. Error | t value | Pr(\>|t|) |
+| :--------- | -------: | ---------: | ------: | --------: |
+| hea-dis    |   105658 |      10706 |    9.87 |    0.0000 |
+| sub-dis    |       23 |          3 |    8.99 |    0.0000 |
+| sub-cen    |     \-10 |          1 |  \-6.99 |    0.0000 |
+| sub-hea    |        8 |          1 |    6.66 |    0.0000 |
+| sus-edu    |   \-5924 |        978 |  \-6.06 |    0.0000 |
+| edu-hea    |  \-24921 |       4445 |  \-5.61 |    0.0000 |
+| edu-tra    |    23977 |       4484 |    5.35 |    0.0000 |
+| sub-tra    |        6 |          1 |    5.08 |    0.0000 |
+| sus-res    |     6258 |       1232 |    5.08 |    0.0000 |
+| sus-sub    |   \-1337 |        331 |  \-4.04 |    0.0001 |
+| sus-ent    |     1446 |        361 |    4.00 |    0.0001 |
+| edu-dis    |  \-78057 |      24521 |  \-3.18 |    0.0020 |
+| ent-tra    |    38179 |      12019 |    3.18 |    0.0020 |
+| edu-sus    |    16904 |       5572 |    3.03 |    0.0031 |
 
 Table 1. Statistical parameters of final model of pedestrian flows
 through New York City. (Placeholder only in rendered version)
