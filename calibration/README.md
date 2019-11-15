@@ -374,6 +374,7 @@ non-significant through the addition of subsequent layers, resulted in
 the final model statistically summarised in Table 1, ordered in
 decreasing values of T-statistics.
 
+
 | Layer Name | Estimate | Std. Error | t value | Pr(\>|t|) |
 | :--------- | -------: | ---------: | ------: | --------: |
 | hea-dis    |   105658 |      10706 |    9.87 |    0.0000 |
@@ -390,6 +391,7 @@ decreasing values of T-statistics.
 | edu-dis    |  \-78057 |      24521 |  \-3.18 |    0.0020 |
 | ent-tra    |    38179 |      12019 |    3.18 |    0.0020 |
 | edu-sus    |    16904 |       5572 |    3.03 |    0.0031 |
+
 
 Table 1. Statistical parameters of final model of pedestrian flows
 through New York City. (Placeholder only in rendered version)
