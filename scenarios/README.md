@@ -154,15 +154,14 @@ technique for modelling proportions based on a range of dependent
 variables (Maier 2014).
 
 Building on this work, support for Dirichlet regression was added to the
-R package `brms`
-(<span class="citeproc-not-found" data-reference-id="burkner_brms_2017">**???**</span>),
-which implements a Bayesian modelling framework based on the stan C++
-library, in 2018. The advantage of `brms` is that it estimates
-uncertainty, vital for effective ‘no-regrets’ policy making. A basic
-example of the outputs of a Dirichlet regression model run are shown in
-the figure below, which represents the result of a model run for a
-subset of 28 cities for which we have access to population (other
-explanatory variables included provision of metro and bikeshare
+R package `brms` (Bürkner 2017), which implements a Bayesian modelling
+framework based on the stan C++ library, in 2018. The advantage of
+`brms` is that it estimates uncertainty, vital for effective
+‘no-regrets’ policy making. A basic example of the outputs of a
+Dirichlet regression model run are shown in the figure below, which
+represents the result of a model run for a subset of 28 cities for which
+we have access to population (other explanatory variables included
+provision of metro and bikeshare
 schemes).
 
 <img src="../figures/mode-share-prediction.png" width="50%" /><img src="../figures/mode-share-prediction-metro.png" width="50%" />
@@ -177,8 +176,33 @@ confidence intervals) are shown. Of course, the quality of the
 prediction relies on good input data predicting mode shift and relies on
 the assumption that cities are in equilibrium states. **This strengthens
 the need for open data on mode shift at city, OD and local levels over
-time following a range of
-interventions.**
+time following a range of interventions.**
+
+Results using different explanatory variables on a slightly larger
+dataset (n = 101) show the generalisability of the modelling framework.
+The figure below shows more policy relevant explanatory variables:
+number of bus stops per inhabitant and the provision of a tram system,
+which is more viable in many cities than a metro
+system.
+
+<img src="../figures/mode-share-prediction-bus-stops-100.png" width="50%" /><img src="../figures/mode-share-has-tram.png" width="50%" />
+
+The figure above shows the *marginal effect* of changes to one variable,
+holding all other variables equal. **The model accounts for fixed
+effects such as population density that are hard to change with policy
+interventions.** The relationship between population density and mode
+split is interesting in itself however, as shown in the figure
+below.
+
+<img src="../figures/mode-share-prediction-density-100.png" width="60%" style="display: block; margin: auto;" />
+
+Of course, we need more input data than the 101 cities taken from open
+data repositories shown above to reduce the confidence intervals.
+However, we have clearly demonstrated a robust and highly flexible way
+to model mode shift that accounts for the interrelations between
+different transport modes. The next step is to apply these models to
+real city
+datasets.
 
 # Estimates of rates of shift towards walking and cycling down to route network levels
 
@@ -195,6 +219,14 @@ below.
 # References
 
 <div id="refs" class="references">
+
+<div id="ref-burkner_brms_2017">
+
+Bürkner, Paul-Christian. 2017. “Brms: An R Package for Bayesian
+Multilevel Models Using Stan.” *Journal of Statistical Software* 80 (1):
+1–28. <https://doi.org/10.18637/jss.v080.i01>.
+
+</div>
 
 <div id="ref-douma_analysing_2019">
 

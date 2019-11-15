@@ -30,7 +30,9 @@ m = brm(mode ~ Density + bus_stops_per_1000 + has_tram, data = d, family = diric
 # plot(m) # works
 p = plot(marginal_effects(m, conditions = "Density:Population", categorical = T))  + ylab("Mode share")
 p$`Density:cats__` + ylab("Mode share")
-ggsave("figures/mode-share-prediction.png")
+ggsave("figures/mode-share-prediction-density-100.png")
+p$`bus_stops_per_1000:cats__` + ylab("Mode share")
+ggsave("figures/mode-share-prediction-bus-stops-100.png")
 p$`m_cycleway_per_1000:cats__`
 p$`has_tram:cats__` + ylab("Mode share")
-ggsave("figures/mode-share-prediction-metro.png")  
+ggsave("figures/mode-share-has-tram.png")  
