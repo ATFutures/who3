@@ -233,15 +233,14 @@ In the PT scenario, we can increase the provision of buses to 10 per
 1000 people, representing a high level of provision within the range of
 the sample of cities worldwide:
 
-|           | walking | cycling |   pt |  car | other |
-| :-------- | ------: | ------: | ---: | ---: | ----: |
-| Estimate  |    0.16 |    0.09 | 0.26 | 0.47 |  0.02 |
-| Est.Error |    0.12 |    0.10 | 0.15 | 0.18 |  0.05 |
-| Q2.5      |    0.00 |    0.00 | 0.03 | 0.14 |  0.00 |
-| Q97.5     |    0.46 |    0.36 | 0.61 | 0.82 |  0.17 |
+**Estimated change in mode share (percentage points)**
+
+|          | walking | cycling |  pt |   car | other |
+| :------- | ------: | ------: | --: | ----: | ----: |
+| Estimate |     0.8 |     0.5 | 1.1 | \-1.9 | \-0.5 |
 
 Under this scenario, the central estimate of car use drops by 12
-percentage point while the central estimates for walking and cycling
+percentage points while the central estimates for walking and cycling
 grow, by 2 percentage points and 4 percentage points, respectively. This
 highlights the synergies between active transport modes and bus use
 implicit in the data, **suggesting that a combination of strong
@@ -251,7 +250,25 @@ particular with more example datasets from Africa and the developing
 world in general in this context, are needed to reduce the large
 confidence intervals around these estimates.
 
-# Simulating the impacts citywide
+The framework enables us to model changes in mode share that would
+result from changes in any variable, categorical or continuous,
+
+  - ‘Get walking’, referring to a global (meaning without spatial input
+    components, but with spatially distributed consequences) walking
+    uptake, as a result of citywide policies to promote safe and
+    attractive walking.
+  - ‘Get cycling’, referring to a global scenario of cycling, as a
+    result of citywide policies to provide safe cycleways.
+  - ‘Car diet’, a global, citywide scenario of multi-modal transport
+    change, showing reduced levels of driving following disincentives to
+    own and use cars.
+  - ‘Go public transport’, a global scenario of public transport uptake,
+    linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
+  - ‘Car free’, meaning investment in car free city centers and other
+    spaces, other locally specific scenarios, such as reductions in car
+    parking spaces.
+
+# Converting the results to locally meaningful outputs
 
 Scenario development accounting for the transport systems in Accra and
 Kathmandu, as part of UHI project activities, must be based on current
