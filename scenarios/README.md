@@ -111,33 +111,18 @@ process that is able to respond when the input data changes (e.g. due to
 changes in the transport system or improved data
 availability/collection).
 
-This section therefore provides a framework for including key transport
+This section therefore outlines a framework for including key transport
 system variables, based on the assumption that additional/modified
-variables will be used in future iterations of the model. Key variables
-that are readily available for most cities include:
+variables will be used in future iterations of the model.
 
-  - Percentage of the transport network that is dedicated to motor
-    traffic (an alternative or suplementary measure could be the
-    percentage of the city’s surface area dedicated to motor traffic)
-  - Provision for public transport, in terms of the percentage of the
-    city’s area within walking distance (e.g. 300m) of public transport
-    nodes such as bus stops and rail stations
-  - The percentage of the city’s transport network that is dedicated to
-    cycling. Other important variables include average gradient, type of
-    cycle network, level or car ownership and directness of cycle routes
-    compared with driving routes (Parkin, Wardman, and Page 2008).
-  - Provision of walking infrastructure, for example the percentage of
-    the city’s transport network that is footway
-
-Note that all the high level varibles outlined above are ‘scale free’,
-meaning that they do not depend on the city’s size. The scale free
-nature of such measures also means that they can be used to estimate
-mode shares not only at city levels but also at the level of ‘desire
-lines’ connecting origins and destinations, as with the use of average
-gradient as a predictor of cycling potential in the PCT (Lovelace et al.
-2017). Some additional variables, such as distance and relative
-time/cost for alternative modes, only make sense when measured at the OD
-level.
+The framework requires variables that are ‘scale free’, meaning that
+they do not depend on the city’s size. The scale free nature of such
+measures also means that they can be used to estimate mode shares not
+only at city levels but also at the level of ‘desire lines’ connecting
+origins and destinations, as with the use of average gradient as a
+predictor of cycling potential in the PCT (Lovelace et al. 2017). Some
+additional variables, such as distance and relative time/cost for
+alternative modes, only make sense when measured at the OD level.
 
 ## Modelling mode shift
 
@@ -235,11 +220,19 @@ the sample of cities worldwide:
 
 **Estimated change in mode share (percentage points)**
 
-|          | walking | cycling |  pt |   car | other |
-| :------- | ------: | ------: | --: | ----: | ----: |
-| Estimate |     0.8 |     0.5 | 1.1 | \-1.9 | \-0.5 |
+|                  | walking | cycling |  pt |   car | other |
+| :--------------- | ------: | ------: | --: | ----: | ----: |
+| Central estimate |     0.8 |     0.5 | 1.1 | \-1.9 | \-0.5 |
 
-It is
+The result can be shown graphically, as shown in the figure below, that
+shows mode split estimates under the two model experiment conditions:
+one in which Accra has 1.2 bus stops per person (as it does currently)
+and one in which it has 3. The x axis shows that this model experiment
+can be generalised over the parameter space, in this case with x
+representing density, and the verticle line representing Accra’s density
+(~5000 people per km2):
+
+![](../figures/mode-share-prediction-accra.png)<!-- -->
 
 Under this scenario, the central estimate of car use drops by 12
 percentage points while the central estimates for walking and cycling
@@ -253,25 +246,144 @@ world in general in this context, are needed to reduce the large
 confidence intervals around these estimates.
 
 The framework enables us to model changes in mode share that would
-result from changes in any variable, categorical or continuous. The
-change
+result from changes in any variable, categorical or continuous. Based on
+the input data, the impact of a tram system in Accra could be simulated
+as follows:
 
-  - ‘Get walking’, referring to a global (meaning without spatial input
-    components, but with spatially distributed consequences) walking
-    uptake, as a result of citywide policies to promote safe and
-    attractive walking.
-  - ‘Get cycling’, referring to a global scenario of cycling, as a
-    result of citywide policies to provide safe cycleways.
-  - ‘Car diet’, a global, citywide scenario of multi-modal transport
-    change, showing reduced levels of driving following disincentives to
-    own and use cars.
-  - ‘Go public transport’, a global scenario of public transport uptake,
-    linked to [SDG 11](https://sustainabledevelopment.un.org/sdg11).
-  - ‘Car free’, meaning investment in car free city centers and other
-    spaces, other locally specific scenarios, such as reductions in car
-    parking spaces.
+As with any model, the usefulness of the outputs rely on the quality of
+the inputs and the assumptions underlying the model. These limitations,
+which reflect the paucity of open, curated data on mode shift in cities
+internationally, are covered in the next section. They are such that the
+current data (which only has one data point in Africa and only a handful
+of cities in the developing world) is not deemed of sufficient size and
+diversity to make useful predictions of modal shift. Instead of
+presenting results based on limited input data, the remainder of this
+section outlines how mode shift *could* be estimated, provided
+sufficiently large and diverse input dataset on mode shift following
+interventions. The basic tennets of this method are that:
 
-# Converting the results to locally meaningful outputs
+  - Mode share in cities depends on measurable transport system
+    characteristics such as number of bus stops, length of footways and
+    walkways and cycleways and other explanatory variables.
+  - A sufficiently large and diverse dataset on mode share and
+    explanatory variables can be collected. In the examples presented
+    here, the dependent variables are the more problematic data to
+    access: we can get data on transport system characteristics by bulk
+    download and analysis of large OSM datasets (although this is a time
+    consuming and computationally intensive task).
+
+Based on these tennets, an approach to estimate mode shift in response
+to the scenarios outlined above is detailed below. We have shown that we
+can model multi-modal responses to continuous and categorical variables
+in a robus Bayesian framework with explicit treatment of uncertainty.
+Under this framework, the scenario definition can be simplified to the
+identification and modification of explanatory variables that are
+available at the city level for a sufficiently large sample (500+)
+settlements with sufficient diversity to represent the changes that
+could take place in the cities under consideration.
+
+Changes could be made in a systematic way to each of the predictors to
+represent change on the ground. Adding amounts to continuous variables
+by amounts determined by the input data, e.g. with 25<sup>th</sup>,
+50<sup>th</sup> and 75<sup>th</sup> percentile increases representing
+low, medium and high levels of change, with a modifier (e.g.
+\(1 - current_provision / max_provision\) ) to represent the law of
+diminishing returns, would be one way to achieve this (that was roughly
+the approach used in the example scenario of increasing bus stop
+provision in Accra).
+
+To provide a concrete example, imagine that the maximum number of bus
+stops in the city dataset is 15 per 1000 people and that the
+75<sup>th</sup> percentile level of provision is 3 bus stops per 1000.
+In this case, an ambitious increase would be calculated for cities that
+currently have no bus stops, 1 bus stop, 10 and 15 bus stops per person
+as follows:
+
+``` r
+max_provision = 15
+max_increase_in_provision = 3
+current_provision = c(
+  0,
+  1,
+  10,
+  15
+)
+modifier = (1 - current_provision / max_provision)
+increase_in_provision = max_increase_in_provision * modifier
+future_provision = current_provision + increase_in_provision 
+future_provision
+```
+
+    ## [1]  3.0  3.8 11.0 15.0
+
+For categorical variables, the changes are simpler: a one-size-fits-all
+change to a categorical variable that will only affect cities that do
+not currently have a specific piece of infrastructure (e.g. a tram
+system in the example above).
+
+## Get walking
+
+This scenario refers to a global (meaning without spatial input
+components, but with spatially distributed consequences) walking uptake,
+as a result of citywide policies to promote safe and attractive walking.
+
+A simple way to measure walking provision in cities
+
+Key variables that are readily available for most cities include:
+
+  - The percentage of the city’s transport network that is dedicated to
+    cycling. Other important variables include average gradient, type of
+    cycle network, level or car ownership and directness of cycle routes
+    compared with driving routes (Parkin, Wardman, and Page 2008).
+  - Provision of walking infrastructure, for example the percentage of
+    the city’s transport network that is footway
+
+## Get cycling
+
+This scenario refers to a global scenario of cycling, as a result of
+citywide policies to provide safe cycleways.
+
+## Car diet
+
+This scenario refers a global, citywide scenario of multi-modal
+transport change, showing reduced levels of driving following
+disincentives to own and use cars.
+
+## Go public transport
+
+This scenario is a global scenario of public transport uptake, linked to
+[SDG 11](https://sustainabledevelopment.un.org/sdg11). It would involve
+modifying explanatory variables that represent public public transport
+provision. Variables we could change in this scenario could include:
+
+  - Increase in the number of bus stops per person in the city, a crude
+    measure which has already been demonstrated to be a powerful
+    predictor of multi-mode shift away from cars. A specific scenario
+    could increase the provision of bus stops by the median value in the
+    data
+
+in terms of the percentage of the city’s area within walking distance
+(e.g. 300m) of public transport nodes such as bus stops and rail
+stations
+
+## Go car free
+
+This scenario refers means investment in car free city centers and other
+spaces, other locally specific scenarios, such as reductions in car
+parking spaces.
+
+## Other modifiable transport system variables
+
+In addition to the specific scenarios outlined above, there are other
+important variables that could be modified in model experiments, either
+as stand-alone interventions, or to supplement specific scenarios. These
+include:
+
+  - Percentage of the transport network that is dedicated to motor
+    traffic (an alternative or suplementary measure could be the
+    percentage of the city’s surface area dedicated to motor traffic)
+
+# Data limitations and discussion
 
 Scenario development accounting for the transport systems in Accra and
 Kathmandu, as part of UHI project activities, must be based on current
