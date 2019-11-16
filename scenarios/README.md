@@ -327,27 +327,50 @@ This scenario refers to a global (meaning without spatial input
 components, but with spatially distributed consequences) walking uptake,
 as a result of citywide policies to promote safe and attractive walking.
 
-A simple way to measure walking provision in cities
+Key variables that are readily available for most cities, that could be
+modified by policies, include:
 
-Key variables that are readily available for most cities include:
-
-  - The percentage of the city’s transport network that is dedicated to
-    cycling. Other important variables include average gradient, type of
-    cycle network, level or car ownership and directness of cycle routes
-    compared with driving routes (Parkin, Wardman, and Page 2008).
   - Provision of walking infrastructure, for example the percentage of
     the city’s transport network that is footway
+  - Average distance of demand-weighted walking routes from major (and
+    therefore likely polluted) roads
+  - Measures of pedestrian safety, e.g. pedestrian fatalities per bkm
+    walked (where available)
 
 ## Get cycling
 
 This scenario refers to a global scenario of cycling, as a result of
 citywide policies to provide safe cycleways.
 
+  - The the provision of cycling infrastructure, which could be measured
+    as KM/person or as a percentage of the length of the total transport
+    network
+  - Number of cycle parking spaces per person
+  - Number of cyclist fatalities per bkm cycled (where available)
+  - The provision of free cycle training facities
+  - The provision of a cycle hire scheme
+
+Other important variables include average gradient, type of cycle
+network, level or car ownership and directness of cycle routes compared
+with driving routes (Parkin, Wardman, and Page 2008).
+
 ## Car diet
 
 This scenario refers a global, citywide scenario of multi-modal
 transport change, showing reduced levels of driving following
-disincentives to own and use cars.
+disincentives to own and use cars. Variables that could be modified in
+support of this scenario include:
+
+  - The average number of lanes of traffic on roads in a city could be
+    reduced, representing reduction of space on the roads for cars.
+  - The distribution of speed limits in a city, for example represented
+    by the proportion of roads on which the speed limit is above 30, 50
+    and 100 KM/hr. Real world data from crowd-sourced driving data,
+    e.g. as provided by Uber, could enable the quality of these
+    variables to grow over time
+  - Speed limit enforcement, e.g. measured as number of prosecutions per
+    bkm driven
+  - Fuel tax
 
 ## Go public transport
 
@@ -372,6 +395,12 @@ This scenario refers means investment in car free city centers and other
 spaces, other locally specific scenarios, such as reductions in car
 parking spaces.
 
+  - The proportion of the transport network on which cars can travel
+  - The provision of car parking spaces per person
+  - Localised changes, for example making city centres car free, which
+    could feed into the proportion of the network which is car free,
+    weighted by travel levels into the zones which go car free
+
 ## Other modifiable transport system variables
 
 In addition to the specific scenarios outlined above, there are other
@@ -382,8 +411,33 @@ include:
   - Percentage of the transport network that is dedicated to motor
     traffic (an alternative or suplementary measure could be the
     percentage of the city’s surface area dedicated to motor traffic)
+  - Laws and other policies influencing new modes of transport such as
+    electric bicycles and electric scooters.
+
+## Fixed effects
+
+Many variables are outside the scope of policy intervention but are
+important to consider in models nonetheless. An example of a fixed
+effect in the example above was population density. However, the
+predictions of current mode split in Accra were unrealistic because
+other fixed effects were omitted. There was no variable accounting for
+the fact that in Accra most people cannot afford a car, for example.
+Also, differences in culture influence transport systems. Variables to
+account for these fixed effects could include:
+
+  - Transport variables from the country that the city is in, e.g. % who
+    drive overall
+  - A measure of economic development, inequality-adjusted human
+    development index
+    ([HDI](https://en.wikipedia.org/wiki/Human_Development_Index)) bands
+  - Topographic and climate variables
 
 # Data limitations and discussion
+
+The data requirements of a robust model to estimate mode shift in the
+Bayesian, multi-model framework outlined above are substantial. The
+preliminary results are inherently limited by the small size and skewed
+nature of the input city dataset, shown in the map.
 
 Scenario development accounting for the transport systems in Accra and
 Kathmandu, as part of UHI project activities, must be based on current
