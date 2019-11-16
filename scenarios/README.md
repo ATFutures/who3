@@ -62,6 +62,20 @@ worldwide. The figure below shows the diversity in mode splits based on
 (primarily wealthy) cities, based on data of the type shown in the table
 below from [Wikipedia](https://en.wikipedia.org/wiki/Modal_share).
 
+``` r
+dc = readRDS("../global-data/city-mode-split-wiki.Rds")
+# dc = readRDS("global-data/city-mode-split-wiki.Rds")
+dc %>% 
+  filter(
+    walking == max(walking) |
+    cycling == max(cycling) |
+    pt == max(pt) |
+    car == max(car) |
+    car == min(car) 
+    ) %>% 
+  knitr::kable()
+```
+
 | City       | walking | cycling | pt | car | other | year |
 | :--------- | ------: | ------: | -: | --: | ----: | ---: |
 | Detroit    |       1 |       0 |  2 |  92 |     5 | 2016 |
@@ -82,8 +96,13 @@ there is a roughly even distribution of mode shares by car, other modes
 have more skewed distributions. This could reflect the diversity of
 policies used to promote walking, cycling and public transport and the
 fact that cars tend to be the default. This implication is that **if no
-policies have been implemented to promote alternatives, cars
-dominate**.
+policies have been implemented to promote alternatives, cars dominate**.
+
+``` r
+# see code/mode-split-cities.R
+knitr::include_graphics("../figures/city-mode-split-wiki-cars.png")
+knitr::include_graphics("../figures/city-mode-split-wiki.png")
+```
 
 <img src="../figures/city-mode-split-wiki-cars.png" width="100%" /><img src="../figures/city-mode-split-wiki.png" width="100%" />
 
@@ -93,6 +112,10 @@ figure below, which suggests competition between all modes and cars
 this dataset), and synergies between public transport and walking.
 **This strongly suggests that a reliable way to encourage walking in
 cities is through investment in public transport.**
+
+``` r
+knitr::include_graphics("../figures/city-mode-cor.png")
+```
 
 <img src="../figures/city-mode-cor.png" width="50%" />
 
@@ -155,6 +178,15 @@ we have access to population (other explanatory variables included
 provision of metro and bikeshare
 schemes).
 
+``` r
+m = brm(mode ~ population + pt, data = d_min, family = dirichlet(), iter = 10e5)
+res = predict(m2, new_data)
+```
+
+``` r
+knitr::include_graphics(c("../figures/mode-share-prediction.png", "../figures/mode-share-prediction-metro.png"))
+```
+
 <img src="../figures/mode-share-prediction.png" width="50%" /><img src="../figures/mode-share-prediction-metro.png" width="50%" />
 
 The result suggest that beyond a certain size, increasingly large city
@@ -176,6 +208,10 @@ number of bus stops per inhabitant and the provision of a tram system,
 which is more viable in many cities than a metro
 system.
 
+``` r
+knitr::include_graphics(c("../figures/mode-share-prediction-bus-stops-100.png", "../figures/mode-share-has-tram.png"))
+```
+
 <img src="../figures/mode-share-prediction-bus-stops-100.png" width="50%" /><img src="../figures/mode-share-has-tram.png" width="50%" />
 
 The figure above shows the *marginal effect* of changes to one variable,
@@ -184,6 +220,10 @@ effects such as population density that are hard to change with policy
 interventions.** The relationship between population density and mode
 split is interesting in itself however, as shown in the figure
 below.
+
+``` r
+knitr::include_graphics(c("../figures/mode-share-prediction-density-100.png"))
+```
 
 <img src="../figures/mode-share-prediction-density-100.png" width="60%" style="display: block; margin: auto;" />
 
@@ -201,11 +241,25 @@ Taking Accra as an example, let’s see how the modelling framework can
 estimate mode shift (remember this is based on a small input dataset and
 a proof of concept rather than final results).
 
+``` r
+m = readRDS("model-result-brms-density-bus-stops-101.Rds")
+class(m)
+accra = cities %>% filter(City == "Accra") %>% 
+  mutate(Density = Population / Area) %>% 
+  select(Density, bus_stops_per_1000, has_tram, -geometry)
+knitr::kable(accra)
+```
+
 | City  | Density | bus\_stops\_per\_1000 | has\_tram |
 | :---- | ------: | --------------------: | :-------- |
 | Accra | 4787.81 |               1.23008 | FALSE     |
 
 The current mode split can be estimated as follows:
+
+``` r
+mode_share_current_estimate = predict(m, accra)[, , ]
+knitr::kable(mode_share_current_est, digits = 2)
+```
 
 |           | walking | cycling |   pt |  car | other |
 | :-------- | ------: | ------: | ---: | ---: | ----: |
@@ -217,6 +271,24 @@ The current mode split can be estimated as follows:
 In the PT scenario, we can increase the provision of buses to 10 per
 1000 people, representing a high level of provision within the range of
 the sample of cities worldwide:
+
+``` r
+summary(cities$bus_stops_per_1000)
+accra_pt = accra %>% mutate(bus_stops_per_1000 = 3)
+mode_share_pt_estimate = predict(m, accra_pt)[, , ]
+knitr::kable(mode_share_pt_estimate, digits = 2)
+knitr::kable((mode_share_pt_estimate - mode_share_current_estimate)*100, digits = 1)
+conditions = data.frame(bus_stops_per_1000 = c(accra$bus_stops_per_1000, accra_pt$bus_stops_per_1000))
+effects = marginal_effects(m, "Density", conditions = conditions, categorical = TRUE, re_formula = NULL)
+effects
+class(effects)
+effects 
+g = print(effects)
+class(g$`Density:cats__`)
+g$`Density:cats__` + 
+  geom_vline(xintercept = accra$Density)
+ggsave("figures/mode-share-prediction-accra.png")
+```
 
 **Estimated change in mode share (percentage points)**
 
@@ -231,6 +303,10 @@ and one in which it has 3. The x axis shows that this model experiment
 can be generalised over the parameter space, in this case with x
 representing density, and the verticle line representing Accra’s density
 (~5000 people per km2):
+
+``` r
+knitr::include_graphics("../figures/mode-share-prediction-accra.png")
+```
 
 ![](../figures/mode-share-prediction-accra.png)<!-- -->
 
@@ -249,6 +325,10 @@ The framework enables us to model changes in mode share that would
 result from changes in any variable, categorical or continuous. Based on
 the input data, the impact of a tram system in Accra could be simulated
 as follows:
+
+``` r
+accra_tram = accra %>% mutate(has_tram = TRUE)
+```
 
 As with any model, the usefulness of the outputs rely on the quality of
 the inputs and the assumptions underlying the model. These limitations,
@@ -439,11 +519,56 @@ Bayesian, multi-model framework outlined above are substantial. The
 preliminary results are inherently limited by the small size and skewed
 nature of the input city dataset, shown in the map.
 
+``` r
+cities = readRDS("../global-data/cities.Rds")
+library(tmap)
+tmap_mode("view")
+tm_shape(cities) +
+  tm_dots(size = "Population", col = "walking", palette = "viridis")
+```
+
+``` r
+knitr::include_graphics("https://pbs.twimg.com/media/EJf-Vo5WoAIfXQ2?format=png&name=900x900")
+```
+
+![](https://pbs.twimg.com/media/EJf-Vo5WoAIfXQ2?format=png&name=900x900)<!-- -->
+
+The map shows that there are only 2 cities with a high (40% +) level of
+walking, and these were cities that we added to the cities dataset. **A
+priority for future is to expand this cities dataset to make it larger
+and more representative of cities where the the Upthat tool is most
+likely to be used.**
+
 Scenario development accounting for the transport systems in Accra and
 Kathmandu, as part of UHI project activities, must be based on current
 transport data. An overview for Ghana (a proxy for the travel pattern in
-Accra) is shown
-below.
+Accra) is shown below.
+
+A more subtle data limitation surrounds modal categories. This is
+highlighted in the figure below which shows the full diversity of modes
+used in Accra from survey data on the left, and the effect of
+simplifying these categories into the modes which are most commonly
+reported. **Future research should explore ways to gain data on and
+incorporate a richer diversity of transport modes.**
+
+A more conceptual question is how to account for the ordered nature of
+transport systems, e.g.:
+
+Walking \> Cycling \> Public Transport \> Cars
+
+In terms of typical costs per KM (assuming you have access to a bicycle)
+and the reverse order in terms of maximum speeds and energy costs per
+KM. The framework outlined above could accept an arbitrary number of
+modes and mode size, speed and energy requirements could be accounted
+for by adding hybrid variables such as ‘maximum potential mode share by
+mode walking/cycling’ based on data on average trip distances per city
+(which may not be available for most cities) and distance decay
+parameters published in the literature.
+
+``` r
+knitr::include_graphics("../figures/modes-ghana-work.png")
+knitr::include_graphics("../figures/modes-ghana-work-simple.png")
+```
 
 <img src="../figures/modes-ghana-work.png" width="50%" /><img src="../figures/modes-ghana-work-simple.png" width="50%" />
 

@@ -9,11 +9,11 @@ bibliography:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-```{r refs, eval=FALSE}
+```{r refs, eval=FALSE, echo=FALSE}
 # refs_cycle_hire = RefManageR::ReadZotero(group = "418217", .params = list(collection = "JAK5PW5K", limit = 100))
 # refs_atf = RefManageR::ReadZotero(group = "418217", .params = list(collection = "TJEQMXJR", limit = 100))
 # o = ls()
@@ -358,13 +358,35 @@ Variables to account for these fixed effects could include:
 The data requirements of a robust model to estimate mode shift in the Bayesian, multi-model framework outlined above are substantial.
 The preliminary results are inherently limited by the small size and skewed nature of the input city dataset, shown in the map.
 
-```{r}
-# cities =
+```{r, eval=FALSE}
+cities = readRDS("../global-data/cities.Rds")
+library(tmap)
+tmap_mode("view")
+tm_shape(cities) +
+  tm_dots(size = "Population", col = "walking", palette = "viridis")
 ```
 
+```{r}
+knitr::include_graphics("https://pbs.twimg.com/media/EJf-Vo5WoAIfXQ2?format=png&name=900x900")
+```
+
+The map shows that there are only 2 cities with a high (40% +) level of walking, and these were cities that we added to the cities dataset.
+**A priority for future is to expand this cities dataset to make it larger and more representative of cities where the the Upthat tool is most likely to be used.**
 
 Scenario development accounting for the transport systems in Accra and Kathmandu, as part of UHI project activities, must be based on current transport data.
 An overview for Ghana (a proxy for the travel pattern in Accra) is shown below.
+
+A more subtle data limitation surrounds modal categories.
+This is highlighted in the figure below which shows the full diversity of modes used in Accra from survey data on the left, and the effect of simplifying these categories into the modes which are most commonly reported.
+**Future research should explore ways to gain data on and incorporate a richer diversity of transport modes.**
+
+A more conceptual question is how to account for the ordered nature of transport systems, e.g.:
+
+Walking > Cycling > Public Transport > Cars
+
+In terms of typical costs per KM (assuming you have access to a bicycle) and the reverse order in terms of maximum speeds and energy costs per KM.
+The framework outlined above could accept an arbitrary number of modes and mode size, speed and energy requirements could be accounted for by adding hybrid variables such as 'maximum potential mode share by mode walking/cycling' based on data on average trip distances per city (which may not be available for most cities) and distance decay parameters published in the literature.
+
 
 ```{r modes-ghana, out.width="50%", fig.show='hold'}
 knitr::include_graphics("../figures/modes-ghana-work.png")
