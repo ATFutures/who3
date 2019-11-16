@@ -239,6 +239,8 @@ the sample of cities worldwide:
 | :------- | ------: | ------: | --: | ----: | ----: |
 | Estimate |     0.8 |     0.5 | 1.1 | \-1.9 | \-0.5 |
 
+It is
+
 Under this scenario, the central estimate of car use drops by 12
 percentage points while the central estimates for walking and cycling
 grow, by 2 percentage points and 4 percentage points, respectively. This
@@ -251,7 +253,8 @@ world in general in this context, are needed to reduce the large
 confidence intervals around these estimates.
 
 The framework enables us to model changes in mode share that would
-result from changes in any variable, categorical or continuous,
+result from changes in any variable, categorical or continuous. The
+change
 
   - ‘Get walking’, referring to a global (meaning without spatial input
     components, but with spatially distributed consequences) walking

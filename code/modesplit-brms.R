@@ -21,7 +21,7 @@ d = d %>% select(-(walking:other))
 d$mode = modes_matrix / 100
 names(d)
 # set init to 0 - see https://discourse.mc-stan.org/t/initialization-error-try-specifying-initial-values-reducing-ranges-of-constrained-values-or-reparameterizing-the-model/4401
-m = brm(mode ~ Density + bus_stops_per_1000 + has_tram, data = d, family = dirichlet(), inits = 0)
+m = brm(mode ~ Density + bus_stops_per_1000 + has_tram, data = d, family = dirichlet(), inits = 0, iter = 10e4)
 # ESS tool low on data with 42 cities: https://easystats.github.io/bayestestR/reference/effective_sample.html
 # not working...
 # m = brm_multiple(mode ~ Population + Density + bus_stops_per_1000 + has_tram, data = d, family = dirichlet(), inits = 0, combine = T)

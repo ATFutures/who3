@@ -135,7 +135,7 @@ The advantage of `brms` is that it estimates uncertainty, vital for effective 'n
 A basic example of the outputs of a Dirichlet regression model run are shown in the figure below, which represents the result of a model run for a subset of 28 cities for which we have access to population (other explanatory variables included provision of metro and bikeshare schemes).
 
 ```{r, eval=FALSE}
-m = brm(mode ~ population + pt, data = d_min, family = dirichlet())
+m = brm(mode ~ population + pt, data = d_min, family = dirichlet(), iter = 10e5)
 res = predict(m2, new_data)
 ```
 
@@ -207,22 +207,34 @@ accra_pt = accra %>% mutate(bus_stops_per_1000 = 3)
 mode_share_pt_estimate = predict(m, accra_pt)[, , ]
 knitr::kable(mode_share_pt_estimate, digits = 2)
 knitr::kable((mode_share_pt_estimate - mode_share_current_estimate)*100, digits = 1)
+conditions = data.frame(bus_stops_per_1000 = c(accra$bus_stops_per_1000, accra_pt$bus_stops_per_1000))
+effects = marginal_effects(m, "Density", conditions = conditions, categorical = TRUE, re_formula = NULL)
+effects
+effects +
+  geom_vline(xintercept = 1000)
+plot(
+  effects$`bus_stops_per_1000:cats__`$bus_stops_per_1000,
+  effects$`bus_stops_per_1000:cats__`$cond__
+)
 ```
 
 **Estimated change in mode share (percentage points)**
 
 |          | walking| cycling|  pt|  car| other|
 |:---------|-------:|-------:|---:|----:|-----:|
-|Estimate  |     0.8|     0.5| 1.1| -1.9|  -0.5|
-
+|Central estimate  |     0.8|     0.5| 1.1| -1.9|  -0.5|
 
 Under this scenario, the central estimate of car use drops by 12 percentage points while the central estimates for walking and cycling grow, by 2 percentage points and 4 percentage points, respectively.
 This highlights the synergies between active transport modes and bus use implicit in the data, **suggesting that a combination of strong investment in public transport and active transport infrastructure can be complimentary.**
 As mentioned already, larger input datasets, in particular with more example datasets from Africa and the developing world in general in this context, are needed to reduce the large confidence intervals around these estimates.
 
-The framework enables us to model changes in mode share that would result from changes in any variable, categorical or continuous, 
+The framework enables us to model changes in mode share that would result from changes in any variable, categorical or continuous.
+Based on the input data, the impact of a tram system in Accra could be simulated as follows:
 
 
+
+As with any model, the usefulness of the outputs rely on the quality of the inputs and the assumptions underlying the model, which we will cover in next section.
+The 
 
 
 - 'Get walking', referring to a global (meaning without spatial input components, but with spatially distributed consequences) walking uptake, as a result of citywide policies to promote safe and attractive walking.
