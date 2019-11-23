@@ -239,26 +239,47 @@ datasets.
 
 Taking Accra as an example, let’s see how the modelling framework can
 estimate mode shift (remember this is based on a small input dataset and
-a proof of concept rather than final results).
+a proof of concept rather than final
+results).
 
 ``` r
-m = readRDS("model-result-brms-density-bus-stops-101.Rds")
+cities = readRDS(here::here("global-data", "cities-101-osm-bus.Rds")) %>% 
+  dplyr::ungroup()
+m = readRDS(here::here("model-result-brms-density-bus-stops-101.Rds"))
+```
+
+    ## Registered S3 method overwritten by 'xts':
+    ##   method     from
+    ##   as.zoo.xts zoo
+
+``` r
 class(m)
+```
+
+    ## [1] "brmsfit"
+
+``` r
 accra = cities %>% filter(City == "Accra") %>% 
   mutate(Density = Population / Area) %>% 
   select(Density, bus_stops_per_1000, has_tram, -geometry)
 knitr::kable(accra)
 ```
 
-| City  | Density | bus\_stops\_per\_1000 | has\_tram |
-| :---- | ------: | --------------------: | :-------- |
-| Accra | 4787.81 |               1.23008 | FALSE     |
+| Density | bus\_stops\_per\_1000 | has\_tram |
+| ------: | --------------------: | :-------- |
+| 4787.81 |               1.23008 | FALSE     |
+
+<!-- |City  | Density| bus_stops_per_1000|has_tram | -->
+
+<!-- |:-----|-------:|------------------:|:--------| -->
+
+<!-- |Accra | 4787.81|            1.23008|FALSE    | -->
 
 The current mode split can be estimated as follows:
 
 ``` r
 mode_share_current_estimate = predict(m, accra)[, , ]
-knitr::kable(mode_share_current_est, digits = 2)
+knitr::kable(mode_share_current_estimate, digits = 2)
 ```
 
 |           | walking | cycling |   pt |  car | other |
@@ -268,9 +289,9 @@ knitr::kable(mode_share_current_est, digits = 2)
 | Q2.5      |    0.01 |    0.00 | 0.01 | 0.27 |  0.00 |
 | Q97.5     |    0.43 |    0.25 | 0.48 | 0.88 |  0.24 |
 
-In the PT scenario, we can increase the provision of buses to 10 per
-1000 people, representing a high level of provision within the range of
-the sample of cities worldwide:
+In the PT scenario, we can increase the provision of buses to 3 per 1000
+people, representing a high level of provision within the range of the
+sample of cities worldwide:
 
 ``` r
 summary(cities$bus_stops_per_1000)
@@ -401,6 +422,53 @@ change to a categorical variable that will only affect cities that do
 not currently have a specific piece of infrastructure (e.g. a tram
 system in the example above).
 
+To estimate the uptake associated with each intervention for a range of
+scenarios, we will create a new function that takes a list of changes to
+variables, a list of cities, and returns a data frame with the changes
+in mode share:
+
+``` r
+cities = cities %>% 
+  mutate(Density = Population / Area) %>% 
+  sf::st_drop_geometry() 
+city_scenarios = c("Accra", "Kathmandu", "New York", "Bristol")
+city_scenarios = cities$City[cities$City %in% city_scenarios] # only uses cities in data
+city_scenarios
+
+scenario_changes = list(
+  bus_stops_per_1000 = 1:10,
+  has_tram = c(TRUE, FALSE),
+  City = city_scenarios
+)
+
+mode_names = c("walking", "cycling", "pt", "car", "other")
+
+estimate_mode_split_change = function(m, scenario_changes, city_scenarios, cities) {
+  scenario_combinations = expand.grid(scenario_changes)
+  results_table = tibble::as_tibble(
+    scenario_combinations[c(3, 1:(ncol(scenario_combinations) - 1))]
+  )
+  mode_na_mat = matrix(data = NA, nrow = nrow(results_table), ncol = length(mode_names))
+  mode_na_df = as.data.frame(mode_na_mat, stringsAsFactors = FALSE)
+  colnames(mode_na_df) = mode_names
+  results_table = cbind(results_table, mode_na_df)
+  results_table = inner_join(results_table,cities[c("City", "Density")])
+  i = 1 # for testing
+  for(i in 1:nrow(results_table)) {
+    scenario_df = results_table[i, ]
+    city_df = cities %>% filter(City == results_table$City[i])
+    pred_current = predict(m, city_df)[, , ][1, ]
+    pred_scenario = predict(m, scenario_df)[, , ][1, ]
+    results_table[i, mode_names] = (pred_scenario - pred_current) * 100
+  }
+  results_table
+}
+results_table = estimate_mode_split_change(m, scenario_changes, city_scenarios, cities)
+readr::write_csv(results_table, here::here("global-data", "scenario-results-table.csv"))
+readr::write_csv(results_table, "scenario-results-table.csv")
+piggyback::pb_upload("scenario-results-table.csv", "atfutures/upthat")
+```
+
 ## Get walking
 
 This scenario refers to a global (meaning without spatial input
@@ -520,7 +588,6 @@ preliminary results are inherently limited by the small size and skewed
 nature of the input city dataset, shown in the map.
 
 ``` r
-cities = readRDS("../global-data/cities.Rds")
 library(tmap)
 tmap_mode("view")
 tm_shape(cities) +
