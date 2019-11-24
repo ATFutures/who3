@@ -1,10 +1,10 @@
 ---
 title: "Calibration of Urban Planning and Transport Health Assessment Toolkit"
 output:
-   #word_document: default
    #github_document
-   #pdf_document:
-   #  number_sections: yes
+   #word_document: default
+   # pdf_document:
+   #     number_sections: yes
     html_document:
         toc: true
         toc_float: true
@@ -526,8 +526,9 @@ these in decreasing absolute values of T-statistics.
 
 ```{r final-model, echo = FALSE}
 dat <- readRDS ("ped-model-final.Rds")
+dat$ped_counts <- dat$ped_counts * 2.34
 f_ <- dat$flowvars
-mod <- summary (lm (dat$p ~ f_))
+mod <- summary (lm (dat$ped_counts ~ f_))
 coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
 # for some reason, colnames do not transfer properly:
 names (coeffs) <- colnames (mod$coefficients)
@@ -568,6 +569,11 @@ ggplot (res, aes (x = modelled, y = observed)) +
 ```
 
 
+The above table reveals that layer origins were divided between the four
+categories of education, health, subway, and sustenance. Each of these origin
+categories was combined with multiple destination layers, except for health,
+with in each case the combinations coming from two to three
+positively-correlated layers, and one to two negatively-correlated layers.
 
 # Discussion
 
