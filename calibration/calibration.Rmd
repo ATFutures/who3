@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 if (!file.exists ("ATF.bib")) { # delete file to auto-update
     refs <- RefManageR::ReadZotero(group = "418217",
                     .params = list(collection = "TJEQMXJR", limit = 100))
-    RefManageR::WriteBib(refs, "ATF.bib")
+    RefManageR::WriteBib(refs, "../ATF.bib")
 }
 library (ggplot2)
 theme_set (theme_minimal ())
@@ -40,13 +40,69 @@ theme_set (theme_minimal ())
 
 # Introduction
 
-Calibration of UPTHAT (the Urban Planning and Transport Health Assessment
-Toolkit) relies primarily on new high performace software
-[@padgham_dodgr:_2019] for analysing dynamic movement through urban areas.
+Pedestrian modelling is very generally approached as an *aggregate* phenomenon,
+attempting either to directly model movement between variously aggregated areal
+units, or to explain pedestrian counts in terms of explanatory variables
+aggregated over defined--and often notably coarse--spatial areas [see, for
+example, the comprehensive references in
+@singleton_pedestrians_2013;@griswold_pedestrian_2018]. Moreover, pedestrian
+models are frequently considered to be additional or even "optional"
+components of general transport models, and have thus been constructed to be
+backwards-compatible with traditional modelling approaches, notably through
+focussing on coarse spatial scales of aggregation such as "transport analysis
+zones" [@singleton_pedestrians_2013]. Progress is modelling pedestrian
+behaviour has generally lagged notably behind progress in modelling other forms
+of transport [@kuzmyak_estimating_2014], even though recent research has
+suggested and revealed that pedestrian behaviour is more strong determined by
+variations at finer spatial scales than other travel behaviour
+[@clifton_representing_2016]. 
 
-This manuscript details procedures developed for calibrating UPTHAT estimates
-of both pedestrian and cyclist densities along individual street segments
-against empirical data from New York City, USA.
+Parallel to the development of such arguably more "traditional" approaches to
+modelling pedestrian behaviour has been the development of very fine-scale
+agent-based simulations such as "Simulation of Urban Mobility" [SUMO;
+@krajzewicz_recent_2012] and UrbanSim
+[@waddell_urbansim:_2002;@waddell_integrated_2011]. Such models yield highly
+detailed models of dynamic pedestrian movement, yet are typically constrained
+to small spatial scales, typically much less than entire city sizes. Current
+practices in modelling pedestrian movement are thus often faced with
+a compromise between modelling movement with sufficient detail yet only over
+restricted spatial scales, or modelling movement over larger spatial scales yet
+with insufficient fine-scaled detail.
+
+The present work takes advantage of modern high-performance software for
+modelling and analysing dynamic movement through urban areas
+[@padgham_dodgr:_2019] to derive a general framework for pedestrian modelling
+at the finest possible spatial scale of individual street segments. The model
+presented here is not an individual-based simulation model, rather it
+incorporates the finest possible representation of the spatial structure of
+a city, including all possible detail of the way network, and of all available
+buildings. It is not a multi-modal model, and does not explicitly consider
+pedestrian movement in any direct relationship with other modes of travel,
+although it does implicitly do so by considering movement to and from both
+locations of public transport, and private parking facilities for both bicycles
+and automobiles.
+
+Importantly, our model is based entirely on open-source software, much of
+which was explicitly developed or modified for the present study, and on
+exclusively open sources of data. We consider such openness of both software
+and data as critically important to advance the science of pedestrian
+modelling. The spaces of cities are one of the primary "common goods" shared
+amongst urban humanity, and walking is--or ought to be considered--the primary
+mode of engagement with such shared spaces. Accordingly, we see pedestrian
+modelling as a common good best advanced through open source software based on
+open data.
+
+In order to demonstrate the spatially expansive capabilities of our software
+and models, we present a model of pedestrian behaviour throughout the entirety
+of New York City, through calibrating the model against pedestrian counts from
+114 stations, using openly available data provided by the City of New York for
+the year 2018. Finally, note that we refer to the network of traversable ways
+within a city as a "way network", in contrast to arguably more traditional
+terminology such as "street network." We do this both in acknowledgement of the
+fact that many ways traversable to pedestrians can not be categorized as
+streets (think of staircases, or paths across grass lawns), and that this is
+the terminology adopted by our primary provider of open data, Open Street Map.
+
 
 # Methods
 
@@ -143,7 +199,7 @@ converting 424 counts into 1,926 locations of associated pedestrian flows.
 Both the street network used to route pedestrian journeys, and the structure,
 nature, and location of buildings serving as origins and/or destinations of
 those journeys were obtained from Open Street Map, accessed via the R package,
-`osmdata` [@padgham_osmdata_2017]. The network consisted of 813,402 street
+`osmdata` [@Padgham2017]. The network consisted of 813,402 street
 segments, representing a total 30,226 km. These segments are simply those used
 to represent Open Street Map, such that a single linear length of way may be
 represented by several points, and several corresponding edges in our internal
@@ -238,7 +294,7 @@ Flow layers were generated in two primary ways: either by dispersing from
 a given set of origin points according to specified densities, or through
 routing flows between specific sets of origin and destination points, with
 densities calculated by a doubly-constrained spatial interaction model, with
-exponential form used throughout [@wilson_boltzmann_2008]. We refer to these
+exponential form used throughout [@Wilson2008]. We refer to these
 two methods of calculating flow layers as "flow dispersal" and "flow
 aggregation", and illustrate both in the following sub-sections.
 
@@ -251,7 +307,7 @@ applying the spatial interaction models described above between a specified set
 of origin points, taken from the eight categories given above. Each flow layer
 was obtained through calculating shortest paths between each origin point, $i$,
 and destination point, $j$, in the network, and aggregating flows according to
-exponential spatial interaction models [@wilson_boltzmann_2008] of the form,
+exponential spatial interaction models [@Wilson2008] of the form,
 \begin{equation}
     SI_{ij} (d_{ij}) = \frac{n_in_{j\ne i}}{\sum_{j\ne i} n_j exp (-d_{ij} / k)} exp (-d_{ij} / k),
 \end{equation}

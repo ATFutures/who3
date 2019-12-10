@@ -2,14 +2,70 @@
 
 # Introduction
 
-Calibration of UPTHAT (the Urban Planning and Transport Health
-Assessment Toolkit) relies primarily on new high performace software
-(Padgham and Peutschnig 2019) for analysing dynamic movement through
-urban areas.
+Pedestrian modelling is very generally approached as an *aggregate*
+phenomenon, attempting either to directly model movement between
+variously aggregated areal units, or to explain pedestrian counts in
+terms of explanatory variables aggregated over defined–and often notably
+coarse–spatial areas (see, for example, the comprehensive references in
+Singleton and Clifton 2013; Griswold et al. 2018). Moreover, pedestrian
+models are frequently considered to be additional or even “optional”
+components of general transport models, and have thus been constructed
+to be backwards-compatible with traditional modelling approaches,
+notably through focussing on coarse spatial scales of aggregation such
+as “transport analysis zones” (Singleton and Clifton 2013). Progress is
+modelling pedestrian behaviour has generally lagged notably behind
+progress in modelling other forms of transport (Kuzmyak et al. 2014),
+even though recent research has suggested and revealed that pedestrian
+behaviour is more strong determined by variations at finer spatial
+scales than other travel behaviour (Clifton et al. 2016).
 
-This manuscript details procedures developed for calibrating UPTHAT
-estimates of both pedestrian and cyclist densities along individual
-street segments against empirical data from New York City, USA.
+Parallel to the development of such arguably more “traditional”
+approaches to modelling pedestrian behaviour has been the development of
+very fine-scale agent-based simulations such as “Simulation of Urban
+Mobility” (SUMO; Krajzewicz et al. 2012) and UrbanSim (Waddell 2002,
+2011). Such models yield highly detailed models of dynamic pedestrian
+movement, yet are typically constrained to small spatial scales,
+typically much less than entire city sizes. Current practices in
+modelling pedestrian movement are thus often faced with a compromise
+between modelling movement with sufficient detail yet only over
+restricted spatial scales, or modelling movement over larger spatial
+scales yet with insufficient fine-scaled detail.
+
+The present work takes advantage of modern high-performance software for
+modelling and analysing dynamic movement through urban areas (Padgham
+2019) to derive a general framework for pedestrian modelling at the
+finest possible spatial scale of individual street segments. The model
+presented here is not an individual-based simulation model, rather it
+incorporates the finest possible representation of the spatial structure
+of a city, including all possible detail of the way network, and of all
+available buildings. It is not a multi-modal model, and does not
+explicitly consider pedestrian movement in any direct relationship with
+other modes of travel, although it does implicitly do so by considering
+movement to and from both locations of public transport, and private
+parking facilities for both bicycles and automobiles.
+
+Importantly, our model is based entirely on open-source software, much
+of which was explicitly developed or modified for the present study, and
+on exclusively open sources of data. We consider such openness of both
+software and data as critically important to advance the science of
+pedestrian modelling. The spaces of cities are one of the primary
+“common goods” shared amongst urban humanity, and walking is–or ought
+to be considered–the primary mode of engagement with such shared spaces.
+Accordingly, we see pedestrian modelling as a common good best advanced
+through open source software based on open data.
+
+In order to demonstrate the spatially expansive capabilities of our
+software and models, we present a model of pedestrian behaviour
+throughout the entirety of New York City, through calibrating the model
+against pedestrian counts from 114 stations, using openly available data
+provided by the City of New York for the year 2018. Finally, note that
+we refer to the network of traversable ways within a city as a “way
+network”, in contrast to arguably more traditional terminology such as
+“street network.” We do this both in acknowledgement of the fact that
+many ways traversable to pedestrians can not be categorized as streets
+(think of staircases, or paths across grass lawns), and that this is the
+terminology adopted by our primary provider of open data, Open Street
+Map.
 
 # Methods
 
@@ -57,15 +113,14 @@ into 1,926 locations of associated pedestrian flows.
 Both the street network used to route pedestrian journeys, and the
 structure, nature, and location of buildings serving as origins and/or
 destinations of those journeys were obtained from Open Street Map,
-accessed via the R package, `osmdata`
-(<span class="citeproc-not-found" data-reference-id="padgham_osmdata_2017">**???**</span>).
-The network consisted of 813,402 street segments, representing a total
-30,226 km. These segments are simply those used to represent Open Street
-Map, such that a single linear length of way may be represented by
-several points, and several corresponding edges in our internal
-representation. We then used the `dodgr` software (Padgham and
-Peutschnig 2019) to “contract” this network down to segments between
-junctions points only, reducing it to 407,840 segments.
+accessed via the R package, `osmdata` (Padgham et al. 2017). The network
+consisted of 813,402 street segments, representing a total 30,226 km.
+These segments are simply those used to represent Open Street Map, such
+that a single linear length of way may be represented by several points,
+and several corresponding edges in our internal representation. We then
+used the `dodgr` software (Padgham 2019) to “contract” this network down
+to segments between junctions points only, reducing it to 407,840
+segments.
 
 Each of these 407,840 segments had an associated length, along with
 further detail as contained in the Open Street Map data, including the
@@ -87,7 +142,7 @@ principle, but introduces several categories of additional time-based
 penalties, notably for waiting at traffic lights, or for waiting to
 cross busy, multi-lane roads (where such crossing is permitted). All
 routing was implemented using the authors’ own `dodgr` software (Padgham
-and Peutschnig 2019).
+2019).
 
 ### Trip categories
 
@@ -160,8 +215,7 @@ Flow layers were generated in two primary ways: either by dispersing
 from a given set of origin points according to specified densities, or
 through routing flows between specific sets of origin and destination
 points, with densities calculated by a doubly-constrained spatial
-interaction model, with exponential form used throughout
-(<span class="citeproc-not-found" data-reference-id="wilson_boltzmann_2008">**???**</span>).
+interaction model, with exponential form used throughout (Wilson 2008).
 We refer to these two methods of calculating flow layers as “flow
 dispersal” and “flow aggregation”, and illustrate both in the following
 sub-sections.
@@ -174,17 +228,15 @@ between a specified set of origin points, taken from the eight
 categories given above. Each flow layer was obtained through calculating
 shortest paths between each origin point, \(i\), and destination point,
 \(j\), in the network, and aggregating flows according to exponential
-spatial interaction models
-(<span class="citeproc-not-found" data-reference-id="wilson_boltzmann_2008">**???**</span>)
-of the form,  where \(d_{ij}\) denotes the distance between the points
-\(i\) and \(j\) (and self-flows \(SI_{ii}\) were excluded), and \(n_i\)
-denotes the number or densities of individuals at origin point \(i\).
-The denominator ensured that our models were singly-constrained to unit
-sums for each origin, \(i\), over densities at destinations, \(j\). The
-above form gives the expected flow, in direct units of \(n_i\), along
-the path between the points \(i\) and \(j\). Layers were also calculated
-describing undirected dispersal throughout the entire network from a set
-of origin points.
+spatial interaction models (Wilson 2008) of the form,  where \(d_{ij}\)
+denotes the distance between the points \(i\) and \(j\) (and self-flows
+\(SI_{ii}\) were excluded), and \(n_i\) denotes the number or densities
+of individuals at origin point \(i\). The denominator ensured that our
+models were singly-constrained to unit sums for each origin, \(i\), over
+densities at destinations, \(j\). The above form gives the expected
+flow, in direct units of \(n_i\), along the path between the points
+\(i\) and \(j\). Layers were also calculated describing undirected
+dispersal throughout the entire network from a set of origin points.
 
 Our [`dodgr`](https://github.com/ATFutures/dodgr) software enables
 spatial interaction models to be efficiently calculated for a range of
@@ -420,6 +472,45 @@ portion of New York City.
 
 <div id="refs" class="references">
 
+<div id="ref-clifton_representing_2016">
+
+Clifton, Kelly J., Patrick A. Singleton, Christopher D. Muhs, and Robert
+J. Schneider. 2016. “Representing Pedestrian Activity in Travel Demand
+Models: Framework and Application.” *Journal of Transport Geography* 52
+(April): 111–22. <https://doi.org/10.1016/j.jtrangeo.2016.03.009>.
+
+</div>
+
+<div id="ref-griswold_pedestrian_2018">
+
+Griswold, Julia, Aditya Medury, Louis Huang, David Amos, Jiajian Lu,
+Schneider, Robert, and Offer Grembek. 2018. “Pedestrian Safety
+Improvement Program: Phase 2.” Technical Report CA18-2452. State of
+California: Department of Transport. <https://rip.trb.org/view/1427380>.
+
+</div>
+
+<div id="ref-krajzewicz_recent_2012">
+
+Krajzewicz, Daniel, Jakob Erdmann, Michael Behrisch, and Laura Bieker.
+2012. “Recent Development and Applications of SUMO - Simulation of Urban
+MObility.” *International Journal on Advances in Systems and
+Measurements*, International Journal On Advances in Systems and
+Measurements, 5 (3&4): 128–38. <http://elib.dlr.de/80483/>.
+
+</div>
+
+<div id="ref-kuzmyak_estimating_2014">
+
+Kuzmyak, J. Richard, Jerry Walters, Mark Bradley, Kara M. Kockelman,
+National Cooperative Highway Research Program, Transportation Research
+Board, Engineering National Academies of Sciences, and edicine. 2014.
+*Estimating Bicycling and Walking for Planning and Project Development:
+A Guidebook*. Washington, D.C.: Transportation Research Board.
+<https://doi.org/10.17226/22330>.
+
+</div>
+
 <div id="ref-luxen_real-time_2011">
 
 Luxen, Dennis, and Christian Vetter. 2011. “Real-Time Routing with
@@ -432,9 +523,52 @@ International Conference on Advances in Geographic Information Systems*,
 
 <div id="ref-padgham_dodgr:_2019">
 
-Padgham, Mark, and Andreas Peutschnig. 2019. *Dodgr: An R Package for
-Network Flow Aggregation*. Vol. 2. Transport Findings. Network Design
-Lab. <https://doi.org/10.32866/6945>.
+Padgham, Mark. 2019. *Dodgr: An R Package for Network Flow Aggregation*.
+Vol. 2. Transport Findings. Network Design Lab.
+<https://doi.org/10.32866/6945>.
+
+</div>
+
+<div id="ref-Padgham2017">
+
+Padgham, Mark, Robin Lovelace, Maëlle Salmon, and Bob Rudis. 2017.
+“Osmdata.” *The Journal of Open Source Software* 2 (14).
+<https://doi.org/10.21105/joss.00305>.
+
+</div>
+
+<div id="ref-singleton_pedestrians_2013">
+
+Singleton, Patrick A., and Kelly J. Clifton. 2013. “Pedestrians in
+Regional Travel Demand Forecasting Models: State of the Practice.” In
+*Transportation Research Board 92nd Annual Meeting*.
+<https://trid.trb.org/view.aspx?id=1242847>.
+
+</div>
+
+<div id="ref-waddell_urbansim:_2002">
+
+Waddell, Paul. 2002. “UrbanSim: Modeling Urban Development for Land Use,
+Transportation, and Environmental Planning.” *Journal of the American
+Planning Association* 68 (3): 297–314.
+<https://doi.org/10.1080/01944360208976274>.
+
+</div>
+
+<div id="ref-waddell_integrated_2011">
+
+———. 2011. “Integrated Land Use and Transportation Planning and
+Modelling: Addressing Challenges in Research and Practice.” *Transport
+Reviews* 31 (2): 209–29. <https://doi.org/10.1080/01441647.2010.525671>.
+
+</div>
+
+<div id="ref-Wilson2008">
+
+Wilson, Alan. 2008. “Boltzmann, Lotka and Volterra and Spatial
+Structural Evolution: An Integrated Methodology for Some Dynamical
+Systems.” *Journal of the Royal Society Interface* 5 (25): 865–71.
+<https://doi.org/10.1098/rsif.2007.1288>.
 
 </div>
 
