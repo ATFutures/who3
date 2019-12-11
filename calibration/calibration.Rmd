@@ -1,5 +1,6 @@
 ---
-title: "Calibration of Urban Planning and Transport Health Assessment Toolkit"
+title: "An open-source, open-data model for pedestrian movement at the finest possible scale"
+author: "Mark Padgham"
 output:
    #github_document
    #word_document: default
@@ -11,7 +12,7 @@ output:
         number_sections: true
         theme: flatly
     header-includes: 
-        - \usepackage{sfmath}
+        - \usepackage{amsmath,sfmath}
         - \usepackage{tikz}
         - \usetikzlibrary{arrows}
 bibliography: ../ATF.bib
@@ -61,13 +62,13 @@ Parallel to the development of such arguably more "traditional" approaches to
 modelling pedestrian behaviour has been the development of very fine-scale
 agent-based simulations such as "Simulation of Urban Mobility" [SUMO;
 @krajzewicz_recent_2012] and UrbanSim
-[@waddell_urbansim:_2002;@waddell_integrated_2011]. Such models yield highly
-detailed models of dynamic pedestrian movement, yet are typically constrained
-to small spatial scales, typically much less than entire city sizes. Current
-practices in modelling pedestrian movement are thus often faced with
-a compromise between modelling movement with sufficient detail yet only over
-restricted spatial scales, or modelling movement over larger spatial scales yet
-with insufficient fine-scaled detail.
+[@waddell_urbansim:_2002;@waddell_integrated_2011]. These are other such tools
+yield highly detailed models of dynamic pedestrian movement, yet are typically
+constrained to small spatial extents, typically much less than entire city
+extents. Current practices in modelling pedestrian movement are thus often
+faced with a compromise between modelling movement with sufficient detail yet
+only over restricted spatial extents, or modelling movement over larger spatial
+extents yet with insufficient fine-scaled detail.
 
 The present work takes advantage of modern high-performance software for
 modelling and analysing dynamic movement through urban areas
@@ -75,12 +76,12 @@ modelling and analysing dynamic movement through urban areas
 at the finest possible spatial scale of individual street segments. The model
 presented here is not an individual-based simulation model, rather it
 incorporates the finest possible representation of the spatial structure of
-a city, including all possible detail of the way network, and of all available
-buildings. It is not a multi-modal model, and does not explicitly consider
-pedestrian movement in any direct relationship with other modes of travel,
-although it does implicitly do so by considering movement to and from both
-locations of public transport, and private parking facilities for both bicycles
-and automobiles.
+a city, including all possible detail of the "way network" (see below for
+terminological note), and of all available buildings. It is not a multi-modal
+model, and does not explicitly consider pedestrian movement in any direct
+relationship with other modes of travel, although it does implicitly do so by
+considering movement to and from both locations of public transport, and
+private parking facilities for both bicycles and automobiles.
 
 Importantly, our model is based entirely on open-source software, much of
 which was explicitly developed or modified for the present study, and on
@@ -94,11 +95,17 @@ open data.
 
 In order to demonstrate the spatially expansive capabilities of our software
 and models, we present a model of pedestrian behaviour throughout the entirety
-of New York City, through calibrating the model against pedestrian counts from
+of New York City. The model is calibrated against pedestrian counts observed at
 114 stations, using openly available data provided by the City of New York for
-the year 2018. Finally, note that we refer to the network of traversable ways
+the year 2018. A major aim of the present work is to demonstrate a *general and
+transferrable* technique for pedestrian modelling. Accordingly, our aim was not
+just to model pedestrian flows throughout New York City, but to demonstrate how
+the results may be directly transferred to other locations, through extracting
+the general principles of the resultant model.
+
+Finally, note that we refer to the network of traversable ways
 within a city as a "way network", in contrast to arguably more traditional
-terminology such as "street network." We do this both in acknowledgement of the
+terminology such as "street network." We do this in acknowledgement both of the
 fact that many ways traversable to pedestrians can not be categorized as
 streets (think of staircases, or paths across grass lawns), and that this is
 the terminology adopted by our primary provider of open data, Open Street Map.
@@ -106,12 +113,13 @@ the terminology adopted by our primary provider of open data, Open Street Map.
 
 # Methods
 
-## Data Sources
+Our model consisted of a number of "flow layers" between specified categories
+of origin and destination locations. Each of these layers comprised flows
+aggregated between every single pairwise combination of origin and destination
+points, following quickest, or least-time, paths through the way network of New
+York City as weighted for pedestrian routing.
 
-UPTHAT is based out of principle on entirely open data sets, primarily on data
-from Open Street Map and "worldpop" (www.worldpop.org). The latter data enable
-estimates of population flows to be made in absolute terms, given aggregate
-data on proportions and typical frequencies of trips.
+## Data Sources
 
 ```{r ped-station-stats}
 suppressPackageStartupMessages (requireNamespace ("sf"))
@@ -161,14 +169,17 @@ a <- round (as.numeric (sf::st_area (sf::st_convex_hull (xmp))) / 1e6)
 )
 ```
 
-Data on pedestrian densities was obtained from New York City Government
-[pedestrian count
+The primary source of data for our models was Open Street Map (OSM), used to
+obtain both a highly detailed representation of the way network, and of
+building locations, structures, and purposes. We used the R software `osmdata`
+[@Padgham2017] to download and process all OSM data. Data on pedestrian
+densities was obtained from New York City Government's [pedestrian count
 data](https://www1.nyc.gov/html/dot/html/about/datafeeds.shtml#Pedestrians),
 collected bi-annually at `r nrow(x)` stations throughout the city, encompassing
 a total area of `r a` km<sup>2</sup>. Additional data on subway usage was
 obtained from the city's [Metropolitan Transit Authority
 (MTA)](http://web.mta.info/nyct/facts/ridership/ridership_sub_annual.htm), with
-data on locations obtained through the city's [open data
+data on locations of subway entrances obtained through the city's [open data
 portal](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49).
 The MTA figures are annual "ridership totals" for each station, which are
 counts of number of passengers entering the system at each of 424 stations (or,
@@ -261,19 +272,21 @@ densities of movements towards or away from those points or segments. A final
 categorical trip purpose considered in our analyses below is thus,
 "centrality".
 
-Extraction and processing of these data enabled analyses of the following eight
-trip categories, serving as types of journey origins or destinations:
+Extraction and processing of these data enabled analyses of the eight
+trip categories specified in the following table, serving as types of journey
+origins or destinations. The table also enumerates numbers of buildings of each
+category in the OSM database at the time of our analyses (around October 2019).
 
-n | category
---- | ---
-1 | subway
-2 | centrality
-3 | residential
-4 | transportation
-5 | sustenance
-6 | entertainment
-7 | education
-8 | healthcare
+n | category | number of structures or points
+--- | --- | ---
+1 | subway | 1,926
+2 | centrality | -
+3 | residential | 99,022
+4 | transportation | 6,691
+5 | sustenance | 7,489
+6 | entertainment | 459
+7 | education | 1,680
+8 | healthcare | 1,147
 
 Each category of trip represented one pairwise combination of these eight
 categories, yielding 8&#215;7 = 56 distinct categories. An additional eight
@@ -282,32 +295,31 @@ locations identified for each category.
 
 ## Modelling Pedestrian Flows
 
-We modelled pedestrian flows throughout the entirety of New York City, USA, in
-order to calibrate our models against the empirical data from the 114
-pedestrian count stations. Models were constructed using the
-[`dodgr`](https://github.com/atfutures/dodgr) software package for large-scale
-routing through street networks, by assembling an array of "flow layers"
-representing pedestrian flows between the distinct categories of origin and
-destination points described above.
+We calibrated our model of pedestrian flows throughout the entirety of New York
+City, USA, against empirical data from the 114 pedestrian count stations. Flow
+layers were generated in two primary ways: either by dispersing from a given
+set of origin points according to specified densities, or through routing flows
+between specific sets of origin and destination points, with densities
+calculated by a doubly-constrained spatial interaction model, with exponential
+form used throughout [@Wilson2008]. We refer to these two methods of
+calculating flow layers as "flow dispersal" and "flow aggregation", and
+illustrate both in the following sub-sections.
 
-Flow layers were generated in two primary ways: either by dispersing from
-a given set of origin points according to specified densities, or through
-routing flows between specific sets of origin and destination points, with
-densities calculated by a doubly-constrained spatial interaction model, with
-exponential form used throughout [@Wilson2008]. We refer to these
-two methods of calculating flow layers as "flow dispersal" and "flow
-aggregation", and illustrate both in the following sub-sections.
+As described above, for all layers other than dispersal, shortest paths were
+calculated between all pairwise combinations of origin and destination points,
+and flows aggregated along each street segment throughout the entire network.
+The shortest paths were actually calculated by weighting the network for
+time-based pedestrian travel, and so were represented "quickest paths" between
+each pair of points. The following sub-section briefly formalises our models.
 
 
 
 ### Flow Layers
 
-Our models comprised a variety of flow layers, each of which was generated by
-applying the spatial interaction models described above between a specified set
-of origin points, taken from the eight categories given above. Each flow layer
-was obtained through calculating shortest paths between each origin point, $i$,
-and destination point, $j$, in the network, and aggregating flows according to
-exponential spatial interaction models [@Wilson2008] of the form,
+Each flow layer was obtained through calculating shortest paths between each
+origin point, $i$, and destination point, $j$, in the network, and aggregating
+flows according to exponential spatial interaction models [@Wilson2008] of the
+form,
 \begin{equation}
     SI_{ij} (d_{ij}) = \frac{n_in_{j\ne i}}{\sum_{j\ne i} n_j exp (-d_{ij} / k)} exp (-d_{ij} / k),
 \end{equation}
@@ -324,10 +336,11 @@ Our [`dodgr`](https://github.com/ATFutures/dodgr) software enables spatial
 interaction models to be efficiently calculated for a range of exponential
 decay coefficients, `k`, returning a matrix of flows, with one row for each
 segment of the network, and one column for each exponential decay coefficient
-entered. This enabled us to initially calculate all flow layers for defined
-values of `k`, and to subsequently combine these pre-calculated layers in
-a single model as described in the following section. Each layer was calculated
-for 30 values of `k`, from 100 to 3000 metres in 100 metre increments.
+entered (see the following sub-section on Computational Strategy). This enabled
+us to initially calculate all flow layers for defined values of `k`, and to
+subsequently combine these pre-calculated layers in a single model as described
+in the following section. Each layer was calculated for 30 values of `k`, from
+100 to 3000 metres in 100 metre increments.
 
 The strength of spatial interaction (SI) given above was used to determine the
 flow between each pair of origins and destinations in a given layer. The flow
@@ -360,36 +373,63 @@ street segments for the different layers, but we argue that this procedure is
 appropriate because actual placements of flow values for each layer depend on
 the spatial location and variability of data as recorded in Open Street Map.
 
+### Computational Strategy
+
+Calculating the flow layers was naturally  a very computationally demanding
+endeavour. Our models aimed to discern for each layer an optimal width of
+exponential spatial interaction yielding the lowest overall model error,
+according to the modelling procedure described immediately below. To do that,
+we needed to calculate each layer for a range of exponential widths ($k$).
+Rather than independently calculating each layer for each value of $k$ for
+potential incorporation within a final aggregate model, we pre-calculated all
+layers for 30 distinct values of $k\in\{100,200,300, \ldots 3000\}$, using the
+aforementioned ability of our `dodgr` software to calculate a single layer for
+multiple values of $k$ at effectively no additional computational cost. As also
+described above, we obtained flows at each pedestrian count station by
+aggregating over some variable number of nearest edges, hereafter denoted $n$,
+for which we used values between 1 and 20. This translated to each flow layer
+providing 30 values of $k$ times 20 values of $n$, or 600 estimates. Each of
+these 600 values was pre-calculated prior to assembling the final model as
+described in the following section.
+
+All computation was conducted on a standard laptop, with the pre-computation of
+flow layers taking a few days total calculation time, a duration we consider
+quite reasonable for effectively $64\times600\times O(1,000)^2\sim
+50,000,000,000$ shortest path calculations on a network with around half
+a million edges.
+
 
 ### Statistical Models
 
 The 64 pairwise combinations of origin and destination categories represents 64
-potential independent variables in a statistical model. Our final model
+potential independent variables in a statistical model (times the two
+additional variables described above of $k$ and $n$). Our final model
 incorporated only a small fraction of this total number, through applying
 a step-wise variable addition procedure. The first layer was selected by
-applying the same procedure to each layer of aggregated flows generated by each
-of the 30 value of `k`, across numbers of nearest segments, `n`, from 1 to 20
-as described above, to determine the values of `k` and `n` that minimised the
-error of a standard linear regression against observed pedestrian counts. The
-layer which yielded the overall minimal error was selected as the first model
-layer.
+calculating linear regressions against the 114 observed pedestrian flows for
+each layer and all 600 combinations of $k$ and $n$, and selecting the layer and
+corresponding values of $k$ and $n$ which yielded the lowest squared residual
+error.
 
 The procedure was then repeated by applying an analogous procedure to all 63
 remaining layers, and including the flow values from the previously-selected
 layer in a multiple linear regression model. Having selected the second layer,
 it was then also included along with each of the remaining 62 layers, in order
 to determine the third layer yielding the model with the lowest overall error.
-Flow layers were successively added to the model as long as their contribution
-to the model was significant; that is, layer addition within the model was
-terminated as soon as the next layer added made no significant contribution.
-Where the addition of new layers rendered the contribution of any prior layers
-no longer significant, those non-significant layers were removed from the
-model. We used two degrees of significance to generate the results given below:
-initial model construction used a significance of $p\le0.05$, while final
-models only retained layers with $p\le0.01$. Removal of layers modifies
-resultant models, including significance values, and so removal of layers with
-$0.01<p\le0.05$ was iterated until all remaining layers in the final model had
-$p\le0.01$.
+Flow layers were successively added as long as their contribution to the model
+was significant; that is, layer addition within the model was terminated as
+soon as the next layer added made no significant contribution. Where the
+addition of new layers rendered the contribution of any prior layers no longer
+significant, those non-significant layers were removed from the model. We used
+two degrees of significance to generate the results given below: initial model
+construction used a significance of $p\le0.05$, while final models only
+retained layers with $p\le0.01$. Removal of layers modifies resultant models,
+including significance values, and so removal of layers with $0.01<p\le0.05$
+was iterated until all remaining layers in the final model had $p\le0.01$. The
+statistical summaries given below also include estimates of the relative
+importance of each variable [@lindeman_introduction_1980], obtained by
+decomposing components of model variance over all permutations of variable
+orders [@gromping_relative_2006].
 
 Finally, it is statistically possible for flow layers to be significantly
 *negatively* correlated with observed counts (Figure 2). Because each layer was
@@ -460,19 +500,26 @@ resultant estimates for each layer provided relative scaling coefficients for
 those layers. Flow values for the layers themselves were determined by values
 at the points of origin for each layer, such that the sum of flows for each
 layer was equal to the sum of values for all origins in that layer (see Figure
-1). For example, the sum across the entire network of flows dispersing away
-from all subway exits was equal to the total number of passengers entering and,
-according to our assumption, exiting all stations of the subway system. Note,
-however, that even this layer may result in a model estimate greater than one,
-because the contribution to observed pedestrian counts of numbers *effectively*
-dispersing from subway exits may in fact exceed the actual numbers exiting,
-because this layer may in fact capture more pedestrian activity than just
-dispersive movement of actual subway passengers. A resultant model estimate for
-the layer representing dispersal away from subway exits would nevertheless
-provide a direct quantification of any such effect, and be able to be directly
-translated into absolute terms. The number of pedestrians according to such
-a resultant model effectively dispersing from subway exits would equal actual
-numbers measured in the subway times the resultant model coefficient.
+1). 
+
+```{r subway-stats, echo = FALSE}
+# subway-stats is output of who3::nysubway_data()
+subway <- readRDS ("./subway-stats.Rds")
+```
+
+The only layers with direct scales in numbers of pedestrians per day were those
+representing movement away from subway exits. Presuming numbers exiting each
+station to equal the recorded numbers entering each station, the total daily
+count of `r format(sum(subway$count) / 356, big.mark = ",")` passengers
+distributed over `r format(nrow(subway), big.mark = ",")` station exits gives
+`r format(round(sum(subway$count)/365/nrow(subway)), big.mark = ",")`
+pedestrians per station exit per day. Model estimates for layers originating at
+station exits thus represent this number of pedestrians for each unit of
+estimated coefficient. These estimates may of course be greater than one,
+because, for example, the contribution to observed pedestrian counts of numbers
+*effectively* dispersing from subway exits may in fact exceed the actual
+numbers exiting, because this layer may in fact capture more pedestrian
+activity than just dispersive movement of actual subway passengers.
 
 Other layers result in more abstract scaling, but scales that are nevertheless
 straightforward to interpret. Four of the categories are directly associated
@@ -577,36 +624,59 @@ ggplot (dat, aes (x = k, y = ss)) +
 Following the procedure described above of adding the next minimal error layer
 that was significant, while removing any layers rendered non-significant
 through the addition of subsequent layers, resulted in the final model
-statistically summarised in Table 1, ordered by layer origins, and for each of
-these in decreasing absolute values of T-statistics.
+statistically summarised in Table 1, ordered by layer origins, and within each
+of these groups in decreasing relative importance.
 
 ```{r final-model, echo = FALSE}
 dat <- readRDS ("ped-model-final.Rds")
 dat$ped_counts <- dat$ped_counts * 2.34
 f_ <- dat$flowvars
-mod <- summary (lm (dat$ped_counts ~ f_))
-coeffs <- data.frame (mod$coefficients [2:nrow (mod$coefficients), ])
+mod <- lm (dat$ped_counts ~ f_)
+mods <- summary (mod)
+coeffs <- data.frame (mods$coefficients [2:nrow (mods$coefficients), ])
 # for some reason, colnames do not transfer properly:
-names (coeffs) <- colnames (mod$coefficients)
+names (coeffs) <- colnames (mods$coefficients)
 coeffs <- cbind ("Layer Name" = gsub ("f_", "", rownames (coeffs)),
                  coeffs)
+
+# Relative importance of variables:
+ri <- relaimpo::calc.relimp (mod)
+ri <- slot (ri, "lmg")
+
+# remove Std. Error from coeffs
+coeffs <- coeffs [, which (!grepl ("Std", names (coeffs)))]
+coeffs [["Rel. Importance"]] <- ri
+
+coeffs$k <- dat$k # SI k-values
+
 # Next line is critical, because the vertical lines are interpreted by markdown
 # as table column breaks, which mucks the whole thing up!
-names (coeffs) [length (names (coeffs))] <- "Pr(>t)"
-# order by origin, then by decreasing absolute T value
+names (coeffs) [grepl ("Pr", names (coeffs))] <- "Pr(>t)"
+# order by origin, then by relative importances
 coeffs$origin <- substr (coeffs$`Layer Name`, 1, 3)
 names (coeffs) [which (names (coeffs) == "t value")] <- "t"
-coeffs <- arrange (coeffs, origin, desc (t))
+# get max rel. importance for each origin:
+rimax <- dplyr::group_by (coeffs, origin) %>%
+    dplyr::summarise (ri = max (`Rel. Importance`))
+coeffs$rimax <- rimax$ri [match (coeffs$origin, rimax$origin)]
+coeffs <- dplyr::arrange (coeffs, dplyr::desc (rimax),
+                          dplyr::desc (`Rel. Importance`))
 rownames (coeffs) <- NULL
-coeffs$origin <- NULL
-names (coeffs) [which (names (coeffs) == "t")] <- "t value"
-knitr::kable (coeffs, digits = c (NA, 0, 0, 2, 4), row.names = FALSE, caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City. (Placeholder only in rendered version)")
+coeffs$origin <- coeffs$rimax <- NULL
+names (coeffs) [grepl ("^t", names (coeffs))] <- "t value"
+knitr::kable (coeffs, digits = c (NA, 0, 1, 4, 3, 0), row.names = FALSE, caption = "Table 1. Statistical parameters of final model of pedestrian flows through New York City.")
 ```
 
-That model was able to explain R<sup>2</sup> = `r signif (mod$r.squared, 3)` of the
-observed variation in pedestrian counts across New York City. Converting the
-estimates of the resultant statistical model into absolute scales of
-pedestrians per day and summing the result yielded the model shown in Figure 5.
+This table reveals that layer origins were divided between the five categories
+of subway, health, sustenance, entertainment, and education. Each of these
+origin categories was combined with multiple destination layers, except for
+health and entertainment, with in each case the combinations coming from two to
+three positively-correlated layers, and one to two negatively-correlated
+layers. The model was able to explain R<sup>2</sup> = 
+`r signif (mods$r.squared, 3)` of the observed variation in pedestrian counts
+across New York City. Converting the estimates of the resultant statistical
+model into absolute scales of pedestrians per day and summing the result
+yielded the model shown in Figure 5.
 
 ```{r final-model-plot, echo = FALSE}
 dat <- readRDS ("ped-model-final.Rds")
@@ -624,17 +694,183 @@ ggplot (res, aes (x = modelled, y = observed)) +
     geom_smooth (method = "lm")
 ```
 
+The most important layers in the model by far were those describing movement
+away from subway exits. Model estimates for these layers were all several tens,
+indicating rough equivalent numbers of pedestrians of these values times 
+`r format (nrow (subway), big.mark = ",")` pedestrians per day, so for example
+the most important category of dispersal from subway exists equated to 
+`r round (coeffs$Estimate [1])` $\times$
+`r format (nrow (subway), big.mark = ",")` = 
+`r format (round (nrow (subway) * coeffs$Estimate [1]), big.mark = ",")`
+pedestrians per day. While this number may seem high, it is important to note
+that it represents dispersive movement along all nearby ways, so that effective
+pedestrians flows along any one way will generally be orders of magnitude less
+than this value. The second most important group was represented by the single
+layer of dispersive movement away from healthcare facilities, with a similar
+absolute scale of 
+`r format (round (coeffs$Estimate [coeffs[["Layer Name"]] =="hea-dis"]), big.mark = ",")` 
+pedestrians per unit building per day. Layers representing movement to defined
+categories---that is, non-dispersive layers---had estimates generally at least
+an order of magnitude lower than layers representing dispersive movement.
 
-The above table reveals that layer origins were divided between the four
-categories of education, health, subway, and sustenance. Each of these origin
-categories was combined with multiple destination layers, except for health,
-with in each case the combinations coming from two to three
-positively-correlated layers, and one to two negatively-correlated layers.
+Widths of exponential spatial interaction or dispersal models ($k$ values in
+Table 1) differed between the different flow layers, from 400 metres for the
+most significant layer of dispersal from subways, to the maximal value
+considered of 3,000 metres for dispersal from health care facilities. (There
+were also two values of 100 metres for movement from educational facilities to
+locations of both transport and sustenance.) In terms of these exponential
+widths, patterns of movement from subway stations depended on journey origins,
+with dispersive movement being relatively short (400 metres), other movement
+(towards transport and centrality) being over around 1,000 metres, and movement
+towards health centres having an exponential width of 2.1 kilometres. Movement
+from other locations resulted in more consistent $k$ values for the various
+categories of destination, with movement from locations of sustenance described
+by exponential widths of 1-2 kilometres; and movement from educational facilities
+by widths of under one kilometre.
+
+## Generalizing the Model
+
+As described at the outset, a primary aim of our model was to extract general
+principles of pedestrian modelling, through abstracting these results as much
+as possible from the particularities of pedestrian behaviour in New York City.
+To do so, we took the final aggregate model layer in its entirety, and
+retrospectively examined correlations with component layers taken in isolation
+or in combination. Models were only constructed from positive (non-zero) values
+for individual and aggregate layers. The above table suggested primary layers
+representing movement from subway stations, and from locations of health,
+sustenance, and education. To generalise the model, we quantified dispersive
+movement away from each of these categories, then followed the stepwise
+selection procedure used to construct the main model of observed pedestrian
+counts, yet here fitting sequences of layers to the overall aggregate layer of
+flows along all street edges of New York City (of which there were
+$n=408,920$).
+
+```{r general-model}
+dat <- readRDS ("/data/data/moveability/nyc/ped-model-general.Rds")
+dat <- data.frame ("Layer Name" = rownames (dat),
+                   "Estimate" = dat$Estimate,
+                   "t value" = dat [[grep ("^t", names (dat))]],
+                   #"Pr(>t)" = dat [[grep ("^Pr", names (dat))]],
+                   k = dat$k,
+                   "Rel. Importance" = dat [["Rel. Importance"]],
+                   stringsAsFactors = FALSE)
+#names (dat) [grepl ("Pr", names (dat))] <- "Pr(>t)"
+names (dat) [grepl ("^t", names (dat))] <- "t value"
+names (dat) [grepl ("^Rel", names (dat))] <- "Rel. Importance"
+dat <- dat [order (dat [["Rel. Importance"]], decreasing = TRUE), ]
+knitr::kable (dat, digits = c (NA, 0, 0, 0, 3), row.names = FALSE, caption = "Table 2. Statistical parameters of general model of pedestrian flows through New York City.")
+```
+
+This general model explained $R^2=$ 
+`r signif (sum (dat [["Rel. Importance"]]), 3)` of the variation in non-zero
+flow values across the entire city, with the Relative Importance values of
+Table 2 giving the contributions of each of the four layers to that overall
+coefficient. (All layers were entirely significant, with all $p$-values
+effectively zero.) Modelling dispersal from subway stations accounted for 0.56
+of the explained variable portion of 0.66, or around 84%. 
+The second most influential component was dispersal from educational
+facilities, which explained 0.077/0.662 = 11.6% of the total explained
+variance. Dispersal widths were in both cases roughly commensurate with the
+preceding values from the original model (Table 1), at 300 rather than 400
+metres for dispersal from subway, and 100 metres for dispersal from educational
+facilities. The remaining two layers of dispersal from sustenance and health
+care facilities represented a combined proportion of less than 3%, and are not
+considered further here.
+
+Beyond the specificities of New York City, this generalisation suggests that
+simply modelling dispersal from public transport facilities can account for the
+large majority of pedestrian flows throughout a city. The above model estimates
+translate to $22\times2,250 = 49,500$ pedestrians per day from each subway
+exit. To reiterate the above: This is not to be interpreted to indicate that
+50,000 pedestrians actually disperse directly from each subwqy exit, rather
+that the major portion of the city's general patterns of movement can be best
+explained by the diffiusion of this number of people from the general areas
+surrounding each subway exit. Dispersal from educational facilities plays
+a significant yet secondary role, with an estimate of 33,000 pedestrians from
+each facility.
 
 # Discussion
 
 The model developed here was able to reproduce over 85% of the observed
 variation in pedestrian counts at 114 stations encompassing a large portion of
-New York City.
+New York City. Both this final model and the generalisation steps revealed
+dispersal from subway stations to be by far the most significant contribution
+to pedestrian flows. While the ability to explain such a large proportion of
+the variance in pedestrian counts across such a large area (705 km<sup>2</sup>)
+in one of the world's major cities is obviously an achievement in its own
+right, we hope that the major result of this study is the ability to generalise
+this model beyond locational particularities.
+
+Both the specific and general results confirm prior work on the important
+influence of public transport on pedestrian activity
+[@zacharias_pedestrian_2001]. The dispersal radius of 300 metres accords very
+well with many prior studies on transit-oriented development and pedestrian
+"walksheds" [see @stojanovski_urban_2019, and references therein]. These
+generalisations obviously need to be confirmed through repeating such studies
+in other locations, yet offer an immediate entry point for cities lacking the
+detailed kinds of monitoring data provided by New York City. Absent any
+additional data whatsoever, the general model could be adapted to other cites
+by devising a means to estimate relative numbers exiting from public transport
+stops or stations [using proxies such as network centrality;
+@derrible_network_2012; @jiang_station-based_2018]. Modelling pedestrian
+dispersal from these stops or stations according to estimates of passenger
+numbers could then provide an initial relative indication of pedestrian
+densities throughout a city. A city with a single pedestrian count station
+would then be able to convert that relative scale to an absolute scale; a city
+with $n$ pedestrian count stations would be able to consider combinations of
+different layers, with the general model developed here demonstrating how
+a explaining the major portion of all pedestrian movement can be constructed
+from very few layers indeed.
+
+## Is our model over-fitted?
+
+We now argue why we believe our model to be entirely statistical valid, in
+spite of the fact that we calculated around 50 billion shortest paths through
+the way network of New York City in order to correlate results with 114
+observations. Numbers of independent variables were at most the 64 layers
+considered times the 600 combinations of values of $k$ and $n$. As explained
+above in reference to negative correlations, however, the actual layers
+effectively contributing to observed pedestrian behaviour remain unknown even
+after constructing our model, with negative correlations likely indicative of
+some kind of mismatch between our arbitrary layer categories and actual
+behaviour with regard to categorical origins and destinations. According to
+this hypothesis, although we examined 64 layers, we ought to have expected
+layers from common origins to be combined both positively and negatively to
+reflect effective single layers, and thus this number of 64 layers can not be
+interpreted to reflect 64 independent variables. Moreover, this number is less
+than numbers of variables commonly employed in pedestrian models [see again
+@singleton_pedestrians_2013;@griswold_pedestrian_2018, and references therein].
+
+The combinations of 600 values of $k\times n$ similarly does not represent an
+equivalent number of independent variables, as each layer was only ultimately
+represented by one single value of each. The final model included 5 categories
+of origin, with two of these represented by a single layer, and each of the
+remaining three by four layers. This translates to an average of 2.8
+destinations per origin. Presuming this to reflect some underlying general
+process governing combination of layers would suggest an effective number of
+independent layers of 64 / 2.8 = 23. Values of $k$ and $n$ would then represent
+one additional variable each, amounting to 25 equivalent independent variables
+or degrees of freedom used to explain 114 observations, suggesting an entirely
+valid statistical procedure.
+
+## Future Steps
+
+There is obviously an immediate need to apply the procedure developed here to
+other locations and other data. What we have nevertheless developed is
+a procedure that is entirely amenable to universal adaptation, with very little
+need to adapt or translate the modelling procedure for other locational
+particularities. In that regard, we argue that our modelling procedure truly is
+unique and uniquely powerful. Many or arguably most models of pedestrian
+behaviour are drawn from highly specific data collected in, and relevant to,
+one particular location. Even in cases where adapting such models to other
+locations may be possible, such adaptation almost always requires expensive
+data collection in order to replicate the data inputs of initial case studies.
+Our model merely presumes that a location is reasonably well represented in
+Open Street Map, and that pedestrian counts are available. Locations in which
+the former requirement is not sufficiently well met can translate a desire to
+develop an accurate pedestrian model into the more general, and vastly more
+generally useful, task of enhancing their representation in the worlds foremost
+open data base of urban structure.
+
 
 # References
