@@ -38,6 +38,7 @@ library (ggplot2)
 theme_set (theme_minimal ())
 ```
 
+[6,700 words]
 
 # Introduction
 
