@@ -5,15 +5,16 @@ Development of a prototype web application for active transport planning
 
 # Introduction
 
-This document sets out a plan for the third phase of work for the WHO’s
-Urban Health Initiative, and the ongoing development of a web
+This document provides an overview of the third phase of work for the
+WHO’s Urban Health Initiative, and the ongoing development of a web
 application to explore health benefits of different sustainable
-transport policies, with the working title of “Active Transport Tool”
-(ATT; Lovelace et al. 2018). **The main output will be a stable
-prototype, enabling interactive exploration of active transport
-scenarios and associated health impacts.** The work will build on
-previous projects funded by the WHO (in grants 2017/773067 and
-2017/773067-0). The ATT can be used for many purposes related to the
+transport policies, with the working title of Urban Planning and
+Transport Health Assessment Tool (Upthat; Lovelace et al. 2018), which
+was previously named the Active Transport Toolkit (ATT). **The main
+output is be a stable prototype, enabling interactive exploration of
+active transport scenarios and associated health impacts.** The work
+builds on previous projects funded by the WHO (in grants 2017/773067 and
+2017/773067-0). The Upthat can be used for many purposes related to the
 interface between transport and human health, including assessment of
 exposure to air pollution, changes in the distribution of physical
 activity, and the spatial distribution of cycling and pedestrian flow
@@ -175,9 +176,9 @@ be:
 7.  **Adaptation manual** An “Adaptation Manual” will be developed, to
     serve the dual purpose of describing
     
-    1)  How an ATT may be adapted and applied to other, additional
+    1)  How Upthat may be adapted and applied to other, additional
         locations; and in doing so,
-    2)  How the ATT as presented to each location may be adapted and
+    2)  How Upthat as presented to each location may be adapted and
         modified following feedback from local stakeholders.
     
     This manual will detail in general, non-technical terms, the nature
@@ -192,19 +193,20 @@ be:
 
 # Deliverables
 
-The primary deliverables extending from each of the above phases will
-be:
+The primary deliverables extending from each of the above phases
+are:
 
 <!-- 1. **Analytic Methods and Software** This phase will not produce any concrete deliverables, but will provide for both cities the necessary input data to allow the development of individually adapted ATT. -->
 
 <!-- 1. **Health Integration** This stage will enable ATT output to be expressed in health-economic terms. -->
 
-<!--    As the third stage will be conducted concurrently with these first two, the output of this stage will be directly viewable in the ATT. -->
+<!--    As the third stage are conducted concurrently with these first two, the output of this stage are directly viewable in the ATT. -->
 
 1.  **Prototype web app** which will work for multiple cities and allow
     visualization of transport and health outcomes under a range of
-    scenarios. This will be hosted at a dedicated URL and be available
-    for at least 2 months after the project is complete.
+    scenarios. This is hosted at a dedicated URL and be available for at
+    least 2 months after the project is complete:
+    <https://atfutures.github.io/uta/>
 2.  **A description of scalable scenarios**, which will be encoded,
     quantified, and provided in a form that can be applied to other
     cities. Plausible scenarios of change will include those with the
@@ -234,10 +236,13 @@ are likely to be most effective in each city.
 
 # Timeline
 
-The work will be conducted over 4 months, with each stage taking between
-2 weeks to 2 months, as illustrated below.
+In the initial plan the work would be conducted over 4 months, with each
+stage taking between 2 weeks to 2 months, as illustrated below.
 
 <img src="README_files/figure-gfm/timeline.png" width="100%" />
+
+Due to delays in contracts and unexpected delays in the route network
+analysis software development, the contract ran into December 2019.
 
 # References
 
