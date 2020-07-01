@@ -1,6 +1,40 @@
 library(tidyverse)
 library(brms)
-d = readRDS("global-data/cities-101-osm-bus.Rds")
+library(sf)
+
+# test dirichlet regression:
+A <- rbind(
+  c(0.2, 0.3, 0.5),
+  c(0.8, 0.1, 0.1)
+)
+df <- data.frame(x = rnorm(2))
+df$A <- A
+m = brm(A ~ x, data = df, family = dirichlet())
+summary(m)                 
+
+library(dplyr)
+bind <- function(...) cbind(...)
+
+N <- 20
+df <- data.frame(
+  y1 = rbinom(N, 10, 0.5), y2 = rbinom(N, 10, 0.7), 
+  y3 = rbinom(N, 10, 0.9), x = rnorm(N)
+) %>%
+  mutate(
+    size = y1 + y2 + y3,
+    y1 = y1 / size,
+    y2 = y2 / size,
+    y3 = y3 / size
+  )
+df$y <- with(df, cbind(y1, y2, y3))
+make_stancode(bind(y1, y2, y3) ~ x, df, dirichlet())
+make_standata(bind(y1, y2, y3) ~ x, df, dirichlet())
+
+fit <- brm(bind(y1, y2, y3) ~ x, df, dirichlet())
+summary(fit)
+
+
+d = readRDS("~/atfutures/who3/global-data/cities-101-osm-bus.Rds")
 names(d)
 # no zeros allowed: how to allow zero values?
 d %>% sf::st_drop_geometry() %>% select(walking:cycling) %>% summary()
@@ -36,3 +70,5 @@ ggsave("figures/mode-share-prediction-bus-stops-100.png")
 p$`m_cycleway_per_1000:cats__`
 p$`has_tram:cats__` + ylab("Mode share")
 ggsave("figures/mode-share-has-tram.png")  
+
+
